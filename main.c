@@ -23,12 +23,12 @@ int main()
     //Customer* cus1 = (Customer*)malloc(sizeof(Customer));
 	int choice;
 	int value,CustomerID;
-	int LastCustomerID = 0, LastItem=0;
+	int LastCustomerID = 0, LastItemID=0;
 	char itemName, customerName, employeeName;
 	Customer NewCus;
 	CusNode* CusTree = NULL;
 	CusNode* CusForUpdate = NULL;
-	Item* NewItem;
+	Item NewItem;
 	ItemNode* ItemTree = NULL;
 	ItemNode* ItemForUpdate = NULL;
 
@@ -52,16 +52,16 @@ int main()
 			scanf("%d", &value);
 			break;*/
 		//case 2:
-			LastItem++;
-		NewCus.ID = LastCustomerID;
-		printf("\n\n==>Enter the full name of the customer you to add:");
-		scanf("%s", &NewCus.fullName);
-		printf("\n\n==>Enter current date:");
-		scanf("%s", &NewCus.JoinDate);
-		NewCus.SumOfShops = 0;
-		NewCus.lastPurchaseDay = NULL;
-		AddCustomer(&CusTree, NewCus);
-		print_inorder(CusTree);
+			LastItemID++;
+		    NewItem.id = LastItemID;
+		    printf("\n\n==>Enter the model of the item you to add:");
+		    scanf("%s", &NewItem.model);
+		    printf("\n\n==>Enter manufactory date:");
+		    scanf("%s", &NewItem.manuf);
+			printf("\n\n==>Enter price:");
+			scanf("%d", &NewItem.price);
+	        AddItem(&ItemTree, NewItem);
+    	    print_inorder(ItemTree);
 		//	break;
 		/*case 3:*/
 	printf("For start press 0 ");
