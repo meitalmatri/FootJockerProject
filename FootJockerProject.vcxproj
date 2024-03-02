@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dates.c" />
     <ClCompile Include="employees.c" />
     <ClCompile Include="Customers.c" />
     <ClCompile Include="Items.c" />

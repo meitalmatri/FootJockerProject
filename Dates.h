@@ -9,3 +9,5 @@ typedef struct purchaseday
     Item purItems[3];
 
 } PurchaseDay;
+
+int dateCmp(char* x, char* y);
