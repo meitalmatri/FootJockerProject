@@ -8,3 +8,5 @@ int dateCmp(char* x, char* y)
 		return(strcmp(x + 3, y + 3));
 	return(strcmp(x, y));
 }
+
+why are you
