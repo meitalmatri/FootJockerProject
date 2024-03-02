@@ -1,6 +1,9 @@
 #pragma once
 
-#include <stdbool.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
 
 typedef struct item{
     int id;
@@ -12,24 +15,21 @@ typedef struct item{
 
 } Item;
 
-node* search(node tree, int val)
+typedef struct items_tree
 {
-	if (!(tree))
-	{
-		return tree;
-	}
+    Item itemN;
 
-	if (val < (tree)->id)
-	{
-		search(&((tree)->left), val);
-	}
-	else if (val > (tree)->id)
-	{
-		search(&((tree)->right), val);
-	}
-	else if (val == (tree)->id)
-	{
-		return tree;
-	}
+    int itemID;
 
-}
+    struct items_tree* right, * left, * parent;
+
+    char ManiDate[9];
+
+}ItemNode;
+
+ItemNode* searchItem(ItemNode** Itemtree, int itemID);
+
+void AddItem(ItemNode** Itemtree, Item itm);
+
+void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm);
+

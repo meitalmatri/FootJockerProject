@@ -26,11 +26,12 @@ typedef struct customers_tree
 
 }CusNode;
 
-void insert(CusNode** Custree, CusNode* parent, Customer cus);
+void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus);
 void AddCustomer(CusNode** Custree, Customer cus);
 void print_preorder(CusNode* Custree);
 void print_inorder(CusNode* Custree);
 void print_postorder(CusNode* Custree);
 void deltree(CusNode* Custree);
-CusNode* search(CusNode** Custree, int CusID);
+CusNode* searchCustomer(CusNode** Custree, int CusID);
 void UpdateCustomer(CusNode** Custree);
+

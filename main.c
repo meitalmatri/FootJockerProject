@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include "customers.h"
 
-
-
 int main() 
 {
     //if (!checkIfEmployeeFileExists()) {
@@ -25,11 +23,14 @@ int main()
     //Customer* cus1 = (Customer*)malloc(sizeof(Customer));
 	int choice;
 	int value,CustomerID;
-	int LastCustomerID = 0;
+	int LastCustomerID = 0, LastItem=0;
 	char itemName, customerName, employeeName;
 	Customer NewCus;
 	CusNode* CusTree = NULL;
 	CusNode* CusForUpdate = NULL;
+	Item* NewItem;
+	ItemNode* ItemTree = NULL;
+	ItemNode* ItemForUpdate = NULL;
 
 
 	//do
@@ -47,13 +48,20 @@ int main()
 		//switch (choice)
 		//{
 		//case 1:
-		//	printf("\n\n==>Enter the item ID you want to search:");
-		//	scanf("%d", &value);
-		//	break;
+		/*	printf("\n\n==>Enter the item ID you want to search:");
+			scanf("%d", &value);
+			break;*/
 		//case 2:
-		//	printf("\n\n==>Enter the item you to add:");
-		//	scanf("%s", &itemName);
-		//	AddItem(itemName);
+			LastItem++;
+		NewCus.ID = LastCustomerID;
+		printf("\n\n==>Enter the full name of the customer you to add:");
+		scanf("%s", &NewCus.fullName);
+		printf("\n\n==>Enter current date:");
+		scanf("%s", &NewCus.JoinDate);
+		NewCus.SumOfShops = 0;
+		NewCus.lastPurchaseDay = NULL;
+		AddCustomer(&CusTree, NewCus);
+		print_inorder(CusTree);
 		//	break;
 		/*case 3:*/
 	printf("For start press 0 ");
@@ -84,13 +92,13 @@ int main()
 		//case 6:
 			printf("\n\n==>Enter the ID of the customer you to update:");
 			scanf("%d", &CustomerID);
-			CusForUpdate=search(&CusTree, CustomerID);
+			CusForUpdate=searchCustomer(&CusTree, CustomerID);
 			while (CusForUpdate == NULL)
 			{
 				printf("ID not found, please try again \n");
 				printf("\n\n==>Enter the ID of the customer you to update:");
 				scanf("%d", &CustomerID);
-				CusForUpdate = search(&CusTree, CustomerID);
+				CusForUpdate = searchCustomer(&CusTree, CustomerID);
 			}
 
 			UpdateCustomer(&CusForUpdate);
