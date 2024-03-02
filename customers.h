@@ -35,3 +35,4 @@ void deltree(CusNode* Custree);
 CusNode* search(CusNode** Custree, int CusID);
 void UpdateCustomer(CusNode** Custree);
 
+int sinoy();
