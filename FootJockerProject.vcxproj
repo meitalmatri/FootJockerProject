@@ -133,6 +133,7 @@
     <ClCompile Include="Items.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Menu.c" />
+    <ClCompile Include="yohad1.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="customers.h" />
