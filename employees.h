@@ -32,4 +32,5 @@ Employee_node* search_emp(Employee_node** tree, char* username);
 void update_employee(Employee_node* tree);
 Employee_node* rightRotate(Employee_node* y);
 Employee_node* leftRotate(Employee_node* x);
+int getBalanceFactor(Employee_node* n);
 
