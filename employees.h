@@ -10,7 +10,7 @@ typedef struct employee {
 
 } Employee;
 
-typedef struct bin_tree {
+typedef struct employee_tree {
     Employee* data;
     struct bin_tree* right, * left, * parent;
     int height;
