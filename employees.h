@@ -7,13 +7,16 @@ typedef struct employee {
     char firstname[10];
     char password[10];
     unsigned int level; // 1 - admin, 2 - employee, 3 - practicioner
+
 } Employee;
 
 typedef struct bin_tree {
     Employee* data;
     struct bin_tree* right, * left, * parent;
+    int height;
 }Employee_node;
 
+int getHeight(struct Employee_node* n);
 int checkIfEmployeeFileExists();
 Employee_node* createDefaultAdmin();
 void print_employee(Employee* user);
@@ -27,4 +30,6 @@ void save_employee_tree(Employee_node** tree);
 void add_employee(Employee_node** tree, char* username, char* firstname, char* password, int level);
 Employee_node* search_emp(Employee_node** tree, char* username);
 void update_employee(Employee_node* tree);
+Employee_node* rightRotate(Employee_node* y);
+Employee_node* leftRotate(Employee_node* x);
 

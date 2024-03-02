@@ -126,7 +126,7 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 		temp = (Employee_node*)malloc(sizeof(Employee_node));
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
-
+		temp->height = 1;
 		temp->data = user;
 		*tree = temp;
 		return;
@@ -140,6 +140,41 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 	{
 		 insert(&(*tree)->right, *tree, user);
 	}
+	(*tree)->height = 1 + max(getHeight((*tree)->left), getHeight((*tree)->right));
+	int bf = getBalanceFactor(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && strcmp(user->username, (*tree)->left->data->username) < 0) {
+		(*tree)= rightRotate(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left)
+		{
+			(*tree) = leftRotate(*tree);
+			return;
+		}
+		else if (strcmp(user->username, (*tree)->left->data->username) > 0)
+		{
+			(*tree) = leftRotate(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && strcmp(user->username, (*tree)->left->data->username) > 0) {
+		(*tree)->left = leftRotate((*tree)->left);
+		(*tree) = rightRotate(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && strcmp(user->username, (*tree)->left->data->username) < 0) {
+		(*tree)->right = rightRotate((*tree)->right);
+		(*tree) = leftRotate(*tree);
+		return;
+	}
+	return ;
 }
 
 void print_preorder(Employee_node* tree)
@@ -147,7 +182,9 @@ void print_preorder(Employee_node* tree)
 	if (tree)
 	{
 		print_employee(tree->data);
+		printf("\nthe left sun of %s is\n", tree->data);
 		print_preorder(tree->left);
+		printf("\nthe right sun of %s is\n", tree->data);
 		print_preorder(tree->right);
 	}
 
@@ -196,7 +233,7 @@ void update_employee(Employee_node* tree)
 	int temp = 0;
 	char update_user[20];
 
-	printf("what username would you like to update?");
+	printf("what username would you like to update?\n");
 	scanf("%s", update_user);
 	temp_emp = search_emp(&tree, update_user);
 	if (temp_emp)
@@ -225,4 +262,43 @@ void update_employee(Employee_node* tree)
 	}
 	else
 		printf("error username did not found\n");
+}
+
+int getHeight(Employee_node* n) {
+	if (n == NULL)
+		return 0;
+	return n->height;
+}
+
+Employee_node* rightRotate(Employee_node* y) {
+	 Employee_node* x = y->left;
+	 Employee_node* T2 = x->right;
+
+	x->right = y;
+	y->left = T2;
+
+	x->height = max(getHeight(x->right), getHeight(x->left)) + 1;
+	y->height = max(getHeight(y->right), getHeight(y->left)) + 1;
+
+	return x;
+}
+
+Employee_node* leftRotate(Employee_node* x) {
+	Employee_node* y = x->right;
+	Employee_node* T2 = y->left;
+
+	y->left = x;
+	x->right = T2;
+
+	x->height = max(getHeight(x->right), getHeight(x->left)) + 1;
+	y->height = max(getHeight(y->right), getHeight(y->left)) + 1;
+
+	return y;
+}
+
+int getBalanceFactor(Employee_node* n) {
+	if (n == NULL) {
+		return 0;
+	}
+	return getHeight(n->left) - getHeight(n->right);
 }
