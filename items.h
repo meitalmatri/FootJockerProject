@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include<stdbool.h>
 
 typedef struct item{
     int id;
@@ -12,6 +13,7 @@ typedef struct item{
     int size[11];
     float price;
     int inventory;
+    bool InStock;
 
 } Item;
 
@@ -31,5 +33,7 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID);
 
 void AddItem(ItemNode** Itemtree, Item itm);
 
-void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm);
+void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
+
+void AddIventory(ItemNode** Itemtree, Item itm);
 

@@ -25,6 +25,7 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID)
 void AddItem(ItemNode** itemTree, Item itm)
 {
 	insertItem(itemTree, NULL, itm);
+	AddIventory(itemTree, itm);
 }
 
 void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
@@ -60,4 +61,40 @@ void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 			insertCustomer(&(*itemTree)->right, *itemTree, itm);
 		}
 	}
+}
+
+void AddIventory(ItemNode** Itemtree, ItemNode* itm)
+{
+	int ID,size,sum;
+	printf("Which item would you like to add inventory to? \n");
+
+	scanf("%d", &ID);
+
+	ItemNode* ItmToUpdate = searchItem(Itemtree, ID);
+
+	printf("Which size would you like to add inventory to? \n");
+	scanf("%d", &size);
+
+	while (size != -1)
+	{
+		if (30 < size < 41)
+		{
+			if (!ItmToUpdate->itemN.InStock)
+				ItmToUpdate->itemN.InStock = true;
+			printf("How much inventory you would like to add to this size?");
+			scanf("%d", &sum);
+			ItmToUpdate->itemN.size[(size % 30) + 1] += sum;
+			ItmToUpdate->itemN.inventory+=sum;
+		}
+
+		else
+		{
+			printf("The size you've written is not allowed please try again");
+		}
+
+		printf("Which more size would you like to add inventory to? if there is no more size to add, press -1 \n");
+		scanf("%d", &size);
+	}
+
+	
 }
