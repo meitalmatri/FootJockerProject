@@ -9,4 +9,3 @@ int dateCmp(char* x, char* y)
 	return(strcmp(x, y));
 }
 
-why are you
