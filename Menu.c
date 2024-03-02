@@ -14,6 +14,7 @@ void printMenu(unsigned int employeeLevel)
 	printf("Choose your operation:\n\n");
 	printf("1.ITEM SEARCHING \n");
 	printf("2.ADD ITEM \n");
+	printf("3.ADD INVENTORY \n");
 	printf("3.ADD CUSTOMER  \n");
 
 

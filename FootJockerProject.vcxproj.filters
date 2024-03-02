@@ -27,6 +27,9 @@
     <ClCompile Include="Menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Items.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="customers.h">
