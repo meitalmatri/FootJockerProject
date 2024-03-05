@@ -14,7 +14,6 @@ typedef struct item{
     float price;
     int inventory;
     bool InStock;
-
 } Item;
 
 typedef struct items_tree
@@ -35,5 +34,5 @@ void AddItem(ItemNode** Itemtree, Item itm);
 
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
 
-void AddIventory(ItemNode** Itemtree, Item itm);
+void AddIventory(ItemNode** Itemtree, int ID);
 

@@ -52,16 +52,16 @@ int main()
 			scanf("%d", &value);
 			break;*/
 		//case 2:
-			LastItemID++;
+			/*LastItemID++;
 		    NewItem.id = LastItemID;
 		    printf("\n\n==>Enter the model of the item you to add:");
-		    scanf("%s", &NewItem.model);
+		    scanf("%s", &NewItem.model)
 		    printf("\n\n==>Enter manufactory date:");
 		    scanf("%s", &NewItem.manuf);
 			printf("\n\n==>Enter price:");
 			scanf("%d", &NewItem.price);
 	        AddItem(&ItemTree, NewItem);
-    	    print_inorder(ItemTree);
+    	    print_inorder(ItemTree);*/
 		//	break;
 		/*case 3:*/
 	printf("For start press 0 ");

@@ -25,7 +25,7 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID)
 void AddItem(ItemNode** itemTree, Item itm)
 {
 	insertItem(itemTree, NULL, itm);
-	AddIventory(itemTree, itm);
+	AddIventory(itemTree, itm.id);
 }
 
 void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
@@ -63,14 +63,24 @@ void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 	}
 }
 
-void AddIventory(ItemNode** Itemtree, ItemNode* itm)
+void AddIventory(ItemNode** Itemtree, int itmID)
 {
 	int ID,size,sum;
-	printf("Which item would you like to add inventory to? \n");
 
-	scanf("%d", &ID);
+	ItemNode* ItmToUpdate;
 
-	ItemNode* ItmToUpdate = searchItem(Itemtree, ID);
+	if (itmID == NULL)
+	{
+		printf("Which item would you like to add inventory to? \n");
+
+		scanf("%d", &ID);
+
+		ItmToUpdate = searchItem(Itemtree, ID);
+	}
+
+	else
+
+		ItmToUpdate = searchItem(Itemtree, itmID);
 
 	printf("Which size would you like to add inventory to? \n");
 	scanf("%d", &size);
@@ -96,5 +106,74 @@ void AddIventory(ItemNode** Itemtree, ItemNode* itm)
 		scanf("%d", &size);
 	}
 
+	printf("Inventory Sucssesful update");
 	
+}
+
+void UpdateItem(ItemNode** Itemtree, int itmID)
+{
+	int ID, size, choose, NewPrice;
+	char NewModel[20],ManuFactoryDate[20];
+
+	ItemNode* ItmToUpdate;
+
+	if (itmID == NULL)
+	{
+		printf("Which item would you like to add inventory to? \n");
+
+		scanf("%d", &ID);
+
+		ItmToUpdate = searchItem(Itemtree, ID);
+	}
+
+	else
+
+		ItmToUpdate = searchItem(Itemtree, itmID);
+
+	printf("What would you like to like on this item? \n");
+	printf("If you like to update the model press 1 \n");
+	printf("If you like to update the price press 2 \n");
+	printf("If you like to update the manufactory date press 3 \n");
+	scanf("%d", &choose);
+
+	do 
+	{
+		switch (choose)
+		{
+		case 1:
+			printf("Enter new model: \n");
+			scanf("%s", &NewModel[20]);
+			strcpy(NewModel, ItmToUpdate->itemN.model);
+
+		case 2:
+			printf("Enter new price");
+			scanf("%s", &NewPrice);
+			ItmToUpdate->itemN.price = NewPrice;
+
+		case 3:
+			printf("Enter new manufactory date");
+			scanf("%s", &ManuFactoryDate);
+			strcpy(ManuFactoryDate, ItmToUpdate->itemN.manuf);
+		}
+		
+	} while (choose != -1);
+
+	printf("Inventory Sucssesful update");
+
+}
+
+void removeItem(ItemNode** Itemtree)
+{
+	int ItmID;
+	ItemNode* ItmNode;
+
+	printf("Enter the ID of The item you want to remove");
+	scanf("%d", &ItmID);
+
+	ItmNode = searchItem(Itemtree, ItmID);
+
+	if (ItmNode)
+	{
+		free(ItmNode);
+	}
 }

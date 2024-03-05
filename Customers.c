@@ -71,16 +71,6 @@ void print_postorder(CusNode* Custree)
 	}
 }
 
-void deltree(CusNode* Custree)
-{
-	if (Custree)
-	{
-		deltree(Custree->left);
-		deltree(Custree->right);
-		free(Custree);
-	}
-}
-
 CusNode* searchCustomer(CusNode** Custree, int ID)
 {
 	if (!(*Custree))
