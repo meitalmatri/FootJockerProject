@@ -1,12 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include "employees.h"
-#include "menu.h"
-#include <stdio.h>
-#include "employees.h"
-#include "menu.h"
-#include <stdio.h>
-#include "customers.h"
-
 void printMenu(unsigned int employeeLevel)
 {
 

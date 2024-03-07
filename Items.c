@@ -162,18 +162,89 @@ void UpdateItem(ItemNode** Itemtree, int itmID)
 
 }
 
-void removeItem(ItemNode** Itemtree)
+ItemNode* min_value(ItemNode* Itm, int* height)
+{
+	*height = 0;
+
+	/* loop down to find the leftmost leaf */
+	while (Itm->left != NULL)
+	{
+		Itm = Itm->left;
+		(*height)++;
+	}
+
+	return Itm;
+}
+
+ItemNode* max_value(ItemNode* Itm, int* height)
+{
+	*height = 0;
+
+	/* loop down to find the rightmost leaf */
+	while (Itm->right != NULL)
+	{
+		Itm = Itm->right;
+		(*height)++;
+	}
+
+	return Itm;
+}
+
+ItemNode* removeItem(ItemNode** Itemtree, int ID)
 {
 	int ItmID;
 	ItemNode* ItmNode;
 
+	if(ID==NULL)
+	{ 
 	printf("Enter the ID of The item you want to remove");
 	scanf("%d", &ItmID);
+	}
 
 	ItmNode = searchItem(Itemtree, ItmID);
 
-	if (ItmNode)
-	{
-		free(ItmNode);
-	}
+		if (!ItmNode)
+			return NULL;
+
+	/*	if (data < root->data)
+			root->left = delete_node(root->left, data);
+		else if (data > root->data)
+			root->right = delete_node(root->right, data);
+		else
+		{*/
+			ItemNode* cursor = NULL;
+
+			if ((ItmNode->left) && (ItmNode->right)) //2 children
+			{
+				int left, right;
+				ItemNode* parent = NULL;
+				ItemNode* cursorLeft = min_value(ItmNode->right, &left);
+				ItemNode* cursorRight = max_value(ItmNode->left, &right);
+
+				cursor = (left > right) ? cursorLeft : cursorRight;
+				parent = cursor->parent;
+				ItmNode->itemID = cursor->itemID;
+
+				if (parent->left == cursor)
+					parent->left = removeItem(Itemtree, cursor->itemID);
+				else
+					parent->right = removeItem(Itemtree, cursor->itemID);
+			}
+
+			else
+			{
+				if (ItmNode->left)	//only left child
+				{
+					cursor = ItmNode->left;
+					cursor->parent = ItmNode->parent;
+				}
+				else if (ItmNode->right) //only right child
+				{
+					cursor = ItmNode->right;
+					cursor->parent = ItmNode->parent;
+				}
+				free(ItmNode);
+				ItmNode = cursor;
+			}
+			return(ItmNode);
 }

@@ -36,3 +36,11 @@ void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
 
 void AddIventory(ItemNode** Itemtree, int ID);
 
+void UpdateItem(ItemNode** Itemtree, int itmID);
+
+ItemNode* min_value(ItemNode* Itm, int* height);
+
+ItemNode* max_value(ItemNode* Itm, int* height);
+
+ItemNode* removeItem(ItemNode** Itemtree, int ID);
+
