@@ -24,7 +24,7 @@ int main()
   
     //Customer* cus1 = (Customer*)malloc(sizeof(Customer));
 	int choice;
-	int CustomerID,employeeLevel, NewEmployeeLevel,value;
+	int CustomerID,employeeLevel=0, NewEmployeeLevel,value;
 	int LastCustomerID = 0, LastItemID=0;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
@@ -35,7 +35,7 @@ int main()
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
-	while (employeeLevel == NULL)
+	while (employeeLevel == 0)
 	{
 		employeeLevel = login(&employeeTree);
 	}

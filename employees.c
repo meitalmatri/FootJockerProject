@@ -202,13 +202,13 @@ int login(Employee_node** tree)
 		temp_emp = search_emp(tree, username_temp);
 		if ((temp_emp)&&(!strcmp(temp_emp->data->password, password_temp)))
 		{
-			printf("login successful\nwelcome %s\n",temp_emp->data->firstname);
+			printf("\nlogin successful\nwelcome %s\n",temp_emp->data->firstname);
 			return temp_emp->data->level;
 		}
 
-		printf("please try again\n");
+		printf("please try again\n\n");
 	}
-	printf("login faild please try again later\n");
+	printf("login faild please try again\n\n");
 	return NULL;
 
 }
