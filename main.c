@@ -36,6 +36,10 @@ int main()
 	Employee_node* employeeTree = NULL;
 
 	employeeLevel = login(&employeeTree);
+	while (employeeLevel == NULL)
+	{
+		printf("login failed");
+	}
 
 	printMenu(employeeLevel);
 	scanf("%d", &choice);
