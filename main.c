@@ -35,10 +35,9 @@ int main()
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
-	employeeLevel = login(&employeeTree);
 	while (employeeLevel == NULL)
 	{
-		printf("login failed");
+		employeeLevel = login(&employeeTree);
 	}
 
 	printMenu(employeeLevel);
