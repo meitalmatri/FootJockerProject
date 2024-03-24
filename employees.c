@@ -188,7 +188,7 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 //
 //}
 
-int login(Employee_node** tree)
+Employee_node* login(Employee_node** tree)
 {
 	char username_temp[20];
 	char password_temp[10];
@@ -197,18 +197,20 @@ int login(Employee_node** tree)
 	{
 		printf("please enter your user name:\n");
 		scanf("%s", username_temp);
-		printf("please enter your user password:\n");
+		printf("\nplease enter your user password:\n");
 		scanf("%s", password_temp);
 		temp_emp = search_emp(tree, username_temp);
-		if ((temp_emp)&&(!strcmp(temp_emp->data->password, password_temp)))
+		if ((temp_emp) && (!strcmp(temp_emp->data->password, password_temp)))
 		{
-			printf("\nlogin successful\nwelcome %s\n",temp_emp->data->firstname);
-			return temp_emp->data->level;
+			printf("login successful\nwelcome %s\n", temp_emp->data->firstname);
+			return temp_emp;
 		}
 
-		printf("please try again\n\n");
+		if(i<2)
+		printf("\nplease try again\n\n");
 	}
-	printf("login faild please try again\n\n");
+	printf("\nlogin failed please try again later\n");
+
 	return NULL;
 
 }

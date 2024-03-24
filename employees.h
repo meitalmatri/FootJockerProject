@@ -21,7 +21,7 @@ int getHeight(struct Employee_node* n);
 int checkIfEmployeeFileExists();
 Employee_node* createDefaultAdmin();
 void print_employee(Employee* user);
-int login(Employee_node** tree);
+Employee_node* login(Employee_node** tree);
 void print_preorder(Employee_node* tree);
 void insert(Employee_node** tree, Employee_node* parent, Employee* user);
 void add_new_employee(Employee_node** tree);

@@ -8,21 +8,6 @@
 
 int main() 
 {
-    //if (!checkIfEmployeeFileExists()) {
-    //    createDefaultAdmin();
-    //}
-
-   /* Employee currentEmployee = login();*/
-    //if (currentEmployee.level == 0) {
-    //    printf("Login failed. Try again later..\n");
-    //    return 0;
-    //}
-
-    //
-    //return 0;
-
-  
-    //Customer* cus1 = (Customer*)malloc(sizeof(Customer));
 	int choice;
 	int CustomerID,employeeLevel=0, NewEmployeeLevel,value;
 	int LastCustomerID = 0, LastItemID=0;
@@ -35,12 +20,19 @@ int main()
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
-	while (employeeLevel == 0)
+	if (!checkIfEmployeeFileExists()) 
 	{
-		employeeLevel = login(&employeeTree);
+		createDefaultAdmin();
 	}
 
-	printMenu(employeeLevel);
+	Employee* currentEmployee=NULL;
+
+	while (currentEmployee==NULL)
+	{
+		currentEmployee = login(&employeeTree);
+	}
+
+	printMenu(currentEmployee->level);
 	scanf("%d", &choice);
 
 	do
