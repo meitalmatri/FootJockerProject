@@ -248,3 +248,40 @@ ItemNode* removeItem(ItemNode** Itemtree, int ID)
 			}
 			return(ItmNode);
 }
+
+void load_item_tree(ItemNode** tree)
+{
+	FILE* fp = NULL;
+	int id, inventory, size[11];
+	char model[20], manuf[20];
+	float price;
+	bool InStock;
+	Item* temp_Item = (Item*)malloc(sizeof(Item));
+	if (temp_Item != NULL)
+	{
+		fp = fopen("employee.txt", "r");
+		if (fp == NULL)
+			printf("error uploading the file\n");
+		else
+		{
+			while (!feof(fp))
+			{
+			char model[20], manuf[20];
+			fscanf(fp, "%d %s %s %f %d", temp_Item->id, &temp_Item->model, temp_Item->manuf, &temp_Item->price,&temp_Item->inventory);
+			for (int i = 0; i < 11; i++)
+			{
+				fscanf(fp, " %d", &temp_Item->size[i]);
+			}
+			fscanf(fp, "\n");
+
+			AddItem(tree, temp_Item);
+			}
+		}
+	fclose(fp);
+	}
+	else
+	{
+		printf("error please try agian\n");
+		return;
+	}
+}

@@ -22,17 +22,17 @@ int main()
 
 	if (!checkIfEmployeeFileExists()) 
 	{
-		createDefaultAdmin();
+		employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
 	}
 
-	Employee* currentEmployee=NULL;
+	Employee_node* currentEmployee=NULL;//החלפתי סוג משתנה 
 
 	while (currentEmployee==NULL)
 	{
 		currentEmployee = login(&employeeTree);
 	}
 
-	printMenu(currentEmployee->level);
+	printMenu(currentEmployee->data->level);
 	scanf("%d", &choice);
 
 	do
