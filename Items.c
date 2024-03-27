@@ -274,7 +274,7 @@ void load_item_tree(ItemNode** tree)
 			}
 			fscanf(fp, "\n");
 
-			AddItem(tree, temp_Item);
+			AddItem(tree, *temp_Item);
 			}
 		}
 	fclose(fp);
