@@ -3,21 +3,25 @@
 #include<malloc.h>
 
 
-int checkIfEmployeeFileExists()
+int checkIfEmployeeFileExists(Employee_node* tree)
 {
     FILE* fp = NULL;
     fp = fopen("employee.txt", "r");
 	if (fp == NULL)
+	{
 		return 0;
+	}
 	else
+	{
 		fclose(fp);
+	}
 	return 1;
 }
 
 void load_employee_tree(Employee_node** tree)
 {
 	FILE* fp = NULL;
-	char username[20], firstname[10], password[10];
+	char* username[20], firstname[10], password[10];
 	int level;
 	fp = fopen("employee.txt", "r");
 	if (fp == NULL)
@@ -26,8 +30,8 @@ void load_employee_tree(Employee_node** tree)
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%s %s %s %d\n", username, firstname, password, &level);
-			add_employee(tree, username, firstname, password, level);
+			fscanf(fp, "%s %s %s %d\n", &username, &firstname, &password, &level);
+			add_employee(tree, &username, &firstname, &password, level);
 		}
 	}
 	fclose(fp);
@@ -41,18 +45,18 @@ void save_employee_tree(Employee_node** tree)
 		printf("error uploading the file\n");
 	else
 	{
-		fprint_inorder( *tree, fp);
+		employee_fprint_inorder(*tree, fp);
 	}
 	fclose(fp);
 }
 
-void fprint_inorder(Employee_node* tree,FILE* fp)
+void employee_fprint_inorder(Employee_node* tree,FILE* fp)
 {
 	if (tree)
 	{
-		fprint_inorder(tree->left,fp);
+		employee_fprint_inorder(tree->left,fp);
 		fprintf(fp, "%s %s %s %d\n", tree->data->username, tree->data->firstname,tree->data->password,tree->data->level);
-		fprint_inorder(tree->right,fp);
+		employee_fprint_inorder(tree->right,fp);
 	}
 }
 
@@ -87,10 +91,10 @@ void add_new_employee(Employee_node** tree)
 	scanf("%s",password);
 	printf("please enter levle:\n");
 	scanf("%d",&level);
-	add_employee(tree, username, firstname, password, level);
+	add_employee(tree, &username, &firstname, &password, level);
 }
 
-void add_employee(Employee_node** tree,char username,char firstname,char password, int level)
+void add_employee(Employee_node** tree,char* username,char* firstname,char* password, int level)
 {
 	Employee* new_employee = (Employee*)malloc(sizeof(Employee));
 	if (new_employee != NULL)
@@ -130,20 +134,20 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 		return;
 	}
 
-	if (strcmp(user->username,(*tree)->data->username)<0)
+	if (strcmp(user->username, (*tree)->data->username) < 0)
 	{
 		insert(&(*tree)->left, *tree, user);
 	}
 	else if (strcmp(user->username, (*tree)->data->username) > 0)
 	{
-		 insert(&(*tree)->right, *tree, user);
+		insert(&(*tree)->right, *tree, user);
 	}
 	(*tree)->height = 1 + max(getHeight((*tree)->left), getHeight((*tree)->right));
 	int bf = getBalanceFactor(*tree);
 
 	// Left Left Case  
 	if (bf > 1 && strcmp(user->username, (*tree)->left->data->username) < 0) {
-		(*tree)= rightRotate(*tree);
+		(*tree) = rightRotate(*tree);
 		return;
 	}
 	// Right Right Case  
@@ -172,7 +176,7 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 		(*tree) = leftRotate(*tree);
 		return;
 	}
-	return ;
+	return;
 }
 
 //void print_preorder(Employee_node* tree)

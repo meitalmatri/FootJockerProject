@@ -34,4 +34,7 @@ void print_postorder(CusNode* Custree);
 void deltree(CusNode* Custree);
 CusNode* searchCustomer(CusNode** Custree, int CusID);
 void UpdateCustomer(CusNode** Custree);
+void save_customer_tree(CusNode** Custree);
+int load_customer_tree(CusNode** Custree);
+void cus_fprint_inorder(CusNode* Custree, FILE* fp);
 

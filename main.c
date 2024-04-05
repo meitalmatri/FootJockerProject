@@ -9,8 +9,8 @@
 int main() 
 {
 	int choice;
-	int CustomerID,employeeLevel=0, NewEmployeeLevel,value;
-	int LastCustomerID = 0, LastItemID=0;
+	int CustomerID,employeeLevel=0, NewEmployeeLevel, value;
+	int  LastItemID=0, LastCustomerID;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
 	CusNode* CusTree = NULL;
@@ -20,9 +20,14 @@ int main()
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
-	if (!checkIfEmployeeFileExists()) 
+	if (!checkIfEmployeeFileExists(employeeTree)) 
 	{
 		employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
+	}
+
+	else
+	{
+		load_employee_tree(&employeeTree);
 	}
 
 	Employee_node* currentEmployee=NULL;//החלפתי סוג משתנה 
@@ -34,6 +39,16 @@ int main()
 
 	printMenu(currentEmployee->data->level);
 	scanf("%d", &choice);
+
+	LastCustomerID = load_customer_tree(&CusTree);
+
+
+	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 6 && currentEmployee->data->level > 1))
+	{
+		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
+		printf("\n\n==>Please try again-");
+		scanf("%d", &choice);
+	}
 
 	do
 	{
@@ -58,7 +73,7 @@ int main()
 		case 3:
 		    LastCustomerID++;
 		    NewCus.ID = LastCustomerID;
-		    printf("\n\n==>Enter the full name of the customer you to add:");
+		    printf("\n\n==>Enter the name of the customer you to add:");
 		    scanf("%s", &NewCus.fullName);
 		    printf("\n\n==>Enter current date:");
 		    scanf("%s", &NewCus.JoinDate);
@@ -79,26 +94,32 @@ int main()
 			printf("\n\n==>Enter the ID of the customer you to update:");
 			scanf("%d", &CustomerID);
 			CusForUpdate=searchCustomer(&CusTree, CustomerID);
-			while (CusForUpdate == NULL)
+			if (CusForUpdate == NULL)
 			{
 				printf("ID not found, please try again \n");
 				printf("\n\n==>Enter the ID of the customer you to update:");
 				scanf("%d", &CustomerID);
 				CusForUpdate = searchCustomer(&CusTree, CustomerID);
+
+				if (CusForUpdate == NULL)
+				{
+					printf("ID not found, please try again later");
+					break;
+				}
 			}
 
 			UpdateCustomer(&CusForUpdate);
 			break;
 		case 7:
-			printf("\n\n==>Enter the name of the employee you to add:");
+			printf("\n\n==>Enter the name of the employee you want to add:");
 			scanf("%s", &employeeName);
-			printf("\n\n==>Enter the username of the employee you to add:");
+			printf("\n\n==>Enter the username of the employee you want to add:");
 			scanf("%s", &userName);
-			printf("\n\n==>Enter the password of the employee you to add:");
+			printf("\n\n==>Enter the password of the employee you want to add:");
 			scanf("%s", &password);
-			printf("\n\n==>Enter the level of the employee you to add:");
+			printf("\n\n==>Enter the level of the employee you want to add:");
 			scanf("%d", &NewEmployeeLevel);
-			add_employee(&employeeTree, userName, employeeName, password, NewEmployeeLevel);
+			add_employee(&employeeTree, &userName, &employeeName, &password, NewEmployeeLevel);
 			break;
 		case 8:
 			update_employee(employeeTree);
@@ -108,18 +129,28 @@ int main()
 			break;
 		}
 
-		printf("To continue please press q, for exit please press 1");
+		printf("\n\n==>To continue please press 1, for exit please press 0\n\n");
 		scanf("%d", &value);
 
 		if (value == 1)
 		{
-			printMenu(employeeLevel);
+			printMenu(currentEmployee->data->level);
 			scanf("%d", &choice);
+
+			while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 6 && currentEmployee->data->level > 1))
+			{
+				printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
+				printf("\n\n==>Please try again-");
+				scanf("%d", &choice);
+			}
 		}
 		
-	} while (value != 'q');
+	} while (value != 0);
 
-
-
-
+	if (value == 0)
+	{
+		printf("\n==>Goodbye and have a good day");
+		save_employee_tree(&employeeTree);
+		save_customer_tree(&CusTree);
+	}
 }

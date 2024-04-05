@@ -3,7 +3,6 @@
 void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus)
 {
 	CusNode* temp = NULL;
-	//if tree node is empty, then create a new item and add it as head.
 
 	if (!(*Custree))
 	{
@@ -96,7 +95,7 @@ void UpdateCustomer(CusNode** Custree)
 {
 	int value;
 	char newName[20];
-	char newDate[10];
+	char newDate[12];
 	printf("What would you like to update? \n");
 	printf("For name updating press 1 \n");
 	printf("For join date updating press 2 \n");
@@ -117,5 +116,54 @@ void UpdateCustomer(CusNode** Custree)
 	}
 
 	print_inorder(*Custree);
+}
+
+int load_customer_tree(CusNode** Custree)
+{
+	FILE* fp = NULL;
+	Customer cus;
+	int LastCusID;
+
+	fp = fopen("customer.txt", "r");
+	if (fp == NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		while (!feof(fp))
+		{
+			fscanf(fp, "%d %s %s %d \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops);
+			cus.lastPurchaseDay = NULL;
+			AddCustomer(Custree, cus);
+			LastCusID = cus.ID;
+		}
+	}
+	fclose(fp);
+
+	return LastCusID;
+}
+
+void save_customer_tree(CusNode** Custree)
+{
+	FILE* fp = NULL;
+	fp = fopen("customer.txt", "w");
+	if (fp == NULL)
+		printf("error uploading the file\n");
+	else
+	{
+		cus_fprint_inorder(*Custree, fp);
+	}
+	fclose(fp);
+}
+
+void cus_fprint_inorder(CusNode* Custree, FILE* fp)
+{
+	if (Custree)
+	{
+		cus_fprint_inorder(Custree->left, fp);
+		fprintf(fp, "%d %s %s %d %s\n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops, &Custree->cus.lastPurchaseDay);
+		cus_fprint_inorder(Custree->right, fp);
+	}
 }
 
