@@ -37,4 +37,5 @@ void UpdateCustomer(CusNode** Custree);
 void save_customer_tree(CusNode** Custree);
 int load_customer_tree(CusNode** Custree);
 void cus_fprint_inorder(CusNode* Custree, FILE* fp);
+void BuyerUpdate(CusNode** Custree, int cusID);
 

@@ -58,6 +58,9 @@ void print_inorder(CusNode* Custree)
 		printf("id: %d fullname: %s %s %d \n", Custree->CusID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 		print_inorder(Custree->right);
 	}
+
+	else
+		return;
 }
 
 void print_postorder(CusNode* Custree)
@@ -165,5 +168,33 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 		fprintf(fp, "%d %s %s %d %s\n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops, &Custree->cus.lastPurchaseDay);
 		cus_fprint_inorder(Custree->right, fp);
 	}
+
+	else
+		return;
+}
+
+void BuyerUpdate(CusNode** Custree,int cusID)
+{
+	CusNode* CusToUpdate = NULL;
+	char* purchaseDay[12];
+
+	CusToUpdate = searchItem(Custree, cusID);
+
+	while (!CusToUpdate)
+	{
+		printf("\n\n==>Wrong ID, try again");
+		scanf("%d", &cusID);
+		CusToUpdate = searchItem(Custree, cusID);
+	}
+
+	printf("Enter purchase date");
+	scanf("%s", &purchaseDay);
+	strcpy(CusToUpdate->cus.lastPurchaseDay, purchaseDay);
+	CusToUpdate->cus.SumOfShops++;
+
+	printf("Purchase Succeed");
+
+	return;
+	
 }
 

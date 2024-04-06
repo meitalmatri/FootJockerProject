@@ -54,10 +54,13 @@ void employee_fprint_inorder(Employee_node* tree,FILE* fp)
 {
 	if (tree)
 	{
-		employee_fprint_inorder(tree->left,fp);
-		fprintf(fp, "%s %s %s %d\n", tree->data->username, tree->data->firstname,tree->data->password,tree->data->level);
-		employee_fprint_inorder(tree->right,fp);
+		employee_fprint_inorder(tree->left, fp);
+		fprintf(fp, "%s %s %s %d\n", tree->data->username, tree->data->firstname, tree->data->password, tree->data->level);
+		employee_fprint_inorder(tree->right, fp);
 	}
+
+	else
+		return;
 }
 
 Employee_node* createDefaultAdmin() 

@@ -8,9 +8,9 @@
 
 int main() 
 {
-	int choice;
+	int choice, ItmToSellID, IsPurchased;
 	int CustomerID,employeeLevel=0, NewEmployeeLevel, value;
-	int  LastItemID=0, LastCustomerID;
+	int  LastItemID, LastCustomerID;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
 	CusNode* CusTree = NULL;
@@ -41,9 +41,10 @@ int main()
 	scanf("%d", &choice);
 
 	LastCustomerID = load_customer_tree(&CusTree);
+	LastItemID = load_items_tree(&ItemTree);
 
 
-	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 6 && currentEmployee->data->level > 1))
+	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 	{
 		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
 		printf("\n\n==>Please try again-");
@@ -61,14 +62,14 @@ int main()
 		case 2:
 			LastItemID++;
 		    NewItem.id = LastItemID;
+			NewItem.inventory = NULL;
 		    printf("\n\n==>Enter the model of the item you to add:");
 			scanf("%s", &NewItem.model);
 		    printf("\n\n==>Enter manufactory date:");
 		    scanf("%s", &NewItem.manuf);
 			printf("\n\n==>Enter price:");
-			scanf("%d", &NewItem.price);
+			scanf("%f", &NewItem.price);
 	        AddItem(&ItemTree, NewItem);
-    	    print_inorder(ItemTree);
 			break;
 		case 3:
 		    LastCustomerID++;
@@ -83,14 +84,28 @@ int main()
 		    print_inorder(CusTree);
 		    break;
 		case 4:
+			printf("\n\n==>Enter The ID of the item you want to sell\n");
+			scanf("%d", &ItmToSellID);
+			IsPurchased=SellByID(&ItemTree, ItmToSellID);
+
+			if (IsPurchased)
+			{
+				printf("\n\n==>Enter the ID of the customer who buy that item\n");
+				scanf("%d", &CustomerID);
+			}
+			
+			BuyerUpdate(CusTree, CustomerID);
+
+			break;
+		case 5:
 		    removeItem(&ItemTree, NULL);
 			break;
-		/*case 5:
+		/*case 6:
 			printf("\n\n==>Enter the item you to update:");
 			scanf("%s", &itemName);
 			UpdateItem(itemName);
 			break;*/
-		case 6:
+		case 7:
 			printf("\n\n==>Enter the ID of the customer you to update:");
 			scanf("%d", &CustomerID);
 			CusForUpdate=searchCustomer(&CusTree, CustomerID);
@@ -110,7 +125,7 @@ int main()
 
 			UpdateCustomer(&CusForUpdate);
 			break;
-		case 7:
+		case 8:
 			printf("\n\n==>Enter the name of the employee you want to add:");
 			scanf("%s", &employeeName);
 			printf("\n\n==>Enter the username of the employee you want to add:");
@@ -121,7 +136,7 @@ int main()
 			scanf("%d", &NewEmployeeLevel);
 			add_employee(&employeeTree, &userName, &employeeName, &password, NewEmployeeLevel);
 			break;
-		case 8:
+		case 9:
 			update_employee(employeeTree);
 			break;
 		default:
@@ -152,5 +167,6 @@ int main()
 		printf("\n==>Goodbye and have a good day");
 		save_employee_tree(&employeeTree);
 		save_customer_tree(&CusTree);
+		save_items_tree(&ItemTree);
 	}
 }

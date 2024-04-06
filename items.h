@@ -31,9 +31,14 @@ typedef struct items_tree
 ItemNode* searchItem(ItemNode** Itemtree, int itemID);
 void AddItem(ItemNode** Itemtree, Item itm);
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
-void AddIventory(ItemNode** Itemtree, int ID);
+void AddIventory(ItemNode** Itemtree);
 void UpdateItem(ItemNode** Itemtree, int itmID);
 ItemNode* min_value(ItemNode* Itm, int* height);
 ItemNode* max_value(ItemNode* Itm, int* height);
 ItemNode* removeItem(ItemNode** Itemtree, int ID);
+//void load_item_tree(ItemNode** tree);
+int load_items_tree(ItemNode** ItmTree);
+void save_item_tree(ItemNode** ItmTree);
+void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
+int SellByID(ItemNode** ItmTree, int ID);
 

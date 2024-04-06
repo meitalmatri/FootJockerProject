@@ -24,8 +24,15 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID)
 
 void AddItem(ItemNode** itemTree, Item itm)
 {
+	ItemNode* ItemToADDInV=NULL;
+
 	insertItem(itemTree, NULL, itm);
-	AddIventory(itemTree, itm.id);
+
+	ItemToADDInV= searchItem(itemTree, itm.id);
+
+	AddIventory(&ItemToADDInV);
+
+	return;
 }
 
 void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
@@ -58,55 +65,63 @@ void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 		else if (itm.id > ((*itemTree)->itemID))
 		{
 			//insert into right pointer of tree, sending the pointer, father (himself) and value
-			insertCustomer(&(*itemTree)->right, *itemTree, itm);
+			insertItem(&(*itemTree)->right, *itemTree, itm);
 		}
 	}
 }
 
-void AddIventory(ItemNode** Itemtree, int itmID)
+void AddIventory(ItemNode** ItemNO)
 {
 	int ID,size,sum;
 
 	ItemNode* ItmToUpdate;
 
-	if (itmID == NULL)
-	{
-		printf("Which item would you like to add inventory to? \n");
+	ItmToUpdate = *ItemNO;
 
-		scanf("%d", &ID);
-
-		ItmToUpdate = searchItem(Itemtree, ID);
-	}
-
-	else
-
-		ItmToUpdate = searchItem(Itemtree, itmID);
-
-	printf("Which size would you like to add inventory to? \n");
+	printf("\n\n==>Which size would you like to add inventory to? \n");
 	scanf("%d", &size);
 
 	while (size != -1)
 	{
-		if (30 < size < 41)
+		if (30 < size && size < 41)
 		{
-			if (!ItmToUpdate->itemN.InStock)
+			if (ItmToUpdate->itemN.InStock==false)
 				ItmToUpdate->itemN.InStock = true;
-			printf("How much inventory you would like to add to this size?");
+			printf("\n\n==>How much inventory you would like to add to this size?");
 			scanf("%d", &sum);
-			ItmToUpdate->itemN.size[(size % 30) + 1] += sum;
-			ItmToUpdate->itemN.inventory+=sum;
+
+			if (ItmToUpdate->itemN.size[(size % 30)] >= 0)
+				ItmToUpdate->itemN.size[(size % 30)] += sum;
+
+			else
+				ItmToUpdate->itemN.size[(size % 30)] = sum;
+
+
+			if (ItmToUpdate->itemN.inventory ==NULL)
+			{
+				ItmToUpdate->itemN.inventory = sum;
+			}
+				
+
+			else
+			{
+				ItmToUpdate->itemN.inventory += sum;
+			}
 		}
 
 		else
 		{
-			printf("The size you've written is not allowed please try again");
+			printf("\n\n==>The size you've written is not allowed please try again");
 		}
 
-		printf("Which more size would you like to add inventory to? if there is no more size to add, press -1 \n");
+		printf("\n\n==>Which more size would you like to add inventory to? if there is no more size to add, press -1 \n");
 		scanf("%d", &size);
 	}
 
-	printf("Inventory Sucssesful update");
+	*ItemNO = ItmToUpdate;
+	printf("\n\n==>Inventory Sucssesful update");
+
+	return;
 	
 }
 
@@ -249,39 +264,166 @@ ItemNode* removeItem(ItemNode** Itemtree, int ID)
 			return(ItmNode);
 }
 
-void load_item_tree(ItemNode** tree)
+//void load_item_tree(ItemNode** tree)
+//{
+//	FILE* fp = NULL;
+//	int id, inventory, size[11];
+//	char model[20], manuf[20];
+//	float price;
+//	bool InStock;
+//	Item* temp_Item = (Item*)malloc(sizeof(Item));
+//	if (temp_Item != NULL)
+//	{
+//		fp = fopen("employee.txt", "r");
+//		if (fp == NULL)
+//			printf("error uploading the file\n");
+//		else
+//		{
+//			while (!feof(fp))
+//			{
+//			char model[20], manuf[20];
+//			fscanf(fp, "%d %s %s %f %d", temp_Item->id, &temp_Item->model, temp_Item->manuf, &temp_Item->price,&temp_Item->inventory);
+//			for (int i = 0; i < 11; i++)
+//			{
+//				fscanf(fp, " %d", &temp_Item->size[i]);
+//			}
+//			fscanf(fp, "\n");
+//
+//			AddItem(tree, *temp_Item);
+//			}
+//		}
+//	fclose(fp);
+//	}
+//	else
+//	{
+//		printf("error please try agian\n");
+//		return;
+//	}
+//}
+
+int load_items_tree(ItemNode** ItmTree)
 {
 	FILE* fp = NULL;
-	int id, inventory, size[11];
-	char model[20], manuf[20];
-	float price;
-	bool InStock;
-	Item* temp_Item = (Item*)malloc(sizeof(Item));
-	if (temp_Item != NULL)
-	{
-		fp = fopen("employee.txt", "r");
-		if (fp == NULL)
-			printf("error uploading the file\n");
-		else
-		{
-			while (!feof(fp))
-			{
-			char model[20], manuf[20];
-			fscanf(fp, "%d %s %s %f %d", temp_Item->id, &temp_Item->model, temp_Item->manuf, &temp_Item->price,&temp_Item->inventory);
-			for (int i = 0; i < 11; i++)
-			{
-				fscanf(fp, " %d", &temp_Item->size[i]);
-			}
-			fscanf(fp, "\n");
+	Item itm;
+	int LastItmID,size,inv;
+	char inStock[15], word[10];
 
-			AddItem(tree, *temp_Item);
-			}
-		}
-	fclose(fp);
+	fp = fopen("Items.txt", "r");
+	if (fp == NULL)
+	{
+		return 0;
 	}
 	else
 	{
-		printf("error please try agian\n");
-		return;
+		while (!feof(fp))
+		{
+			fscanf(fp, "%d %s %s  %f %d ", &itm.id, &itm.model, &itm.manuf, &itm.price, &itm.inventory);
+
+			if (itm.inventory> 0)
+			{
+				itm.InStock == true;
+
+				fscanf(fp, "%s", &word);
+
+				while (strcmp(word, "size") == 0)
+				{
+					fscanf(fp, "%d %s %d", &size, &word, &inv);
+					itm.size[size % 30] = inv;
+
+					fscanf(fp, "%s \n", &word);
+				}
+			
+			}
+			else
+				itm.InStock == false;
+
+			insertItem(ItmTree, NULL, itm);
+
+			LastItmID = itm.id;
+		}
 	}
+
+	fclose(fp);
+
+	return LastItmID;
+}
+	
+
+void save_items_tree(ItemNode** ItmTree)
+{
+	FILE* fp = NULL;
+	fp = fopen("Items.txt", "w");
+	if (fp == NULL)
+		printf("error uploading the file\n");
+	else
+	{
+		item_fprint_inorder(*ItmTree, fp);
+	}
+	fclose(fp);
+}
+
+void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
+{
+	if (ItmTree)
+	{
+		item_fprint_inorder(ItmTree->left, fp);
+		fprintf(fp, "%d %s %s %.0f %d", ItmTree->itemN.id, ItmTree->itemN.model, ItmTree->itemN.manuf, ItmTree->itemN.price, ItmTree->itemN.inventory);
+
+		if (ItmTree->itemN.InStock)
+		{
+
+			for (int i=0; i <= 10; i++)
+			{
+				if (ItmTree->itemN.size[i]>0)
+				{
+					fprintf(fp, " size %d inv %d ", (i + 30), ItmTree->itemN.size[i]);
+				}
+			}
+
+			fprintf(fp, "InStock\n");
+		}
+		else
+			fprintf(fp, "NotInStock\n");
+
+		item_fprint_inorder(ItmTree->right, fp);
+	}
+
+	else
+		return;
+}
+
+int SellByID(ItemNode** ItmTree, int ID)
+{
+	int sum,size, CusID;
+	ItemNode* ItmToSell = NULL;
+	ItmToSell = searchItem(ItmTree, ID);
+
+	if (ItmToSell->itemN.InStock)
+	{
+		printf("\n\n==>Enter the size of the item you want to sell");
+		scanf("%d", &size);
+
+		while (size<31&&size>40)
+		{
+			printf("This size isn't available, try again");
+		}
+
+		printf("\n\n==>Enter the sum of the item you want to sell");
+		scanf("%d", &sum);
+		
+
+		if (ItmToSell->itemN.size[size % 30] >= sum)
+		{
+			ItmToSell->itemN.size[size % 30] -= sum;
+			ItmToSell->itemN.inventory -= sum;
+			return 1;
+		}
+
+		else
+		{
+			printf("\n\n==>There is not enough inventory for that purchase, try again later");
+			return 0;
+		}
+	}
+
 }
