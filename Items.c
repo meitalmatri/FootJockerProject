@@ -400,15 +400,15 @@ int SellByID(ItemNode** ItmTree, int ID)
 
 	if (ItmToSell->itemN.InStock)
 	{
-		printf("\n\n==>Enter the size of the item you want to sell");
+		printf("\n\n==>Enter the size of the item you want to sell\n");
 		scanf("%d", &size);
 
 		while (size<31&&size>40)
 		{
-			printf("This size isn't available, try again");
+			printf("This size isn't available, try again\n");
 		}
 
-		printf("\n\n==>Enter the sum of the item you want to sell");
+		printf("\n\n==>Enter the sum of the item you want to sell\n");
 		scanf("%d", &sum);
 		
 

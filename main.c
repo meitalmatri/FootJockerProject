@@ -8,9 +8,10 @@
 
 int main() 
 {
-	int choice, ItmToSellID, IsPurchased;
-	int CustomerID,employeeLevel=0, NewEmployeeLevel, value;
+	int choice, ItmToSellID, IsPurchased, SumOfItems=0;
+	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
 	int  LastItemID, LastCustomerID;
+	int* PurchaedID[3];
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
 	CusNode* CusTree = NULL;
@@ -79,7 +80,6 @@ int main()
 		    printf("\n\n==>Enter current date:");
 		    scanf("%s", &NewCus.JoinDate);
 		    NewCus.SumOfShops = 0;
-		    NewCus.lastPurchaseDay = NULL;
 		    AddCustomer(&CusTree, NewCus);
 		    print_inorder(CusTree);
 		    break;
@@ -93,8 +93,38 @@ int main()
 				printf("\n\n==>Enter the ID of the customer who buy that item\n");
 				scanf("%d", &CustomerID);
 			}
+
+			printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+			scanf("%d", &Purchase);
+			PurchaedID[SumOfItems] = ItmToSellID;
+			SumOfItems++;
+
+			while (Purchase == 1 && SumOfItems <= 3)
+			{
+				printf("\n\n==>Enter The ID of the item you want to sell\n");
+				scanf("%d", &ItmToSellID);
+				IsPurchased = SellByID(&ItemTree, ItmToSellID);
+
+				if (IsPurchased)
+				{
+					if (SumOfItems <= 2)
+					{
+						printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+						scanf("%d", &Purchase);
+					}
+
+					SumOfItems++;
+					PurchaedID[SumOfItems] = ItmToSellID;
+					SumOfItems++;
+				}
+
+			}
 			
-			BuyerUpdate(CusTree, CustomerID);
+			BuyerUpdate(&CusTree, CustomerID, &PurchaedID ,&ItemTree);
+			Purchase = 0;
+
+			printf("\n\n==>Purchase Succeed");
+		
 
 			break;
 		case 5:
@@ -111,14 +141,14 @@ int main()
 			CusForUpdate=searchCustomer(&CusTree, CustomerID);
 			if (CusForUpdate == NULL)
 			{
-				printf("ID not found, please try again \n");
+				printf("\n\n==>ID not found, please try again \n");
 				printf("\n\n==>Enter the ID of the customer you to update:");
 				scanf("%d", &CustomerID);
 				CusForUpdate = searchCustomer(&CusTree, CustomerID);
 
 				if (CusForUpdate == NULL)
 				{
-					printf("ID not found, please try again later");
+					printf("\n\n==>ID not found, please try again later");
 					break;
 				}
 			}

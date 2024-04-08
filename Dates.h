@@ -3,7 +3,7 @@
 
 typedef struct purchaseday
 {
-    char Date[8];
+    char* Date[10];
     struct Purchaseday* previous;
     struct Purchaseday* next;
     Item purItems[3];

@@ -12,7 +12,7 @@ typedef struct cus
     char fullName[20];
     char JoinDate[10];
     int SumOfShops; 
-    PurchaseDay* lastPurchaseDay;
+    PurchaseDay lastPurchaseDay;
     
 } Customer;
 
@@ -37,5 +37,5 @@ void UpdateCustomer(CusNode** Custree);
 void save_customer_tree(CusNode** Custree);
 int load_customer_tree(CusNode** Custree);
 void cus_fprint_inorder(CusNode* Custree, FILE* fp);
-void BuyerUpdate(CusNode** Custree, int cusID);
+void BuyerUpdate(CusNode** Custree, int cusID,int* ItemsID[], ItemNode** Itmtree);
 
