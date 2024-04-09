@@ -136,7 +136,7 @@ int load_customer_tree(CusNode** Custree)
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%d %s %s %d \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops);
+			fscanf(fp, "%d %s %s %d %s \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops, &cus.lastPurchaseDay.Date);
 			AddCustomer(Custree, cus);
 			LastCusID = cus.ID;
 		}
@@ -164,7 +164,18 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 	if (Custree)
 	{
 		cus_fprint_inorder(Custree->left, fp);
-		fprintf(fp, "%d %s %s %d %s\n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops, &Custree->cus.lastPurchaseDay);
+		fprintf(fp, "%d %s %s %d ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+
+		if (Custree->cus.SumOfShops > 0)
+		{
+			fprintf(fp, "%s\n", Custree->cus.lastPurchaseDay.Date);
+		}
+
+		else
+		{
+			fprintf(fp, "NoPurch %\n");
+		}
+
 		cus_fprint_inorder(Custree->right, fp);
 	}
 
