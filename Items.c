@@ -445,6 +445,7 @@ void insertbyid(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 		temp->parent = parent;
 		temp->height = 1;
 		temp->itemN = *itm;
+		temp->itemID = itm->id;
 		*tree = temp;
 		return;
 	}
@@ -553,3 +554,24 @@ void print_item(Item* user)
 	  printf("password %s\n", user->password);
 	  printf("level: %d\n", user->level);*/
 }
+
+/*ItemNode* searchItem(ItemNode** Itemtree, Item itemID)
+{
+	if (!(*Itemtree))
+	{
+		return NULL;
+	}
+
+	if (itemID.id < (*Itemtree)->itemN.id)
+	{
+		searchItem(&((*Itemtree)->left), itemID);
+	}
+	else if (itemID.id > (*Itemtree)->itemN.id)
+	{
+		searchItem(&((*Itemtree)->right), itemID);
+	}
+	else if (itemID.id == (*Itemtree)->itemN.id)
+	{
+		return *Itemtree;
+	}
+}*/
