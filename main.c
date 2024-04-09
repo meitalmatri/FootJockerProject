@@ -44,6 +44,8 @@ int main()
 	LastCustomerID = load_customer_tree(&CusTree);
 	LastItemID = load_items_tree(&ItemTree);
 
+	print_preorder(ItemTree);
+
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 	{
@@ -51,6 +53,7 @@ int main()
 		printf("\n\n==>Please try again-");
 		scanf("%d", &choice);
 	}
+
 
 	do
 	{

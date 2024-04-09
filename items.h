@@ -22,9 +22,13 @@ typedef struct items_tree
 
     int itemID;
 
-    struct items_tree* right, * left, * parent;
+    struct items_tree* right, * left, * parent, 
+                     * right_pr, * left_pr, * parent_pr, 
+                     * right_na, * left_na, * parent_na, 
+                     * right_md, * left_md, * parent_md;
 
     char ManiDate[9];
+    int height, height_pr, height_na, height_md;
 
 }ItemNode;
 
@@ -41,4 +45,18 @@ int load_items_tree(ItemNode** ItmTree);
 void save_item_tree(ItemNode** ItmTree);
 void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
 int SellByID(ItemNode** ItmTree, int ID);
+
+int getHeight1(ItemNode* n);
+
+ItemNode* rightRotate1(ItemNode* y);
+
+ItemNode* leftRotate1(ItemNode* x);
+
+int getBalanceFactor1(ItemNode* n);
+
+void insertbyid(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
+
+void print_item(Item* user);
+
+void print_preorder1(ItemNode* tree);
 

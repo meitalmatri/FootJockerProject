@@ -35,40 +35,40 @@ void AddItem(ItemNode** itemTree, Item itm)
 	return;
 }
 
-void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
-{
-	ItemNode* temp = NULL;
-	//if tree node is empty, then create a new item and add it as head.
-
-	if (!(*itemTree))
-	{
-		temp = (ItemNode*)malloc(sizeof(ItemNode));
-		//initialize left and right pointers to NULL, this node is currently a leaf
-		temp->left = temp->right = NULL;
-		//initialize father to the one who called me.
-		temp->parent = parent;
-
-		temp->itemN = itm;
-
-		temp->itemID = itm.id;
-
-		*itemTree = temp;
-	}
-	else
-	{
-		if (itm.id < ((*itemTree)->itemID))
-		{
-			//insert into left pointer of tree, sending the pointer, father (himself) and value
-			insertItem(&(*itemTree)->left, *itemTree, itm);
-		}
-
-		else if (itm.id > ((*itemTree)->itemID))
-		{
-			//insert into right pointer of tree, sending the pointer, father (himself) and value
-			insertItem(&(*itemTree)->right, *itemTree, itm);
-		}
-	}
-}
+//void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
+//{
+//	ItemNode* temp = NULL;
+//	//if tree node is empty, then create a new item and add it as head.
+//
+//	if (!(*itemTree))
+//	{
+//		temp = (ItemNode*)malloc(sizeof(ItemNode));
+//		//initialize left and right pointers to NULL, this node is currently a leaf
+//		temp->left = temp->right = NULL;
+//		//initialize father to the one who called me.
+//		temp->parent = parent;
+//
+//		temp->itemN = itm;
+//
+//		temp->itemID = itm.id;
+//
+//		*itemTree = temp;
+//	}
+//	else
+//	{
+//		if (itm.id < ((*itemTree)->itemID))
+//		{
+//			//insert into left pointer of tree, sending the pointer, father (himself) and value
+//			insertItem(&(*itemTree)->left, *itemTree, itm);
+//		}
+//
+//		else if (itm.id > ((*itemTree)->itemID))
+//		{
+//			//insert into right pointer of tree, sending the pointer, father (himself) and value
+//			insertItem(&(*itemTree)->right, *itemTree, itm);
+//		}
+//	}
+//}
 
 void AddIventory(ItemNode** ItemNO)
 {
@@ -426,4 +426,130 @@ int SellByID(ItemNode** ItmTree, int ID)
 		}
 	}
 
+}
+
+
+void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
+{
+	ItemNode* temp = NULL;
+	//if tree node is empty, then create a new item and add it as head.
+	temp = (ItemNode*)malloc(sizeof(ItemNode));
+	insertbyid(itemTree, parent, &itm, temp);
+}
+
+void insertbyid(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
+{
+	if (!(*tree))
+	{
+		temp->left = temp->right = NULL;
+		temp->parent = parent;
+		temp->height = 1;
+		temp->itemN = *itm;
+		*tree = temp;
+		return;
+	}
+
+	if (itm->id < (*tree)->itemN.id)
+	{
+		insertbyid(&(*tree)->left, *tree, itm, temp);
+	}
+	else if (itm->id > (*tree)->itemN.id)
+	{
+		insertbyid(&(*tree)->right, *tree, itm, temp);
+	}
+	(*tree)->height = 1 + max(getHeight1((*tree)->left), getHeight1((*tree)->right));
+	int bf = getBalanceFactor1(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && (itm->id < (*tree)->itemN.id)) {
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+		else if (itm->id > (*tree)->itemN.id)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && (itm->id > (*tree)->itemN.id)) {
+		(*tree)->left = leftRotate1((*tree)->left);
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && (itm->id < (*tree)->itemN.id)) {
+		(*tree)->right = rightRotate1((*tree)->right);
+		(*tree) = leftRotate1(*tree);
+		return;
+	}
+	return;
+}
+
+int getHeight1(ItemNode* n) {
+	if (n == NULL)
+		return 0;
+	return n->height;
+}
+
+ItemNode* rightRotate1(ItemNode* y) {
+	ItemNode* x = y->left;
+	ItemNode* T2 = x->right;
+
+	x->right = y;
+	y->left = T2;
+
+	x->height = max(getHeight1(x->right), getHeight1(x->left)) + 1;
+	y->height = max(getHeight1(y->right), getHeight1(y->left)) + 1;
+
+	return x;
+}
+
+ItemNode* leftRotate1(ItemNode* x) {
+	ItemNode* y = x->right;
+	ItemNode* T2 = y->left;
+
+	y->left = x;
+	x->right = T2;
+
+	x->height = max(getHeight1(x->right), getHeight1(x->left)) + 1;
+	y->height = max(getHeight1(y->right), getHeight1(y->left)) + 1;
+
+	return y;
+}
+
+int getBalanceFactor1(ItemNode* n) {
+	if (n == NULL) {
+		return 0;
+	}
+	return getHeight1(n->left) - getHeight1(n->right);
+}
+
+void print_preorder1(ItemNode* tree)
+{
+	if (tree)
+	{
+		print_item(&tree->itemN);
+		printf("\nthe left sun of %s is\n", tree->itemN);
+		print_preorder1(tree->left);
+		printf("\nthe right sun of %s is\n", tree->itemN);
+		print_preorder1(tree->right);
+	}
+
+}
+
+void print_item(Item* user)
+{
+	printf("id:%d inventory:%d manuf:%s model:%s price:%d\n", user->id, user->inventory, user->manuf,user->model,user->price);
+	/*  printf("first name: %s\n", user->firstname);
+	  printf("password %s\n", user->password);
+	  printf("level: %d\n", user->level);*/
 }
