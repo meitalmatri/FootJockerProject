@@ -24,11 +24,11 @@ typedef struct items_tree
 
     struct items_tree* right, * left, * parent, 
                      * right_pr, * left_pr, * parent_pr, 
-                     * right_na, * left_na, * parent_na, 
+                     * right_mf, * left_mf, * parent_mf, 
                      * right_md, * left_md, * parent_md;
 
     char ManiDate[9];
-    int height, height_pr, height_na, height_md;
+    int height, height_pr, height_mf, height_md;
 
 }ItemNode;
 
@@ -60,3 +60,8 @@ void print_item(Item* user);
 
 void print_preorder1(ItemNode* tree);
 
+void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
+
+void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
+
+void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
