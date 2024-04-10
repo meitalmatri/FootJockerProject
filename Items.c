@@ -1,4 +1,5 @@
 #include "items.h"
+#include "dates.h"
 
 
 ItemNode* searchItem(ItemNode** Itemtree, int itemID)
@@ -434,7 +435,11 @@ void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 	ItemNode* temp = NULL;
 	//if tree node is empty, then create a new item and add it as head.
 	temp = (ItemNode*)malloc(sizeof(ItemNode));
-	insertbyid(itemTree, parent, &itm, temp);
+	insertbyid(&itemTree[0], parent, &itm, temp);
+	insertbypr(&itemTree[1], parent, &itm, temp);
+	insertbymf(&itemTree[2], parent, &itm, temp);
+	insertbymd(&itemTree[3], parent, &itm, temp);
+
 }
 
 void insertbyid(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
@@ -489,6 +494,183 @@ void insertbyid(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 	// Right Left Case  
 	if (bf < -1 && (itm->id < (*tree)->itemN.id)) {
 		(*tree)->right = rightRotate1((*tree)->right);
+		(*tree) = leftRotate1(*tree);
+		return;
+	}
+	return;
+}
+
+void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
+{
+	if (!(*tree))
+	{
+		temp->left_pr = temp->right_pr = NULL;
+		temp->parent_pr = parent;
+		temp->height_pr = 1;
+		temp->itemN = *itm;
+		*tree = temp;
+		return;
+	}
+
+	if (itm->price < (*tree)->itemN.price)
+	{
+		insertbyid(&(*tree)->left_pr, *tree, itm, temp);
+	}
+	else if (itm->price > (*tree)->itemN.price)
+	{
+		insertbyid(&(*tree)->right_pr, *tree, itm, temp);
+	}
+	(*tree)->height_pr = 1 + max(getHeight1((*tree)->left_pr), getHeight1((*tree)->right_pr));
+	int bf = getBalanceFactor1(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && (itm->price < (*tree)->itemN.price)) {
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left_pr)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+		else if (itm->price > (*tree)->itemN.price)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && (itm->price > (*tree)->itemN.price)) {
+		(*tree)->left_pr = leftRotate1((*tree)->left_pr);
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && (itm->price < (*tree)->itemN.price)) {
+		(*tree)->right_pr = rightRotate1((*tree)->right_pr);
+		(*tree) = leftRotate1(*tree);
+		return;
+	}
+	return;
+}
+
+void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
+{
+	if (!(*tree))
+	{
+		temp->left_md = temp->right_md = NULL;
+		temp->parent_md = parent;
+		temp->height_md = 1;
+		temp->itemN = *itm;
+		*tree = temp;
+		return;
+	}
+
+	if (strcmp(itm->model , (*tree)->itemN.model)<0)
+	{
+		insertbyid(&(*tree)->left_md, *tree, itm, temp);
+	}
+	else if (strcmp(itm->model, (*tree)->itemN.model) > 0)
+	{
+		insertbyid(&(*tree)->right_md, *tree, itm, temp);
+	}
+	(*tree)->height_md = 1 + max(getHeight1((*tree)->left_md), getHeight1((*tree)->right_md));
+	int bf = getBalanceFactor1(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model<0)) 
+	{
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left_md)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+		else if (strcmp(itm->model, (*tree)->itemN.model > 0))
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model > 0))
+	{
+		(*tree)->left_md = leftRotate1((*tree)->left_md);
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && strcmp(itm->model, (*tree)->itemN.model < 0))
+	{
+		(*tree)->right_md = rightRotate1((*tree)->right_md);
+		(*tree) = leftRotate1(*tree);
+		return;
+	}
+	return;
+}
+
+void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
+{
+	if (!(*tree))
+	{
+		temp->left_mf = temp->right_mf = NULL;
+		temp->parent_mf = parent;
+		temp->height_mf = 1;
+		temp->itemN = *itm;
+		*tree = temp;
+		return;
+	}
+
+	if (dateCmp(itm->manuf, (*tree)->itemN.manuf) < 0)
+	{
+		insertbyid(&(*tree)->left_mf, *tree, itm, temp);
+	}
+	else if (dateCmp(itm->manuf, (*tree)->itemN.manuf) > 0)
+	{
+		insertbyid(&(*tree)->right_mf, *tree, itm, temp);
+	}
+	(*tree)->height_mf = 1 + max(getHeight1((*tree)->left_mf), getHeight1((*tree)->right_mf));
+	int bf = getBalanceFactor1(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf < 0))
+	{
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left_mf)
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+		else if (dateCmp(itm->manuf, (*tree)->itemN.manuf > 0))
+		{
+			(*tree) = leftRotate1(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf > 0))
+	{
+		(*tree)->left_mf = leftRotate1((*tree)->left_mf);
+		(*tree) = rightRotate1(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && dateCmp(itm->manuf, (*tree)->itemN.manuf < 0))
+	{
+		(*tree)->right_mf = rightRotate1((*tree)->right_mf);
 		(*tree) = leftRotate1(*tree);
 		return;
 	}
