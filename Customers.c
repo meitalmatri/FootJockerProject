@@ -1,38 +1,38 @@
 #include "customers.h"
 
-void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus)
-{
-	CusNode* temp = NULL;
-
-	if (!(*Custree))
-	{
-		temp = (CusNode*)malloc(sizeof(CusNode));
-		//initialize left and right pointers to NULL, this node is currently a leaf
-		temp->left = temp->right = NULL;
-		//initialize father to the one who called me.
-		temp->parent = parent;
-
-		temp->cus = cus;
-
-		temp->CusID = cus.ID;
-
-		*Custree = temp;
-	}
-	else
-	{
-		if (cus.ID < ((*Custree)->CusID))
-		{
-			//insert into left pointer of tree, sending the pointer, father (himself) and value
-			insertCustomer(&(*Custree)->left, *Custree, cus);
-		}
-
-		else if (cus.ID > ((*Custree)->CusID))
-		{
-			//insert into right pointer of tree, sending the pointer, father (himself) and value
-			insertCustomer(&(*Custree)->right, *Custree, cus);
-		}
-	}
-}
+//void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus)
+//{
+//	CusNode* temp = NULL;
+//
+//	if (!(*Custree))
+//	{
+//		temp = (CusNode*)malloc(sizeof(CusNode));
+//		//initialize left and right pointers to NULL, this node is currently a leaf
+//		temp->left = temp->right = NULL;
+//		//initialize father to the one who called me.
+//		temp->parent = parent;
+//
+//		temp->cus = cus;
+//
+//		temp->cus.ID = cus.ID;
+//
+//		*Custree = temp;
+//	}
+//	else
+//	{
+//		if (cus.ID < ((*Custree)->cus.ID))
+//		{
+//			//insert into left pointer of tree, sending the pointer, father (himself) and value
+//			insertCustomer(&(*Custree)->left, *Custree, cus);
+//		}
+//
+//		else if (cus.ID > ((*Custree)->cus.ID))
+//		{
+//			//insert into right pointer of tree, sending the pointer, father (himself) and value
+//			insertCustomer(&(*Custree)->right, *Custree, cus);
+//		}
+//	}
+//}
 
 void AddCustomer(CusNode** Custree, Customer cus)
 {
@@ -43,7 +43,7 @@ void print_preorder(CusNode* Custree)
 {
 	if (Custree)
 	{
-		printf("id: %d fullname: %s %s %d \n", Custree->CusID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		printf("id: %d fullname: %s %s %d \n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 		print_preorder(Custree->left);
 		print_preorder(Custree->right);
 	}
@@ -55,7 +55,7 @@ void print_inorder(CusNode* Custree)
 	if (Custree)
 	{
 		print_inorder(Custree->left);
-		printf("id: %d fullname: %s %s %d \n", Custree->CusID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		printf("id: %d fullname: %s %s %d \n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 		print_inorder(Custree->right);
 	}
 
@@ -69,7 +69,7 @@ void print_postorder(CusNode* Custree)
 	{
 		print_postorder(Custree->left);
 		print_postorder(Custree->right);
-		printf("id: %d fullname: %s %s %d \n", Custree->CusID, Custree->cus.fullName,Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		printf("id: %d fullname: %s %s %d \n", Custree->cus.ID, Custree->cus.fullName,Custree->cus.JoinDate, Custree->cus.SumOfShops);
 	}
 }
 
@@ -80,15 +80,15 @@ CusNode* searchCustomer(CusNode** Custree, int ID)
 		return NULL;
 	}
 
-	if (ID < (*Custree)->CusID)
+	if (ID < (*Custree)->cus.ID)
 	{
 		searchCustomer(&((*Custree)->left), ID);
 	}
-	else if (ID > (*Custree)->CusID)
+	else if (ID > (*Custree)->cus.ID)
 	{
 		searchCustomer(&((*Custree)->right), ID);
 	}
-	else if (ID == (*Custree)->CusID)
+	else if (ID == (*Custree)->cus.ID)
 	{
 		return *Custree;
 	}
@@ -239,3 +239,135 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 	
 }
 
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp)
+{
+	if (!(*tree))
+	{
+		temp->left = temp->right = NULL;
+		temp->parent = parent;
+		temp->height = 1;
+		temp->cus = *cus;
+		*tree = temp;
+
+		return;
+	}
+
+	if (cus->ID < (*tree)->cus.ID)
+	{
+		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
+	}
+	else if (cus->ID > (*tree)->cus.ID)
+	{
+		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
+	}
+	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
+	int bf = getBalanceFactorCus(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && (cus->ID < (*tree)->cus.ID)) {
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+		else if (cus->ID > (*tree)->cus.ID)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && (cus->ID > (*tree)->cus.ID)) {
+		(*tree)->left = leftRotateCus((*tree)->left);
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && (cus->ID < (*tree)->cus.ID)) {
+		(*tree)->right = rightRotateCus((*tree)->right);
+		(*tree) = leftRotateCus(*tree);
+		return;
+	}
+	return;
+}
+
+void cus_print_preorder(CusNode* tree)
+{
+	if (tree)
+	{
+		print_cus(&tree->cus);
+		printf("\nthe left sun of %s is\n", tree->cus.fullName);
+		cus_print_preorder(tree->left);
+		printf("\nthe right sun of %s is\n", tree->cus.fullName);
+		cus_print_preorder(tree->right);
+	}
+
+}
+
+void insertCustomer(CusNode** cusTree, ItemNode* parent, Customer cus)
+{
+	CusNode* temp = NULL;
+	//if tree node is empty, then create a new item and add it as head.
+	temp = (CusNode*)malloc(sizeof(CusNode));
+	CusInsertbyid(cusTree, parent, &cus, temp);
+}
+
+void print_cus(Customer* cus)
+{
+	printf("id: %d \nFull Name: %s \nJoin Date: %s \nSum Of Shops: %d \nLast Purchase Day: %s\n", cus->ID, cus->fullName , cus->JoinDate, cus->SumOfShops, cus->lastPurchaseDay.Date);
+	/*  printf("first name: %s\n", user->firstname);
+	  printf("password %s\n", user->password);
+	  printf("level: %d\n", user->level);*/
+
+	/* int ID;
+	char fullName[20];
+	char JoinDate[10];
+	int SumOfShops;
+	PurchaseDay lastPurchaseDay; */
+
+}
+
+int getHeightCus(CusNode* custree) {
+	if (custree == NULL)
+		return 0;
+	return custree->height;
+}
+
+CusNode* rightRotateCus(CusNode* custree) {
+	CusNode* x = custree->left;
+	CusNode* T2 = x->right;
+
+	x->right = custree;
+	custree->left = T2;
+
+	x->height = max(getHeightCus(x->right), getHeightCus(x->left)) + 1;
+	custree->height = max(getHeightCus(custree->right), getHeightCus(custree->left)) + 1;
+
+	return x;
+}
+
+CusNode* leftRotateCus(CusNode* custree) {
+	CusNode* y = custree->right;
+	CusNode* T2 = y->left;
+
+	y->left = custree;
+	custree->right = T2;
+
+	custree->height = max(getHeight1(custree->right), getHeight1(custree->left)) + 1;
+	y->height = max(getHeight1(y->right), getHeight1(y->left)) + 1;
+
+	return y;
+}
+
+int getBalanceFactorCus(CusNode* custree) {
+	if (custree == NULL) {
+		return 0;
+	}
+	return getHeightCus(custree->left) - getHeightCus(custree->right);
+}

@@ -44,7 +44,7 @@ int main()
 	LastCustomerID = load_customer_tree(&CusTree);
 	LastItemID = load_items_tree(&ItemTree);
 
-	print_preorder1(ItemTree);
+	cus_print_preorder(CusTree);
 
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))

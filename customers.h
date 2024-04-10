@@ -5,6 +5,8 @@
 #include<stdio.h>
 #include<string.h>
 #include "items.h"
+#include "employees.h"
+
 
 typedef struct cus 
 {
@@ -20,9 +22,11 @@ typedef struct customers_tree
 {
     Customer cus;
 
-    int CusID;
-
     struct customer_tree* right, * left, * parent;
+
+    char ManiDate[9];
+
+    int height, height_pr, height_na, height_md;
 
 }CusNode;
 
@@ -38,4 +42,13 @@ void save_customer_tree(CusNode** Custree);
 int load_customer_tree(CusNode** Custree);
 void cus_fprint_inorder(CusNode* Custree, FILE* fp);
 void BuyerUpdate(CusNode** Custree, int cusID,int* ItemsID[], ItemNode** Itmtree);
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp);
+void cus_print_preorder(CusNode* tree);
+void print_cus(Customer* cus);
+CusNode* rightRotateCus(CusNode* y);
+CusNode* leftRotateCus(CusNode* x);
+int getBalanceFactorCus(CusNode* n);
+int getHeightCus(CusNode* n);
+
+
 
