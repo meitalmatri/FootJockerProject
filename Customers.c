@@ -239,24 +239,24 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 	
 }
 
-void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp)
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 {
 	if (!(*tree))
 	{
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
 		temp->height = 1;
-		temp->cus = *cus;
+		temp->cus = cus;
 		*tree = temp;
 
 		return;
 	}
 
-	if (cus->ID < (*tree)->cus.ID)
+	if (cus.ID < (*tree)->cus.ID)
 	{
 		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
 	}
-	else if (cus->ID > (*tree)->cus.ID)
+	else if (cus.ID > (*tree)->cus.ID)
 	{
 		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
 	}
@@ -264,7 +264,7 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp
 	int bf = getBalanceFactorCus(*tree);
 
 	// Left Left Case  
-	if (bf > 1 && (cus->ID < (*tree)->cus.ID)) {
+	if (bf > 1 && (cus.ID < (*tree)->cus.ID)) {
 		(*tree) = rightRotateCus(*tree);
 		return;
 	}
@@ -276,20 +276,20 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp
 			(*tree) = leftRotateCus(*tree);
 			return;
 		}
-		else if (cus->ID > (*tree)->cus.ID)
+		else if (cus.ID > (*tree)->cus.ID)
 		{
 			(*tree) = leftRotateCus(*tree);
 			return;
 		}
 	}
 	// Left Right Case  
-	if (bf > 1 && (cus->ID > (*tree)->cus.ID)) {
+	if (bf > 1 && (cus.ID > (*tree)->cus.ID)) {
 		(*tree)->left = leftRotateCus((*tree)->left);
 		(*tree) = rightRotateCus(*tree);
 		return;
 	}
 	// Right Left Case  
-	if (bf < -1 && (cus->ID < (*tree)->cus.ID)) {
+	if (bf < -1 && (cus.ID < (*tree)->cus.ID)) {
 		(*tree)->right = rightRotateCus((*tree)->right);
 		(*tree) = leftRotateCus(*tree);
 		return;
@@ -302,10 +302,17 @@ void cus_print_preorder(CusNode* tree)
 	if (tree)
 	{
 		print_cus(&tree->cus);
-		printf("\nthe left sun of %s is\n", tree->cus.fullName);
-		cus_print_preorder(tree->left);
-		printf("\nthe right sun of %s is\n", tree->cus.fullName);
-		cus_print_preorder(tree->right);
+		if (tree->left)
+		{
+			printf("\nthe left sun of %s is\n", tree->cus.fullName);
+			cus_print_preorder(tree->left);
+		}
+
+		if (tree->right)
+		{
+			printf("\nthe right sun of %s is\n", tree->cus.fullName);
+			cus_print_preorder(tree->right);
+		}
 	}
 
 }
@@ -315,12 +322,17 @@ void insertCustomer(CusNode** cusTree, ItemNode* parent, Customer cus)
 	CusNode* temp = NULL;
 	//if tree node is empty, then create a new item and add it as head.
 	temp = (CusNode*)malloc(sizeof(CusNode));
-	CusInsertbyid(cusTree, parent, &cus, temp);
+	CusInsertbyid(cusTree, parent, cus, temp);
 }
 
 void print_cus(Customer* cus)
 {
-	printf("id: %d \nFull Name: %s \nJoin Date: %s \nSum Of Shops: %d \nLast Purchase Day: %s\n", cus->ID, cus->fullName , cus->JoinDate, cus->SumOfShops, cus->lastPurchaseDay.Date);
+	printf("id: %d \nFull Name: %s \nJoin Date: %s \nSum Of Shops: %d \n", cus->ID, cus->fullName , cus->JoinDate, cus->SumOfShops);
+
+	if (cus->SumOfShops > 0)
+	{
+		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay.Date);
+	}
 	/*  printf("first name: %s\n", user->firstname);
 	  printf("password %s\n", user->password);
 	  printf("level: %d\n", user->level);*/

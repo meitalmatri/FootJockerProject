@@ -44,8 +44,6 @@ int main()
 	LastCustomerID = load_customer_tree(&CusTree);
 	LastItemID = load_items_tree(&ItemTree);
 
-	cus_print_preorder(CusTree);
-
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 	{
@@ -83,8 +81,10 @@ int main()
 		    printf("\n\n==>Enter current date:");
 		    scanf("%s", &NewCus.JoinDate);
 		    NewCus.SumOfShops = 0;
+			strcpy(NewCus.lastPurchaseDay.Date, "NoPurch");
 		    AddCustomer(&CusTree, NewCus);
-		    print_inorder(CusTree);
+			printf("\n\n");
+			cus_print_preorder(CusTree);
 		    break;
 		case 4:
 			printf("\n\n==>Enter The ID of the item you want to sell\n");
@@ -102,7 +102,7 @@ int main()
 			PurchaedID[SumOfItems] = ItmToSellID;
 			SumOfItems++;
 
-			while (Purchase == 1 && SumOfItems <= 3)
+			while (Purchase == 1 && SumOfItems <= 2)
 			{
 				printf("\n\n==>Enter The ID of the item you want to sell\n");
 				scanf("%d", &ItmToSellID);
@@ -110,19 +110,23 @@ int main()
 
 				if (IsPurchased)
 				{
-					if (SumOfItems <= 2)
-					{
+					PurchaedID[SumOfItems] = ItmToSellID;
+
 						printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
 						scanf("%d", &Purchase);
-					}
 
-					SumOfItems++;
-					PurchaedID[SumOfItems] = ItmToSellID;
 					SumOfItems++;
 				}
 
 			}
-			
+
+			while (Purchase == 1 && SumOfItems > 2)
+			{
+				printf("\n\n==>Error, you've reach the maximum items to sell on that purchase");
+				printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+				scanf("%d", &Purchase);
+			}
+
 			BuyerUpdate(&CusTree, CustomerID, &PurchaedID ,&ItemTree);
 			Purchase = 0;
 

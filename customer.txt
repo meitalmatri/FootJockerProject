@@ -1,3 +1,4 @@
 1 KoralOr 10/04/24 1 10/04/24
-2 MeitalMatri 10/04/24 0 NoPurch 
-3 YohadLevi 10/04/24 0 NoPurch 
+2 MeitalMatri 10/04/24 1 13/04/24
+3 YohadLevi 10/04/24 1 13/04/24
+4 OsnatPatahov 13/04/24 1 13/04/24

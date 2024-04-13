@@ -202,21 +202,21 @@ Employee_node* login(Employee_node** tree)
 	Employee_node* temp_emp;
 	for (int i = 0; i < 3; i++)
 	{
-		printf("please enter your user name:\n");
+		printf("==>please enter your user name:\n");
 		scanf("%s", username_temp);
-		printf("\nplease enter your user password:\n");
+		printf("\n==>please enter your user password:\n");
 		scanf("%s", password_temp);
 		temp_emp = search_emp(tree, username_temp);
 		if ((temp_emp) && (!strcmp(temp_emp->data->password, password_temp)))
 		{
-			printf("login successful\nwelcome %s\n", temp_emp->data->firstname);
+			printf("==>login successful\nwelcome %s\n", temp_emp->data->firstname);
 			return temp_emp;
 		}
 
 		if(i<2)
-		printf("\nplease try again\n\n");
+		printf("\n==>please try again\n\n");
 	}
-	printf("\nlogin failed please try again later\n");
+	printf("\n==>login failed please try again later\n");
 
 	return NULL;
 

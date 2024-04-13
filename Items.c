@@ -404,7 +404,7 @@ int SellByID(ItemNode** ItmTree, int ID)
 		printf("\n\n==>Enter the size of the item you want to sell\n");
 		scanf("%d", &size);
 
-		while (size<31&&size>40)
+		while (size<31 && size>40)
 		{
 			printf("This size isn't available, try again\n");
 		}
@@ -436,9 +436,9 @@ void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 	//if tree node is empty, then create a new item and add it as head.
 	temp = (ItemNode*)malloc(sizeof(ItemNode));
 	insertbyid(&itemTree[0], parent, &itm, temp);
-	insertbypr(&itemTree[1], parent, &itm, temp);
+	/*insertbypr(&itemTree[1], parent, &itm, temp);
 	insertbymf(&itemTree[2], parent, &itm, temp);
-	insertbymd(&itemTree[3], parent, &itm, temp);
+	insertbymd(&itemTree[3], parent, &itm, temp);*/
 
 }
 
