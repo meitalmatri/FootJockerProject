@@ -14,12 +14,16 @@ int main()
 	int* PurchaedID[3];
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
-	CusNode* CusTree = NULL;
+	CusNode* CusTree[2];
 	CusNode* CusForUpdate = NULL;
 	Item NewItem;
 	ItemNode* ItemTree = NULL;
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
+
+	CusTree[0] = NULL;
+
+	CusTree[1] = NULL;
 
 	if (!checkIfEmployeeFileExists(employeeTree)) 
 	{
@@ -84,7 +88,7 @@ int main()
 			strcpy(NewCus.lastPurchaseDay.Date, "NoPurch");
 		    AddCustomer(&CusTree, NewCus);
 			printf("\n\n");
-			cus_print_preorder(CusTree);
+			cus_print_preorder(CusTree[1]);
 		    break;
 		case 4:
 			printf("\n\n==>Enter The ID of the item you want to sell\n");

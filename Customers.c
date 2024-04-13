@@ -297,6 +297,67 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 	return;
 }
 
+void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
+{
+
+	if (!(*tree))
+	{
+		temp->left = temp->right = NULL;
+		temp->parent = parent;
+		temp->height = 1;
+		temp->cus = cus;
+		*tree = temp;
+
+		return;
+	}
+
+	if (strcmp(cus.fullName , (*tree)->cus.fullName)<0)
+	{
+		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
+	}
+	else if (strcmp(cus.fullName, (*tree)->cus.fullName) > 0)
+	{
+		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
+	}
+	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
+
+	int bf = getBalanceFactorCus(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && (strcmp(cus.fullName, (*tree)->cus.fullName) < 0)) {
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+		else if (cus.ID > (*tree)->cus.ID)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && (cus.ID > (*tree)->cus.ID)) {
+		(*tree)->left = leftRotateCus((*tree)->left);
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && (cus.ID < (*tree)->cus.ID)) {
+		(*tree)->right = rightRotateCus((*tree)->right);
+		(*tree) = leftRotateCus(*tree);
+		return;
+	}
+	return;
+}
+
+
 void cus_print_preorder(CusNode* tree)
 {
 	if (tree)
@@ -322,7 +383,10 @@ void insertCustomer(CusNode** cusTree, ItemNode* parent, Customer cus)
 	CusNode* temp = NULL;
 	//if tree node is empty, then create a new item and add it as head.
 	temp = (CusNode*)malloc(sizeof(CusNode));
-	CusInsertbyid(cusTree, parent, cus, temp);
+
+	CusInsertbyid(&cusTree[0], parent, cus, temp);
+
+	CusInsertbyName(&cusTree[1], parent, cus, temp);
 }
 
 void print_cus(Customer* cus)
