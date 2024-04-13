@@ -22,7 +22,8 @@ typedef struct customers_tree
 {
     Customer cus;
 
-    struct customer_tree* right, * left, * parent;
+    struct customer_tree* right, * left, * parent,
+        * right_name, * left_name, * parent_name;
 
     char ManiDate[9];
 
@@ -42,7 +43,8 @@ void save_customer_tree(CusNode** Custree);
 int load_customer_tree(CusNode** Custree);
 void cus_fprint_inorder(CusNode* Custree, FILE* fp);
 void BuyerUpdate(CusNode** Custree, int cusID,int* ItemsID[], ItemNode** Itmtree);
-void CusInsertbyid(CusNode** tree, CusNode* parent, Customer* cus, CusNode* temp);
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus);
+void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus);
 void cus_print_preorder(CusNode* tree);
 void print_cus(Customer* cus);
 CusNode* rightRotateCus(CusNode* y);

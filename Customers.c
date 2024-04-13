@@ -1,39 +1,5 @@
 #include "customers.h"
 
-//void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus)
-//{
-//	CusNode* temp = NULL;
-//
-//	if (!(*Custree))
-//	{
-//		temp = (CusNode*)malloc(sizeof(CusNode));
-//		//initialize left and right pointers to NULL, this node is currently a leaf
-//		temp->left = temp->right = NULL;
-//		//initialize father to the one who called me.
-//		temp->parent = parent;
-//
-//		temp->cus = cus;
-//
-//		temp->cus.ID = cus.ID;
-//
-//		*Custree = temp;
-//	}
-//	else
-//	{
-//		if (cus.ID < ((*Custree)->cus.ID))
-//		{
-//			//insert into left pointer of tree, sending the pointer, father (himself) and value
-//			insertCustomer(&(*Custree)->left, *Custree, cus);
-//		}
-//
-//		else if (cus.ID > ((*Custree)->cus.ID))
-//		{
-//			//insert into right pointer of tree, sending the pointer, father (himself) and value
-//			insertCustomer(&(*Custree)->right, *Custree, cus);
-//		}
-//	}
-//}
-
 void AddCustomer(CusNode** Custree, Customer cus)
 {
 	insertCustomer(Custree, NULL, cus);
@@ -239,10 +205,13 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 	
 }
 
-void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus)
 {
 	if (!(*tree))
 	{
+		CusNode* temp = NULL;
+		//if tree node is empty, then create a new item and add it as head.
+		temp = (CusNode*)malloc(sizeof(CusNode));
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
 		temp->height = 1;
@@ -254,17 +223,80 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 
 	if (cus.ID < (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
+		CusInsertbyid(&(*tree)->left, *tree, cus);
 	}
 	else if (cus.ID > (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
+		CusInsertbyid(&(*tree)->right, *tree, cus);
 	}
 	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
 	int bf = getBalanceFactorCus(*tree);
 
 	// Left Left Case  
 	if (bf > 1 && (cus.ID < (*tree)->cus.ID)) {
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Right Case  
+	if (bf < -1)
+	{
+		if (!(*tree)->left)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+		else if (cus.ID > (*tree)->cus.ID)
+		{
+			(*tree) = leftRotateCus(*tree);
+			return;
+		}
+	}
+	// Left Right Case  
+	if (bf > 1 && (cus.ID > (*tree)->cus.ID)) {
+		(*tree)->left = leftRotateCus((*tree)->left);
+		(*tree) = rightRotateCus(*tree);
+		return;
+	}
+	// Right Left Case  
+	if (bf < -1 && (cus.ID < (*tree)->cus.ID)) {
+		(*tree)->right = rightRotateCus((*tree)->right);
+		(*tree) = leftRotateCus(*tree);
+		return;
+	}
+	return;
+}
+
+void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus)
+{
+
+	if (!(*tree))
+	{
+		CusNode* temp = NULL;
+		//if tree node is empty, then create a new item and add it as head.
+		temp = (CusNode*)malloc(sizeof(CusNode));
+		temp->left = temp->right = NULL;
+		temp->parent = parent;
+		temp->height = 1;
+		temp->cus = cus;
+		*tree = temp;
+
+		return;
+	}
+
+	if (strcmp(cus.fullName , (*tree)->cus.fullName)<0)
+	{
+		CusInsertbyName(&(*tree)->left, *tree, cus);
+	}
+	else if (strcmp(cus.fullName, (*tree)->cus.fullName) > 0)
+	{
+		CusInsertbyName(&(*tree)->right, *tree, cus);
+	}
+	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
+
+	int bf = getBalanceFactorCus(*tree);
+
+	// Left Left Case  
+	if (bf > 1 && (strcmp(cus.fullName, (*tree)->cus.fullName) < 0)) {
 		(*tree) = rightRotateCus(*tree);
 		return;
 	}
@@ -317,12 +349,11 @@ void cus_print_preorder(CusNode* tree)
 
 }
 
-void insertCustomer(CusNode** cusTree, ItemNode* parent, Customer cus)
+void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 {
-	CusNode* temp = NULL;
-	//if tree node is empty, then create a new item and add it as head.
-	temp = (CusNode*)malloc(sizeof(CusNode));
-	CusInsertbyid(cusTree, parent, cus, temp);
+	CusInsertbyid(&cusTree[0], parent, cus);
+
+	CusInsertbyName(&cusTree[1], parent, cus);
 }
 
 void print_cus(Customer* cus)
@@ -371,8 +402,8 @@ CusNode* leftRotateCus(CusNode* custree) {
 	y->left = custree;
 	custree->right = T2;
 
-	custree->height = max(getHeight1(custree->right), getHeight1(custree->left)) + 1;
-	y->height = max(getHeight1(y->right), getHeight1(y->left)) + 1;
+	custree->height = max(getHeightCus(custree->right), getHeightCus(custree->left)) + 1;
+	y->height = max(getHeightCus(y->right), getHeightCus(y->left)) + 1;
 
 	return y;
 }
