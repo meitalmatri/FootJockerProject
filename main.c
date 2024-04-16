@@ -8,22 +8,24 @@
 
 int main() 
 {
-	int choice, ItmToSellID, IsPurchased, SumOfItems=0;
+	int choice, ItmToSellID, IsPurchased, SumOfItems = 0, UpdateChoice;
 	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
 	int  LastItemID, LastCustomerID;
 	int* PurchaedID[3];
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
-	CusNode* CusTree[2];
+	CusNode* CusTree[3];
 	CusNode* CusForUpdate = NULL;
 	Item NewItem;
-	ItemNode* ItemTree = NULL;
+	ItemNode* ItemTree[] = { NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
 	CusTree[0] = NULL;
 
 	CusTree[1] = NULL;
+
+	CusTree[2] = NULL;
 
 	if (!checkIfEmployeeFileExists(employeeTree)) 
 	{
@@ -46,7 +48,16 @@ int main()
 	scanf("%d", &choice);
 
 	LastCustomerID = load_customer_tree(&CusTree);
-	LastItemID = load_items_tree(&ItemTree);
+	LastItemID = load_items_tree(ItemTree);
+
+	//printf("id\n");
+	//print_preorder1(ItemTree[0]);
+	//printf("price\n");
+	//print_preorder1(ItemTree[1]);
+	//printf("modify\n");
+	//print_preorder1(ItemTree[2]);
+	//printf("modle\n");
+	//print_preorder1(ItemTree[3]);
 
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
@@ -88,7 +99,7 @@ int main()
 			strcpy(NewCus.lastPurchaseDay.Date, "NoPurch");
 		    AddCustomer(&CusTree, NewCus);
 			printf("\n\n");
-			cus_print_preorder(CusTree[1]);
+			cus_print_preorder(CusTree[2]);
 		    break;
 		case 4:
 			printf("\n\n==>Enter The ID of the item you want to sell\n");
@@ -147,20 +158,49 @@ int main()
 			UpdateItem(itemName);
 			break;*/
 		case 7:
-			printf("\n\n==>Enter the ID of the customer you to update:");
-			scanf("%d", &CustomerID);
-			CusForUpdate=searchCustomer(&CusTree, CustomerID);
-			if (CusForUpdate == NULL)
-			{
-				printf("\n\n==>ID not found, please try again \n");
-				printf("\n\n==>Enter the ID of the customer you to update:");
-				scanf("%d", &CustomerID);
-				CusForUpdate = searchCustomer(&CusTree, CustomerID);
+			printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
+			scanf("%d", &UpdateChoice);
+			
+			if(UpdateChoice==0)
+			{ 
+				printf("\n\n==>Enter the name of the customer you to update:");
+				scanf("%s", &customerName);
+				CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
 
 				if (CusForUpdate == NULL)
 				{
-					printf("\n\n==>ID not found, please try again later");
-					break;
+					printf("\n\n==>Name not found, please try again \n");
+					printf("\n\n==>Enter the Name of the customer you to update:");
+					scanf("%s", &customerName);
+					CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
+
+					if (CusForUpdate == NULL)
+					{
+						printf("\n\n==>Name not found, please try again later");
+						break;
+					}
+				}
+		
+			}
+
+			else
+			{
+				printf("\n\n==>Enter the ID of the customer you to update:");
+				scanf("%d", &CustomerID);
+				CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
+
+				if (CusForUpdate == NULL)
+				{
+					printf("\n\n==>ID not found, please try again \n");
+					printf("\n\n==>Enter the ID of the customer you to update:");
+					scanf("%d", &CustomerID);
+					CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
+
+					if (CusForUpdate == NULL)
+					{
+						printf("\n\n==>ID not found, please try again later");
+						break;
+					}
 				}
 			}
 
@@ -193,7 +233,7 @@ int main()
 			printMenu(currentEmployee->data->level);
 			scanf("%d", &choice);
 
-			while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 6 && currentEmployee->data->level > 1))
+			while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 			{
 				printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
 				printf("\n\n==>Please try again-");

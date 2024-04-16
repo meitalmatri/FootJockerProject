@@ -2,7 +2,7 @@
 #include "dates.h"
 
 
-ItemNode* searchItem(ItemNode** Itemtree, int itemID)
+ItemNode* searchItemByID(ItemNode** Itemtree, int itemID)
 {
 	if (!(*Itemtree))
 	{
@@ -11,11 +11,11 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID)
 
 	if (itemID < (*Itemtree)->itemID)
 	{
-		searchItem(&((*Itemtree)->left), itemID);
+		searchItemByID(&((*Itemtree)->left), itemID);
 	}
 	else if (itemID > (*Itemtree)->itemID)
 	{
-		searchItem(&((*Itemtree)->right), itemID);
+		searchItemByID(&((*Itemtree)->right), itemID);
 	}
 	else if (itemID == (*Itemtree)->itemID)
 	{
@@ -29,47 +29,12 @@ void AddItem(ItemNode** itemTree, Item itm)
 
 	insertItem(itemTree, NULL, itm);
 
-	ItemToADDInV= searchItem(itemTree, itm.id);
+	ItemToADDInV= searchItemByID(itemTree, itm.id);
 
 	AddIventory(&ItemToADDInV);
 
 	return;
 }
-
-//void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
-//{
-//	ItemNode* temp = NULL;
-//	//if tree node is empty, then create a new item and add it as head.
-//
-//	if (!(*itemTree))
-//	{
-//		temp = (ItemNode*)malloc(sizeof(ItemNode));
-//		//initialize left and right pointers to NULL, this node is currently a leaf
-//		temp->left = temp->right = NULL;
-//		//initialize father to the one who called me.
-//		temp->parent = parent;
-//
-//		temp->itemN = itm;
-//
-//		temp->itemID = itm.id;
-//
-//		*itemTree = temp;
-//	}
-//	else
-//	{
-//		if (itm.id < ((*itemTree)->itemID))
-//		{
-//			//insert into left pointer of tree, sending the pointer, father (himself) and value
-//			insertItem(&(*itemTree)->left, *itemTree, itm);
-//		}
-//
-//		else if (itm.id > ((*itemTree)->itemID))
-//		{
-//			//insert into right pointer of tree, sending the pointer, father (himself) and value
-//			insertItem(&(*itemTree)->right, *itemTree, itm);
-//		}
-//	}
-//}
 
 void AddIventory(ItemNode** ItemNO)
 {
@@ -139,12 +104,12 @@ void UpdateItem(ItemNode** Itemtree, int itmID)
 
 		scanf("%d", &ID);
 
-		ItmToUpdate = searchItem(Itemtree, ID);
+		ItmToUpdate = searchItemByID(Itemtree, ID);
 	}
 
 	else
 
-		ItmToUpdate = searchItem(Itemtree, itmID);
+		ItmToUpdate = searchItemByID(Itemtree, itmID);
 
 	printf("What would you like to like on this item? \n");
 	printf("If you like to update the model press 1 \n");
@@ -217,7 +182,7 @@ ItemNode* removeItem(ItemNode** Itemtree, int ID)
 	scanf("%d", &ItmID);
 	}
 
-	ItmNode = searchItem(Itemtree, ItmID);
+	ItmNode = searchItemByID(Itemtree, ItmID);
 
 		if (!ItmNode)
 			return NULL;
@@ -348,7 +313,6 @@ int load_items_tree(ItemNode** ItmTree)
 
 	return LastItmID;
 }
-	
 
 void save_items_tree(ItemNode** ItmTree)
 {
@@ -397,7 +361,7 @@ int SellByID(ItemNode** ItmTree, int ID)
 {
 	int sum,size, CusID;
 	ItemNode* ItmToSell = NULL;
-	ItmToSell = searchItem(ItmTree, ID);
+	ItmToSell = searchItemByID(ItmTree, ID);
 
 	if (ItmToSell->itemN.InStock)
 	{
@@ -429,16 +393,15 @@ int SellByID(ItemNode** ItmTree, int ID)
 
 }
 
-
 void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 {
 	ItemNode* temp = NULL;
 	//if tree node is empty, then create a new item and add it as head.
 	temp = (ItemNode*)malloc(sizeof(ItemNode));
 	insertbyid(&itemTree[0], parent, &itm, temp);
-	/*insertbypr(&itemTree[1], parent, &itm, temp);
+	insertbypr(&itemTree[1], parent, &itm, temp);
 	insertbymf(&itemTree[2], parent, &itm, temp);
-	insertbymd(&itemTree[3], parent, &itm, temp);*/
+	insertbymd(&itemTree[3], parent, &itm, temp);
 
 }
 
@@ -514,18 +477,27 @@ void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 
 	if (itm->price < (*tree)->itemN.price)
 	{
-		insertbyid(&(*tree)->left_pr, *tree, itm, temp);
+		insertbypr(&(*tree)->left_pr, *tree, itm, temp);
 	}
 	else if (itm->price > (*tree)->itemN.price)
 	{
-		insertbyid(&(*tree)->right_pr, *tree, itm, temp);
+		insertbypr(&(*tree)->right_pr, *tree, itm, temp);
 	}
-	(*tree)->height_pr = 1 + max(getHeight1((*tree)->left_pr), getHeight1((*tree)->right_pr));
-	int bf = getBalanceFactor1(*tree);
+	else
+		if (itm->id < (*tree)->itemN.id)
+		{
+			insertbypr(&(*tree)->left_pr, *tree, itm, temp);
+		}
+		else if (itm->id > (*tree)->itemN.id)
+		{
+			insertbypr(&(*tree)->right_pr, *tree, itm, temp);
+		}
+	(*tree)->height_pr = 1 + max(getHeightpr((*tree)->left_pr), getHeightpr((*tree)->right_pr));
+	int bf = getBalanceFactorpr(*tree);
 
 	// Left Left Case  
 	if (bf > 1 && (itm->price < (*tree)->itemN.price)) {
-		(*tree) = rightRotate1(*tree);
+		(*tree) = rightRotatepr(*tree);
 		return;
 	}
 	// Right Right Case  
@@ -533,25 +505,25 @@ void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 	{
 		if (!(*tree)->left_pr)
 		{
-			(*tree) = leftRotate1(*tree);
+			(*tree) = leftRotatepr(*tree);
 			return;
 		}
 		else if (itm->price > (*tree)->itemN.price)
 		{
-			(*tree) = leftRotate1(*tree);
+			(*tree) = leftRotatepr(*tree);
 			return;
 		}
 	}
 	// Left Right Case  
 	if (bf > 1 && (itm->price > (*tree)->itemN.price)) {
-		(*tree)->left_pr = leftRotate1((*tree)->left_pr);
-		(*tree) = rightRotate1(*tree);
+		(*tree)->left_pr = leftRotatepr((*tree)->left_pr);
+		(*tree) = rightRotatepr(*tree);
 		return;
 	}
 	// Right Left Case  
 	if (bf < -1 && (itm->price < (*tree)->itemN.price)) {
-		(*tree)->right_pr = rightRotate1((*tree)->right_pr);
-		(*tree) = leftRotate1(*tree);
+		(*tree)->right_pr = rightRotatepr((*tree)->right_pr);
+		(*tree) = leftRotatepr(*tree);
 		return;
 	}
 	return;
@@ -571,17 +543,17 @@ void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 
 	if (strcmp(itm->model , (*tree)->itemN.model)<0)
 	{
-		insertbyid(&(*tree)->left_md, *tree, itm, temp);
+		insertbymd(&(*tree)->left_md, *tree, itm, temp);
 	}
 	else if (strcmp(itm->model, (*tree)->itemN.model) > 0)
 	{
-		insertbyid(&(*tree)->right_md, *tree, itm, temp);
+		insertbymd(&(*tree)->right_md, *tree, itm, temp);
 	}
 	(*tree)->height_md = 1 + max(getHeight1((*tree)->left_md), getHeight1((*tree)->right_md));
 	int bf = getBalanceFactor1(*tree);
 
 	// Left Left Case  
-	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model<0)) 
+	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model)<0) 
 	{
 		(*tree) = rightRotate1(*tree);
 		return;
@@ -594,21 +566,21 @@ void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 			(*tree) = leftRotate1(*tree);
 			return;
 		}
-		else if (strcmp(itm->model, (*tree)->itemN.model > 0))
+		else if (strcmp(itm->model, (*tree)->itemN.model) > 0)
 		{
 			(*tree) = leftRotate1(*tree);
 			return;
 		}
 	}
 	// Left Right Case  
-	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model > 0))
+	if (bf > 1 && strcmp(itm->model, (*tree)->itemN.model) > 0)
 	{
 		(*tree)->left_md = leftRotate1((*tree)->left_md);
 		(*tree) = rightRotate1(*tree);
 		return;
 	}
 	// Right Left Case  
-	if (bf < -1 && strcmp(itm->model, (*tree)->itemN.model < 0))
+	if (bf < -1 && strcmp(itm->model, (*tree)->itemN.model )< 0)
 	{
 		(*tree)->right_md = rightRotate1((*tree)->right_md);
 		(*tree) = leftRotate1(*tree);
@@ -631,19 +603,19 @@ void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 
 	if (dateCmp(itm->manuf, (*tree)->itemN.manuf) < 0)
 	{
-		insertbyid(&(*tree)->left_mf, *tree, itm, temp);
+		insertbymf(&(*tree)->left_mf, *tree, itm, temp);
 	}
 	else if (dateCmp(itm->manuf, (*tree)->itemN.manuf) > 0)
 	{
-		insertbyid(&(*tree)->right_mf, *tree, itm, temp);
+		insertbymf(&(*tree)->right_mf, *tree, itm, temp);
 	}
-	(*tree)->height_mf = 1 + max(getHeight1((*tree)->left_mf), getHeight1((*tree)->right_mf));
-	int bf = getBalanceFactor1(*tree);
+	(*tree)->height_mf = 1 + max(getHeightmf((*tree)->left_mf), getHeightmf((*tree)->right_mf));
+	int bf = getBalanceFactormf(*tree);
 
 	// Left Left Case  
-	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf < 0))
+	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf) < 0)
 	{
-		(*tree) = rightRotate1(*tree);
+		(*tree) = rightRotatemf(*tree);
 		return;
 	}
 	// Right Right Case  
@@ -651,27 +623,27 @@ void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp)
 	{
 		if (!(*tree)->left_mf)
 		{
-			(*tree) = leftRotate1(*tree);
+			(*tree) = leftRotatemf(*tree);
 			return;
 		}
-		else if (dateCmp(itm->manuf, (*tree)->itemN.manuf > 0))
+		else if (dateCmp(itm->manuf, (*tree)->itemN.manuf) > 0)
 		{
-			(*tree) = leftRotate1(*tree);
+			(*tree) = leftRotatemf(*tree);
 			return;
 		}
 	}
 	// Left Right Case  
-	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf > 0))
+	if (bf > 1 && dateCmp(itm->manuf, (*tree)->itemN.manuf) > 0)
 	{
-		(*tree)->left_mf = leftRotate1((*tree)->left_mf);
-		(*tree) = rightRotate1(*tree);
+		(*tree)->left_mf = leftRotatemf((*tree)->left_mf);
+		(*tree) = rightRotatemf(*tree);
 		return;
 	}
 	// Right Left Case  
-	if (bf < -1 && dateCmp(itm->manuf, (*tree)->itemN.manuf < 0))
+	if (bf < -1 && dateCmp(itm->manuf, (*tree)->itemN.manuf) < 0)
 	{
-		(*tree)->right_mf = rightRotate1((*tree)->right_mf);
-		(*tree) = leftRotate1(*tree);
+		(*tree)->right_mf = rightRotatemf((*tree)->right_mf);
+		(*tree) = leftRotatemf(*tree);
 		return;
 	}
 	return;
@@ -721,17 +693,17 @@ void print_preorder1(ItemNode* tree)
 	if (tree)
 	{
 		print_item(&tree->itemN);
-		printf("\nthe left sun of %s is\n", tree->itemN);
-		print_preorder1(tree->left);
-		printf("\nthe right sun of %s is\n", tree->itemN);
-		print_preorder1(tree->right);
+		printf("\nthe left sun of %d is\n", tree->itemN.id);
+		print_preorder1(tree->left_pr);
+		printf("\nthe right sun of %d is\n", tree->itemN.id);
+		print_preorder1(tree->right_pr);
 	}
 
 }
 
 void print_item(Item* user)
 {
-	printf("id:%d inventory:%d manuf:%s model:%s price:%d\n", user->id, user->inventory, user->manuf,user->model,user->price);
+	printf("id:%d inventory:%d manuf:%s model:%s price:%f\n", user->id, user->inventory, user->manuf,user->model,user->price);
 	/*  printf("first name: %s\n", user->firstname);
 	  printf("password %s\n", user->password);
 	  printf("level: %d\n", user->level);*/
@@ -757,3 +729,157 @@ void print_item(Item* user)
 		return *Itemtree;
 	}
 }*/
+
+int getHeightpr(ItemNode* n) {
+	if (n == NULL)
+		return 0;
+	return n->height_pr;
+}
+
+ItemNode* rightRotatepr(ItemNode* y) {
+	ItemNode* x = y->left_pr;
+	ItemNode* T2 = x->right_pr;
+
+	x->right_pr = y;
+	y->left_pr = T2;
+
+	x->height_pr = max(getHeightpr(x->right_pr), getHeightpr(x->left_pr)) + 1;
+	y->height_pr = max(getHeightpr(y->right_pr), getHeightpr(y->left_pr)) + 1;
+
+	return x;
+}
+
+ItemNode* leftRotatepr(ItemNode* x) {
+	ItemNode* y = x->right_pr;
+	ItemNode* T2 = y->left_pr;
+
+	y->left_pr = x;
+	x->right_pr = T2;
+
+	x->height_pr = max(getHeightpr(x->right_pr), getHeightpr(x->left_pr)) + 1;
+	y->height_pr = max(getHeightpr(y->right_pr), getHeightpr(y->left_pr)) + 1;
+
+	return y;
+}
+
+int getBalanceFactorpr(ItemNode* n) {
+	if (n == NULL) {
+		return 0;
+	}
+	return getHeightpr(n->left_pr) - getHeightpr(n->right_pr);
+}
+
+int getHeightmf(ItemNode* n) {
+	if (n == NULL)
+		return 0;
+	return n->height_mf;
+}
+
+ItemNode* rightRotatemf(ItemNode* y) {
+	ItemNode* x = y->left_mf;
+	ItemNode* T2 = x->right_mf;
+
+	x->right_mf = y;
+	y->left_mf = T2;
+
+	x->height_mf = max(getHeightmf(x->right_mf), getHeightmf(x->left_mf)) + 1;
+	y->height_mf = max(getHeightmf(y->right_mf), getHeightmf(y->left_mf)) + 1;
+
+	return x;
+}
+
+ItemNode* leftRotatemf(ItemNode* x) {
+	ItemNode* y = x->right_mf;
+	ItemNode* T2 = y->left_mf;
+
+	y->left_mf = x;
+	x->right_mf = T2;
+
+	x->height_mf = max(getHeightmf(x->right_mf), getHeightmf(x->left_mf)) + 1;
+	y->height_mf = max(getHeightmf(y->right_mf), getHeightmf(y->left_mf)) + 1;
+
+	return y;
+}
+
+int getBalanceFactormf(ItemNode* n) {
+	if (n == NULL) {
+		return 0;
+	}
+	return getHeightmf(n->left_mf) - getHeightmf(n->right_mf);
+}
+
+int getHeightmd(ItemNode* n) {
+	if (n == NULL)
+		return 0;
+	return n->height_md;
+}
+
+ItemNode* rightRotatemd(ItemNode* y) {
+	ItemNode* x = y->left_md;
+	ItemNode* T2 = x->right_md;
+
+	x->right_md = y;
+	y->left_md = T2;
+
+	x->height_md = max(getHeightmd(x->right_md), getHeightmd(x->left_md)) + 1;
+	y->height_md = max(getHeightmd(y->right_md), getHeightmd(y->left_md)) + 1;
+
+	return x;
+}
+
+ItemNode* leftRotatemd(ItemNode* x) {
+	ItemNode* y = x->right_md;
+	ItemNode* T2 = y->left_md;
+
+	y->left_md = x;
+	x->right_md = T2;
+
+	x->height_md = max(getHeightmd(x->right_md), getHeightmd(x->left_md)) + 1;
+	y->height_md = max(getHeightmd(y->right_md), getHeightmd(y->left_md)) + 1;
+
+	return y;
+}
+
+int getBalanceFactormd(ItemNode* n) {
+	if (n == NULL) {
+		return 0;
+	}
+	return getHeightmd(n->left_md) - getHeightmd(n->right_md);
+}
+
+long int convertToDate(char* date) 
+{
+	int day, month, year;
+	sscanf(date, "%d %d %d", &day, &month, &year);
+
+	long int days = year * 365 + day;
+	for (int i = 0; i < month - 1; i++) {
+		if (i == 3 || i == 5 || i == 8 || i == 10)
+			days += 30;
+		else if (i == 1) {
+			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+				days += 29;
+			else
+				days += 28;
+		}
+		else
+			days += 31;
+	}
+	return days;
+}
+
+// Function to check if 14 days have passed between two dates
+int check14DaysPassed(char* date1, char* date2) 
+{
+	long int days1 = convertToDate(date1);
+	long int days2 = convertToDate(date2);
+
+	// Calculate the difference between the two dates
+	long int difference = days2 - days1;
+
+	// Check if the difference is exactly 14 days
+	if (difference == 14)
+		return 1;
+	else
+		return 0;
+}

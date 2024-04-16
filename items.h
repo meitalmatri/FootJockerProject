@@ -32,18 +32,30 @@ typedef struct items_tree
 
 }ItemNode;
 
-ItemNode* searchItem(ItemNode** Itemtree, int itemID);
+ItemNode* searchItemByID(ItemNode** Itemtree, int itemID);
+
 void AddItem(ItemNode** Itemtree, Item itm);
+
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
+
 void AddIventory(ItemNode** Itemtree);
+
 void UpdateItem(ItemNode** Itemtree, int itmID);
+
 ItemNode* min_value(ItemNode* Itm, int* height);
+
 ItemNode* max_value(ItemNode* Itm, int* height);
+
 ItemNode* removeItem(ItemNode** Itemtree, int ID);
+
 //void load_item_tree(ItemNode** tree);
+
 int load_items_tree(ItemNode** ItmTree);
+
 void save_item_tree(ItemNode** ItmTree);
+
 void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
+
 int SellByID(ItemNode** ItmTree, int ID);
 
 int getHeight1(ItemNode* n);
@@ -65,3 +77,31 @@ void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
 void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
 
 void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
+
+int getHeightpr(ItemNode* n);
+
+ItemNode* rightRotatepr(ItemNode* y);
+
+ItemNode* leftRotatepr(ItemNode* x);
+
+int getBalanceFactorpr(ItemNode* n);
+
+int getHeightmf(ItemNode* n);
+
+ItemNode* rightRotatemf(ItemNode* y);
+
+ItemNode* leftRotatemf(ItemNode* x);
+
+int getBalanceFactormf(ItemNode* n);
+
+int getHeightmd(ItemNode* n);
+
+ItemNode* rightRotatemd(ItemNode* y);
+
+ItemNode* leftRotatemd(ItemNode* x);
+
+int getBalanceFactormd(ItemNode* n);
+
+long int convertToDate(char* date);
+
+int check14DaysPassed(char* date1, char* date2);
