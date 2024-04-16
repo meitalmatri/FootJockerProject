@@ -65,3 +65,24 @@ void insertbypr(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
 void insertbymf(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
 
 void insertbymd(ItemNode** tree, ItemNode* parent, Item* itm, ItemNode* temp);
+
+int getHeightpr(ItemNode* n);
+
+ItemNode* rightRotatepr(ItemNode* y);
+
+ItemNode* leftRotatepr(ItemNode* x);
+
+int getBalanceFactorpr(ItemNode* n);
+int getHeightmf(ItemNode* n);
+ItemNode* rightRotatemf(ItemNode* y);
+ItemNode* leftRotatemf(ItemNode* x);
+
+int getBalanceFactormf(ItemNode* n);
+
+int getHeightmd(ItemNode* n);
+
+ItemNode* rightRotatemd(ItemNode* y);
+
+ItemNode* leftRotatemd(ItemNode* x);
+
+int getBalanceFactormd(ItemNode* n);
