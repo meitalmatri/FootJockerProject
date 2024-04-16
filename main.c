@@ -17,7 +17,7 @@ int main()
 	CusNode* CusTree[2];
 	CusNode* CusForUpdate = NULL;
 	Item NewItem;
-	ItemNode* ItemTree = NULL;
+	ItemNode* ItemTree[] = { NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
 	ItemNode* ItemForUpdate = NULL;
 	Employee_node* employeeTree = NULL;
 
@@ -46,7 +46,16 @@ int main()
 	scanf("%d", &choice);
 
 	LastCustomerID = load_customer_tree(&CusTree);
-	LastItemID = load_items_tree(&ItemTree);
+	LastItemID = load_items_tree(ItemTree);
+
+	//printf("id\n");
+	//print_preorder1(ItemTree[0]);
+	//printf("price\n");
+	//print_preorder1(ItemTree[1]);
+	//printf("modify\n");
+	//print_preorder1(ItemTree[2]);
+	//printf("modle\n");
+	//print_preorder1(ItemTree[3]);
 
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
