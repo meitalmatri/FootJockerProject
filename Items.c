@@ -847,39 +847,23 @@ int getBalanceFactormd(ItemNode* n) {
 	return getHeightmd(n->left_md) - getHeightmd(n->right_md);
 }
 
-long int convertToDate(char* date) 
+ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName)
 {
-	int day, month, year;
-	sscanf(date, "%d %d %d", &day, &month, &year);
-
-	long int days = year * 365 + day;
-	for (int i = 0; i < month - 1; i++) {
-		if (i == 3 || i == 5 || i == 8 || i == 10)
-			days += 30;
-		else if (i == 1) {
-			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
-				days += 29;
-			else
-				days += 28;
-		}
-		else
-			days += 31;
+	if (!(*Itmtree))
+	{
+		return NULL;
 	}
-	return days;
-}
 
-// Function to check if 14 days have passed between two dates
-int check14DaysPassed(char* date1, char* date2) 
-{
-	long int days1 = convertToDate(date1);
-	long int days2 = convertToDate(date2);
-
-	// Calculate the difference between the two dates
-	long int difference = days2 - days1;
-
-	// Check if the difference is exactly 14 days
-	if (difference == 14)
-		return 1;
-	else
-		return 0;
+	if (strcmp((*Itmtree)->itemN.model, ModelName) > 0)
+	{
+		searchItemByName(&((*Itmtree)->left), ModelName);
+	}
+	else if (strcmp((*Itmtree)->itemN.model, ModelName) < 0)
+	{
+		searchItemByName(&((*Itmtree)->right), ModelName);
+	}
+	else if (strcmp((*Itmtree)->itemN.model, ModelName) == 0)
+	{
+		return *Itmtree;
+	}
 }

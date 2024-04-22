@@ -34,6 +34,8 @@ typedef struct items_tree
 
 ItemNode* searchItemByID(ItemNode** Itemtree, int itemID);
 
+ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName);
+
 void AddItem(ItemNode** Itemtree, Item itm);
 
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
@@ -102,6 +104,3 @@ ItemNode* leftRotatemd(ItemNode* x);
 
 int getBalanceFactormd(ItemNode* n);
 
-long int convertToDate(char* date);
-
-int check14DaysPassed(char* date1, char* date2);

@@ -111,11 +111,14 @@ void UpdateCustomer(CusNode** Custree)
 	print_inorder(*Custree);
 }
 
-int load_customer_tree(CusNode** Custree)
+int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 {
 	FILE* fp = NULL;
 	Customer cus;
 	int LastCusID;
+	char ItemName[12];
+	PurchaseDay* purch = NULL;
+	ItemNode* Itm = NULL;
 
 	fp = fopen("customer.txt", "r");
 	if (fp == NULL)
@@ -126,7 +129,62 @@ int load_customer_tree(CusNode** Custree)
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%d %s %s %d %s \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops, &cus.lastPurchaseDay.Date);
+			fscanf(fp, "%d %s %s %d \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops);
+
+			if (cus.SumOfShops > 0)
+			{
+				for (int i = 0; i < cus.SumOfShops; i++)
+				{
+					int j =1;
+
+					purch = (PurchaseDay*)malloc(sizeof(PurchaseDay));
+					fscanf(fp, "%s %s", &purch->Date, &ItemName);
+					Itm = searchItemByName(ItmTree, &ItemName);
+					purch->purItems[0] = Itm->itemN;
+
+					long int currentPosition = ftell(fp);
+
+					fscanf(fp, "%s", &ItemName);
+
+					Itm = searchItemByName(ItmTree, &ItemName);
+
+					while (Itm!=NULL)
+					{
+						purch->purItems[j] = Itm->itemN;
+						j++;
+
+						currentPosition = ftell(fp);
+
+						fscanf(fp, "%s", &ItemName);
+
+						Itm = searchItemByName(ItmTree, &ItemName);
+					}
+
+					j = 1;
+
+
+					if (i = 0)
+					{
+						purch->previous = NULL;
+					}
+
+					else
+					{
+						cus.lastPurchaseDay->next = purch;
+						purch->previous = cus.lastPurchaseDay;
+					}
+
+					purch->next = NULL;
+					cus.lastPurchaseDay = purch;
+				}
+			}
+
+			else
+			{
+				fscanf(fp, "%s", &ItemName);
+				cus.lastPurchaseDay = NULL;
+			}
+
 			AddCustomer(Custree, cus);
 			LastCusID = cus.ID;
 		}
@@ -154,11 +212,25 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 	if (Custree)
 	{
 		cus_fprint_inorder(Custree->left, fp);
-		fprintf(fp, "%d %s %s %d ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		fprintf(fp, "%d %s %s %d\n ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 
 		if (Custree->cus.SumOfShops > 0)
 		{
-			fprintf(fp, "%s\n", Custree->cus.lastPurchaseDay.Date);
+			for (int i = 0; i < Custree->cus.SumOfShops; i++)
+			{
+				fprintf(fp, "%s ", Custree->cus.lastPurchaseDay->Date);
+
+				for (int j = 0; j <= 2; j++)
+				{
+					if (Custree->cus.lastPurchaseDay->purItems[j].id)
+					{
+						fprintf(fp, ",%s", Custree->cus.lastPurchaseDay->purItems[j].model);
+					}
+				}
+
+				Custree->cus.lastPurchaseDay = Custree->cus.lastPurchaseDay->previous;
+				fprintf(fp,"\n");
+			}
 		}
 
 		else
@@ -177,8 +249,11 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 {
 	CusNode* CusToUpdate = NULL;
 	ItemNode* ItemPurchased = NULL;
+	PurchaseDay* CurrentPurchase=NULL;
 	char* purchaseDay[10];
 	int SumOfItems = 0, i=0;
+
+	CurrentPurchase = (PurchaseDay*)malloc(sizeof(PurchaseDay));
 
 	CusToUpdate = searchCustomerByID(Custree, cusID);
 
@@ -193,28 +268,14 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 		CusToUpdate = searchCustomerByID(Custree, cusID);
 	}
 
-	printf("\n\n==>Enter purchase date\n");
-	scanf("%s", &purchaseDay);
+	strcpy(CurrentPurchase->Date, getCurrentDate());
 
-	strcpy(CusToUpdate->cus.lastPurchaseDay.Date, purchaseDay);
-
-	//if (CusToUpdate->cus.lastPurchaseDay.Date)
-	//{
-	//	strcpy(CusToUpdate->cus.lastPurchaseDay.previous, CusToUpdate->cus.lastPurchaseDay.Date);
-	//	strcpy(CusToUpdate->cus.lastPurchaseDay.Date, purchaseDay);
-	//}
-	//	
-
-	//else
-	//{
-	//	
-	//}
-	//
+	CurrentPurchase->purItems[0].id=CurrentPurchase->purItems[1].id = CurrentPurchase->purItems[2].id = NULL;
 
 		while(ItemsID[i] > 0)
 		{
 			ItemPurchased = searchItemByID(Itmtree, ItemsID[i]);
-			CusToUpdate->cus.lastPurchaseDay.purItems[i] = ItemPurchased->itemN;
+			CurrentPurchase->purItems[i] = ItemPurchased->itemN;
 			SumOfItems++;
 
 			ItemsID[i] = 0;
@@ -222,8 +283,21 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 			if (i <= 2)
 				i++;
 		}
-
+	
 	CusToUpdate->cus.SumOfShops=SumOfItems;
+
+	if (CusToUpdate->cus.lastPurchaseDay)
+	{
+		CurrentPurchase->previous = CusToUpdate->cus.lastPurchaseDay;
+		CusToUpdate->cus.lastPurchaseDay->next = CurrentPurchase;
+		CusToUpdate->cus.lastPurchaseDay = CurrentPurchase;
+	}
+
+	else
+	{
+		CurrentPurchase->next = CurrentPurchase->previous = NULL;
+		CusToUpdate->cus.lastPurchaseDay = CurrentPurchase;
+	}
 
 	return;
 	
@@ -349,6 +423,7 @@ void CusInsertbyDate(CusNode** tree, CusNode* parent, Customer cus)
 	{
 		CusInsertbyDate(&(*tree)->right, *tree, cus);
 	}
+
 	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
 	int bf = getBalanceFactorCus(*tree);
 
@@ -412,7 +487,7 @@ void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 
 	CusInsertbyName(&cusTree[1], parent, cus);
 
-	CusInsertbyName(&cusTree[2], parent, cus);
+	//CusInsertbyDate(&cusTree[2], parent, cus);
 }
 
 void print_cus(Customer* cus)
@@ -421,7 +496,7 @@ void print_cus(Customer* cus)
 
 	if (cus->SumOfShops > 0)
 	{
-		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay.Date);
+		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay->Date);
 	}
 	/*  printf("first name: %s\n", user->firstname);
 	  printf("password %s\n", user->password);
