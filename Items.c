@@ -23,6 +23,27 @@ ItemNode* searchItemByID(ItemNode** Itemtree, int itemID)
 	}
 }
 
+ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName)
+{
+	if (!(*Itmtree))
+	{
+		return NULL;
+	}
+
+	if (strcmp((*Itmtree)->itemN.model, ModelName) > 0)
+	{
+		searchItemByName(&((*Itmtree)->left), ModelName);
+	}
+	else if (strcmp((*Itmtree)->itemN.model, ModelName) < 0)
+	{
+		searchItemByName(&((*Itmtree)->right), ModelName);
+	}
+	else if (strcmp((*Itmtree)->itemN.model, ModelName) == 0)
+	{
+		return *Itmtree;
+	}
+}
+
 void AddItem(ItemNode** itemTree, Item itm)
 {
 	ItemNode* ItemToADDInV=NULL;
@@ -845,23 +866,64 @@ int getBalanceFactormd(ItemNode* n) {
 	return getHeightmd(n->left_md) - getHeightmd(n->right_md);
 }
 
-ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName)
+ItemNode* search_model(ItemNode* tree, char* word)
 {
-	if (!(*Itmtree))
-	{
+	if (!tree)
 		return NULL;
-	}
+	int startwith;
+	startwith=strstartswith(tree->itemN.model, word);
 
-	if (strcmp((*Itmtree)->itemN.model, ModelName) > 0)
+	if (startwith == 0)
 	{
-		searchItemByName(&((*Itmtree)->left), ModelName);
+		char ans=NULL;
+		printf("did you mean %s?\npress Y if yes or N if no\n", tree->itemN.model);
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF) {}
+		scanf("%c", &ans);
+		if ('Y' == ans || 'y' == ans)
+			return tree;
+		search_model(tree->left_md, word);
+		search_model(tree->right_md, word);
 	}
-	else if (strcmp((*Itmtree)->itemN.model, ModelName) < 0)
+	else if(startwith < 0)
+		search_model(tree->left_md, word);
+	else
+		search_model(tree->right_md, word);
+}
+
+int strstartswith(const char* str, const char* prefix) {
+	if (!str || !prefix) {
+		return 0;  // Return false if any string is NULL
+	}
+	size_t len_prefix = strlen(prefix);
+	size_t len_str = strlen(str);
+	if (len_prefix > len_str) {
+		return 0;  // Return false if prefix is longer than str
+	}
+	return strncmp(str, prefix, len_prefix);  // Compare and return the result
+}
+
+ItemNode* search_manuf(ItemNode* tree, char* date)
+{
+	if (!tree)
+		return NULL;
+	int searchDate;
+	searchDate = dateCmp(date,tree->itemN.manuf);
+
+	if (searchDate == 0)
 	{
-		searchItemByName(&((*Itmtree)->right), ModelName);
+		char ans = NULL;
+		printf("did you mean %s?\npress Y if yes or N if no\n", tree->itemN.manuf);
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF) {}
+		scanf("%c", &ans);
+		if ('Y' == ans || 'y' == ans)
+			return tree;
+		search_manuf(tree->left_mf, date);
+		search_manuf(tree->right_mf, date);
 	}
-	else if (strcmp((*Itmtree)->itemN.model, ModelName) == 0)
-	{
-		return *Itmtree;
-	}
+	else if (searchDate < 0)
+		search_manuf(tree->left_mf, date);
+	else
+		search_manuf(tree->right_mf, date);
 }
