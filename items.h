@@ -32,18 +32,32 @@ typedef struct items_tree
 
 }ItemNode;
 
-ItemNode* searchItem(ItemNode** Itemtree, int itemID);
+ItemNode* searchItemByID(ItemNode** Itemtree, int itemID);
+
+ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName);
+
 void AddItem(ItemNode** Itemtree, Item itm);
+
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
+
 void AddIventory(ItemNode** Itemtree);
+
 void UpdateItem(ItemNode** Itemtree, int itmID);
+
 ItemNode* min_value(ItemNode* Itm, int* height);
+
 ItemNode* max_value(ItemNode* Itm, int* height);
+
 ItemNode* removeItem(ItemNode** Itemtree, int ID);
+
 //void load_item_tree(ItemNode** tree);
+
 int load_items_tree(ItemNode** ItmTree);
+
 void save_item_tree(ItemNode** ItmTree);
+
 void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
+
 int SellByID(ItemNode** ItmTree, int ID);
 
 int getHeight1(ItemNode* n);
@@ -73,8 +87,11 @@ ItemNode* rightRotatepr(ItemNode* y);
 ItemNode* leftRotatepr(ItemNode* x);
 
 int getBalanceFactorpr(ItemNode* n);
+
 int getHeightmf(ItemNode* n);
+
 ItemNode* rightRotatemf(ItemNode* y);
+
 ItemNode* leftRotatemf(ItemNode* x);
 
 int getBalanceFactormf(ItemNode* n);
@@ -86,7 +103,3 @@ ItemNode* rightRotatemd(ItemNode* y);
 ItemNode* leftRotatemd(ItemNode* x);
 
 int getBalanceFactormd(ItemNode* n);
-
-ItemNode* search_model(ItemNode* tree, char* word);
-
-int strstartswith(const char* str, const char* prefix);

@@ -2,7 +2,7 @@
 #include "dates.h"
 
 
-ItemNode* searchItem(ItemNode** Itemtree, int itemID)
+ItemNode* searchItemByID(ItemNode** Itemtree, int itemID)
 {
 	if (!(*Itemtree))
 	{
@@ -11,11 +11,11 @@ ItemNode* searchItem(ItemNode** Itemtree, int itemID)
 
 	if (itemID < (*Itemtree)->itemID)
 	{
-		searchItem(&((*Itemtree)->left), itemID);
+		searchItemByID(&((*Itemtree)->left), itemID);
 	}
 	else if (itemID > (*Itemtree)->itemID)
 	{
-		searchItem(&((*Itemtree)->right), itemID);
+		searchItemByID(&((*Itemtree)->right), itemID);
 	}
 	else if (itemID == (*Itemtree)->itemID)
 	{
@@ -29,47 +29,12 @@ void AddItem(ItemNode** itemTree, Item itm)
 
 	insertItem(itemTree, NULL, itm);
 
-	ItemToADDInV= searchItem(itemTree, itm.id);
+	ItemToADDInV= searchItemByID(itemTree, itm.id);
 
 	AddIventory(&ItemToADDInV);
 
 	return;
 }
-
-//void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
-//{
-//	ItemNode* temp = NULL;
-//	//if tree node is empty, then create a new item and add it as head.
-//
-//	if (!(*itemTree))
-//	{
-//		temp = (ItemNode*)malloc(sizeof(ItemNode));
-//		//initialize left and right pointers to NULL, this node is currently a leaf
-//		temp->left = temp->right = NULL;
-//		//initialize father to the one who called me.
-//		temp->parent = parent;
-//
-//		temp->itemN = itm;
-//
-//		temp->itemID = itm.id;
-//
-//		*itemTree = temp;
-//	}
-//	else
-//	{
-//		if (itm.id < ((*itemTree)->itemID))
-//		{
-//			//insert into left pointer of tree, sending the pointer, father (himself) and value
-//			insertItem(&(*itemTree)->left, *itemTree, itm);
-//		}
-//
-//		else if (itm.id > ((*itemTree)->itemID))
-//		{
-//			//insert into right pointer of tree, sending the pointer, father (himself) and value
-//			insertItem(&(*itemTree)->right, *itemTree, itm);
-//		}
-//	}
-//}
 
 void AddIventory(ItemNode** ItemNO)
 {
@@ -139,12 +104,12 @@ void UpdateItem(ItemNode** Itemtree, int itmID)
 
 		scanf("%d", &ID);
 
-		ItmToUpdate = searchItem(Itemtree, ID);
+		ItmToUpdate = searchItemByID(Itemtree, ID);
 	}
 
 	else
 
-		ItmToUpdate = searchItem(Itemtree, itmID);
+		ItmToUpdate = searchItemByID(Itemtree, itmID);
 
 	printf("What would you like to like on this item? \n");
 	printf("If you like to update the model press 1 \n");
@@ -217,7 +182,7 @@ ItemNode* removeItem(ItemNode** Itemtree, int ID)
 	scanf("%d", &ItmID);
 	}
 
-	ItmNode = searchItem(Itemtree, ItmID);
+	ItmNode = searchItemByID(Itemtree, ItmID);
 
 		if (!ItmNode)
 			return NULL;
@@ -348,7 +313,6 @@ int load_items_tree(ItemNode** ItmTree)
 
 	return LastItmID;
 }
-	
 
 void save_items_tree(ItemNode** ItmTree)
 {
@@ -397,7 +361,7 @@ int SellByID(ItemNode** ItmTree, int ID)
 {
 	int sum,size, CusID;
 	ItemNode* ItmToSell = NULL;
-	ItmToSell = searchItem(ItmTree, ID);
+	ItmToSell = searchItemByID(ItmTree, ID);
 
 	if (ItmToSell->itemN.InStock)
 	{
@@ -428,7 +392,6 @@ int SellByID(ItemNode** ItmTree, int ID)
 	}
 
 }
-
 
 void insertItem(ItemNode** itemTree, ItemNode* parent, Item itm)
 {
