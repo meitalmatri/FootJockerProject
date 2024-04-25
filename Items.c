@@ -961,10 +961,10 @@ void print_inorderPrice(ItemNode* tree,float min,float max)
 {
 	if (tree)
 	{	
-		print_preorder1(tree->left_pr);
+		print_inorderPrice(tree->left_pr,min,max);
 		if (((tree->itemN.price > min)&&(tree->itemN.price <max))||min==max)
 			print_item(&tree->itemN);
-		print_preorder1(tree->right_pr);
+		print_inorderPrice(tree->right_pr, min, max);
 	}
 
 }
@@ -973,10 +973,10 @@ void print_inorderdate(ItemNode* tree, char* min,char* max)
 {
 	if (tree)
 	{
-		print_preorder1(tree->left_mf);
-		if (((dateCmp(tree->itemN.manuf, min) < 0) && (dateCmp(tree->itemN.manuf, max) > 0)) || min == max)
+		print_inorderdate(tree->left_mf, min, max);
+		if (((dateCmp(tree->itemN.manuf, min) > 0) && (dateCmp(tree->itemN.manuf, max) < 0)) || min == max)
 			print_item(&tree->itemN);
-		print_preorder1(tree->right_mf);
+		print_inorderdate(tree->right_mf, min, max);
 	}
 
 }
