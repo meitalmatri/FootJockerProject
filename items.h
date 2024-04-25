@@ -110,5 +110,9 @@ ItemNode* search_manuf(ItemNode* tree, char* word);
 
 ItemNode* search_price(ItemNode* tree, float price);
 
+void print_inorderPrice(ItemNode* tree, float min, float max);
+
+void print_inorderdate(ItemNode* tree, char* min, char* max);
+
 
 
