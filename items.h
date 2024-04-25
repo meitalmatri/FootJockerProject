@@ -103,3 +103,11 @@ ItemNode* rightRotatemd(ItemNode* y);
 ItemNode* leftRotatemd(ItemNode* x);
 
 int getBalanceFactormd(ItemNode* n);
+
+ItemNode* search_model(ItemNode* tree, char* word);
+
+int strstartswith(const char* str, const char* prefix);
+
+ItemNode* search_manuf(ItemNode* tree, char* word);
+
+
