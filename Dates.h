@@ -1,13 +1,13 @@
 #pragma once
 #include "items.h"
+#include <time.h>
 
 typedef struct purchaseday
 {
     char* Date[10];
     struct purchaseday* previous;
     struct purchaseday* next;
-    Item purItems[3];
-
+    ItemPur purItems[3];
 } PurchaseDay;
 
 char* getCurrentDate();
