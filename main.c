@@ -9,49 +9,60 @@
 int main()
 {
 
-	char* currentDate = getCurrentDate();
+	//char* currentDate = getCurrentDate();
 
-	// Print the current date
-	printf("Current date: %s\n", currentDate);
+	//// Print the current date
+	//printf("Current date: %s\n", currentDate);
 
-	return 0;
+	//return 0;
 
-	//int choice, ItmToSellID, ItmToReturnID, AbleToPurchase, SumOfItems = 0, UpdateChoice;
-	//int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
-	//int  LastItemID, LastCustomerID;
-	//int* PurchaedID[3];
-	//char itemName, customerName, employeeName, userName, password;
-	//Customer NewCus;
-	//CusNode* CusTree[]= {NULL,NULL,NULL};
-	//CusNode* CusForUpdate = NULL;
-	//Item NewItem;
-	//ItemNode* ItemTree[] = {NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
-	//ItemNode* ItemForUpdate = NULL;
-	//Employee_node* employeeTree = NULL;
+	int choice, ItmToSellID, ItmToReturnID, AbleToPurchase, SumOfItems = 0, UpdateChoice;
+	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
+	int  LastItemID, LastCustomerID;
+	int* PurchaedID[3];
+	char itemName, customerName, employeeName, userName, password;
+	Customer NewCus;
+	CusNode* CusTree[]= {NULL,NULL,NULL};
+	CusNode* CusForUpdate = NULL;
+	Item NewItem;
+	ItemNode* ItemTree[] = {NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
+	ItemNode* ItemForUpdate = NULL, *temp;
+	Employee_node* employeeTree = NULL;
+	float tempPrice=0;
 
+	if (!checkIfEmployeeFileExists(employeeTree))
+	{
+		employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
+	}
 
-	//if (!checkIfEmployeeFileExists(employeeTree))
-	//{
-	//	employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
-	//}
+	else
+	{
+		load_employee_tree(&employeeTree);
+	}
 
-	//else
-	//{
-	//	load_employee_tree(&employeeTree);
-	//}
+	Employee_node* currentEmployee = NULL;//החלפתי סוג משתנה 
 
-	//Employee_node* currentEmployee = NULL;//החלפתי סוג משתנה 
-
-	//while (currentEmployee == NULL)
-	//{
-	//	currentEmployee = login(&employeeTree);
-	//}
+	while (currentEmployee == NULL)
+	{
+		currentEmployee = login(&employeeTree);
+	}
 
 	//printMenu(currentEmployee->data->level);
 	//scanf("%d", &choice);
 
-	//LastItemID = load_items_tree(&ItemTree);
-	//LastCustomerID = load_customer_tree(&CusTree,&ItemTree);
+	LastItemID = load_items_tree(&ItemTree);
+	LastCustomerID = load_customer_tree(&CusTree,&ItemTree);
+
+	printf("what price are you searching for?\n");
+	scanf("%f", &tempPrice);
+	temp = search_price(ItemTree[1], tempPrice);
+	if (temp == NULL)
+		printf("not found\n");
+	else
+	{
+		printf("the price you searching for is %s\n",temp->itemN.manuf);
+	}
+	
 
 	////printf("id\n");
 	////print_preorder1(ItemTree[0]);
@@ -297,10 +308,10 @@ int main()
 
 	//if (value == 0)
 	//{
-	//	printf("\n==>Goodbye and have a good day");
-	//	save_employee_tree(&employeeTree);
-	//	save_customer_tree(&CusTree);
-	//	save_items_tree(&ItemTree);
-	//}
+		printf("\n==>Goodbye and have a good day");
+		save_employee_tree(&employeeTree);
+		save_customer_tree(&CusTree);
+		save_items_tree(&ItemTree);
+	}
 
-}
+//}
