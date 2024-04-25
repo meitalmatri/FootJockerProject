@@ -1,39 +1,5 @@
 #include "customers.h"
 
-//void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus)
-//{
-//	CusNode* temp = NULL;
-//
-//	if (!(*Custree))
-//	{
-//		temp = (CusNode*)malloc(sizeof(CusNode));
-//		//initialize left and right pointers to NULL, this node is currently a leaf
-//		temp->left = temp->right = NULL;
-//		//initialize father to the one who called me.
-//		temp->parent = parent;
-//
-//		temp->cus = cus;
-//
-//		temp->cus.ID = cus.ID;
-//
-//		*Custree = temp;
-//	}
-//	else
-//	{
-//		if (cus.ID < ((*Custree)->cus.ID))
-//		{
-//			//insert into left pointer of tree, sending the pointer, father (himself) and value
-//			insertCustomer(&(*Custree)->left, *Custree, cus);
-//		}
-//
-//		else if (cus.ID > ((*Custree)->cus.ID))
-//		{
-//			//insert into right pointer of tree, sending the pointer, father (himself) and value
-//			insertCustomer(&(*Custree)->right, *Custree, cus);
-//		}
-//	}
-//}
-
 void AddCustomer(CusNode** Custree, Customer cus)
 {
 	insertCustomer(Custree, NULL, cus);
@@ -73,7 +39,7 @@ void print_postorder(CusNode* Custree)
 	}
 }
 
-CusNode* searchCustomer(CusNode** Custree, int ID)
+CusNode* searchCustomerByID(CusNode** Custree, int ID)
 {
 	if (!(*Custree))
 	{
@@ -82,13 +48,34 @@ CusNode* searchCustomer(CusNode** Custree, int ID)
 
 	if (ID < (*Custree)->cus.ID)
 	{
-		searchCustomer(&((*Custree)->left), ID);
+		searchCustomerByID(&((*Custree)->left), ID);
 	}
 	else if (ID > (*Custree)->cus.ID)
 	{
-		searchCustomer(&((*Custree)->right), ID);
+		searchCustomerByID(&((*Custree)->right), ID);
 	}
 	else if (ID == (*Custree)->cus.ID)
+	{
+		return *Custree;
+	}
+}
+
+CusNode* searchCustomerByName(CusNode** Custree, char* FullName)
+{
+	if (!(*Custree))
+	{
+		return NULL;
+	}
+
+	if (strcmp((*Custree)->cus.fullName,FullName)>0)
+	{
+		searchCustomerByName(&((*Custree)->left), FullName);
+	}
+	else if (strcmp((*Custree)->cus.fullName, FullName) < 0)
+	{
+		searchCustomerByName(&((*Custree)->right), FullName);
+	}
+	else if (strcmp((*Custree)->cus.fullName, FullName) == 0)
 	{
 		return *Custree;
 	}
@@ -99,6 +86,9 @@ void UpdateCustomer(CusNode** Custree)
 	int value;
 	char newName[20];
 	char newDate[12];
+
+	print_cus(*Custree);
+
 	printf("What would you like to update? \n");
 	printf("For name updating press 1 \n");
 	printf("For join date updating press 2 \n");
@@ -121,11 +111,14 @@ void UpdateCustomer(CusNode** Custree)
 	print_inorder(*Custree);
 }
 
-int load_customer_tree(CusNode** Custree)
+int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 {
 	FILE* fp = NULL;
 	Customer cus;
 	int LastCusID;
+	char ItemName[12];
+	PurchaseDay* purch = NULL;
+	ItemNode* Itm = NULL;
 
 	fp = fopen("customer.txt", "r");
 	if (fp == NULL)
@@ -136,7 +129,62 @@ int load_customer_tree(CusNode** Custree)
 	{
 		while (!feof(fp))
 		{
-			fscanf(fp, "%d %s %s %d %s \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops, &cus.lastPurchaseDay.Date);
+			fscanf(fp, "%d %s %s %d \n", &cus.ID, &cus.fullName, &cus.JoinDate, &cus.SumOfShops);
+
+			if (cus.SumOfShops > 0)
+			{
+				for (int i = 0; i < cus.SumOfShops; i++)
+				{
+					int j =1;
+
+					purch = (PurchaseDay*)malloc(sizeof(PurchaseDay));
+					fscanf(fp, "%s %s", &purch->Date, &ItemName);
+					Itm = searchItemByName(ItmTree, &ItemName);
+					purch->purItems[0] = Itm->itemN;
+
+					long int currentPosition = ftell(fp);
+
+					fscanf(fp, "%s", &ItemName);
+
+					Itm = searchItemByName(ItmTree, &ItemName);
+
+					while (Itm!=NULL)
+					{
+						purch->purItems[j] = Itm->itemN;
+						j++;
+
+						currentPosition = ftell(fp);
+
+						fscanf(fp, "%s", &ItemName);
+
+						Itm = searchItemByName(ItmTree, &ItemName);
+					}
+
+					j = 1;
+
+
+					if (i = 0)
+					{
+						purch->previous = NULL;
+					}
+
+					else
+					{
+						cus.lastPurchaseDay->next = purch;
+						purch->previous = cus.lastPurchaseDay;
+					}
+
+					purch->next = NULL;
+					cus.lastPurchaseDay = purch;
+				}
+			}
+
+			else
+			{
+				fscanf(fp, "%s", &ItemName);
+				cus.lastPurchaseDay = NULL;
+			}
+
 			AddCustomer(Custree, cus);
 			LastCusID = cus.ID;
 		}
@@ -164,11 +212,25 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 	if (Custree)
 	{
 		cus_fprint_inorder(Custree->left, fp);
-		fprintf(fp, "%d %s %s %d ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		fprintf(fp, "%d %s %s %d\n ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 
 		if (Custree->cus.SumOfShops > 0)
 		{
-			fprintf(fp, "%s\n", Custree->cus.lastPurchaseDay.Date);
+			for (int i = 0; i < Custree->cus.SumOfShops; i++)
+			{
+				fprintf(fp, "%s ", Custree->cus.lastPurchaseDay->Date);
+
+				for (int j = 0; j <= 2; j++)
+				{
+					if (Custree->cus.lastPurchaseDay->purItems[j].id)
+					{
+						fprintf(fp, ",%s", Custree->cus.lastPurchaseDay->purItems[j].model);
+					}
+				}
+
+				Custree->cus.lastPurchaseDay = Custree->cus.lastPurchaseDay->previous;
+				fprintf(fp,"\n");
+			}
 		}
 
 		else
@@ -187,10 +249,13 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 {
 	CusNode* CusToUpdate = NULL;
 	ItemNode* ItemPurchased = NULL;
+	PurchaseDay* CurrentPurchase=NULL;
 	char* purchaseDay[10];
 	int SumOfItems = 0, i=0;
 
-	CusToUpdate = searchCustomer(Custree, cusID);
+	CurrentPurchase = (PurchaseDay*)malloc(sizeof(PurchaseDay));
+
+	CusToUpdate = searchCustomerByID(Custree, cusID);
 
 	while (!CusToUpdate)
 	{
@@ -200,31 +265,17 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 		if (cusID == 0)
 			return;
 
-		CusToUpdate = searchCustomer(Custree, cusID);
+		CusToUpdate = searchCustomerByID(Custree, cusID);
 	}
 
-	printf("\n\n==>Enter purchase date\n");
-	scanf("%s", &purchaseDay);
+	strcpy(CurrentPurchase->Date, getCurrentDate());
 
-	strcpy(CusToUpdate->cus.lastPurchaseDay.Date, purchaseDay);
-
-	//if (CusToUpdate->cus.lastPurchaseDay.Date)
-	//{
-	//	strcpy(CusToUpdate->cus.lastPurchaseDay.previous, CusToUpdate->cus.lastPurchaseDay.Date);
-	//	strcpy(CusToUpdate->cus.lastPurchaseDay.Date, purchaseDay);
-	//}
-	//	
-
-	//else
-	//{
-	//	
-	//}
-	//
+	CurrentPurchase->purItems[0].id=CurrentPurchase->purItems[1].id = CurrentPurchase->purItems[2].id = NULL;
 
 		while(ItemsID[i] > 0)
 		{
-			ItemPurchased = searchItem(Itmtree, ItemsID[i]);
-			CusToUpdate->cus.lastPurchaseDay.purItems[i] = ItemPurchased->itemN;
+			ItemPurchased = searchItemByID(Itmtree, ItemsID[i]);
+			CurrentPurchase->purItems[i] = ItemPurchased->itemN;
 			SumOfItems++;
 
 			ItemsID[i] = 0;
@@ -232,17 +283,33 @@ void BuyerUpdate(CusNode** Custree,int cusID, int* ItemsID, ItemNode** Itmtree)
 			if (i <= 2)
 				i++;
 		}
-
+	
 	CusToUpdate->cus.SumOfShops=SumOfItems;
+
+	if (CusToUpdate->cus.lastPurchaseDay)
+	{
+		CurrentPurchase->previous = CusToUpdate->cus.lastPurchaseDay;
+		CusToUpdate->cus.lastPurchaseDay->next = CurrentPurchase;
+		CusToUpdate->cus.lastPurchaseDay = CurrentPurchase;
+	}
+
+	else
+	{
+		CurrentPurchase->next = CurrentPurchase->previous = NULL;
+		CusToUpdate->cus.lastPurchaseDay = CurrentPurchase;
+	}
 
 	return;
 	
 }
 
-void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus)
 {
 	if (!(*tree))
 	{
+		CusNode* temp = NULL;
+		//if tree node is empty, then create a new item and add it as head.
+		temp = (CusNode*)malloc(sizeof(CusNode));
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
 		temp->height = 1;
@@ -254,11 +321,11 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 
 	if (cus.ID < (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
+		CusInsertbyid(&(*tree)->left, *tree, cus);
 	}
 	else if (cus.ID > (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
+		CusInsertbyid(&(*tree)->right, *tree, cus);
 	}
 	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
 	int bf = getBalanceFactorCus(*tree);
@@ -297,11 +364,14 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 	return;
 }
 
-void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
+void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus)
 {
 
 	if (!(*tree))
 	{
+		CusNode* temp = NULL;
+		//if tree node is empty, then create a new item and add it as head.
+		temp = (CusNode*)malloc(sizeof(CusNode));
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
 		temp->height = 1;
@@ -311,20 +381,54 @@ void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus, CusNode* tem
 		return;
 	}
 
-	if (strcmp(cus.fullName , (*tree)->cus.fullName)<0)
+	else
 	{
-		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
-	}
-	else if (strcmp(cus.fullName, (*tree)->cus.fullName) > 0)
-	{
-		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
-	}
-	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
+		if (strcmp(cus.fullName , (*tree)->cus.fullName)<0|| strcmp(cus.fullName, (*tree)->cus.fullName) == 0)
+		{
+			//insert into left pointer of tree, sending the pointer, father (himself) and value
+			CusInsertbyName(&(*tree)->left, *tree, cus);
+		}
 
+		else if ((cus.fullName, (*tree)->cus.fullName) >0)
+		{
+		    CusInsertbyName(&(*tree)->right, *tree, cus);
+		}
+	}
+
+	return;
+}
+
+void CusInsertbyDate(CusNode** tree, CusNode* parent, Customer cus)
+{
+
+	if (!(*tree))
+	{
+		CusNode* temp = NULL;
+		//if tree node is empty, then create a new item and add it as head.
+		temp = (CusNode*)malloc(sizeof(CusNode));
+		temp->left = temp->right = NULL;
+		temp->parent = parent;
+		temp->height = 1;
+		temp->cus = cus;
+		*tree = temp;
+
+		return;
+	}
+
+	if (dateCmp((*tree)->cus.JoinDate, cus.JoinDate) < 0 || dateCmp((*tree)->cus.JoinDate, cus.JoinDate) == 0)
+	{
+		CusInsertbyDate(&(*tree)->left, *tree, cus);
+	}
+	else if (dateCmp((*tree)->cus.JoinDate, cus.JoinDate) > 0)
+	{
+		CusInsertbyDate(&(*tree)->right, *tree, cus);
+	}
+
+	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
 	int bf = getBalanceFactorCus(*tree);
 
 	// Left Left Case  
-	if (bf > 1 && (strcmp(cus.fullName, (*tree)->cus.fullName) < 0)) {
+	if (bf > 1 && (cus.ID < (*tree)->cus.ID)) {
 		(*tree) = rightRotateCus(*tree);
 		return;
 	}
@@ -357,7 +461,6 @@ void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus, CusNode* tem
 	return;
 }
 
-
 void cus_print_preorder(CusNode* tree)
 {
 	if (tree)
@@ -378,15 +481,13 @@ void cus_print_preorder(CusNode* tree)
 
 }
 
-void insertCustomer(CusNode** cusTree, ItemNode* parent, Customer cus)
+void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 {
-	CusNode* temp = NULL;
-	//if tree node is empty, then create a new item and add it as head.
-	temp = (CusNode*)malloc(sizeof(CusNode));
+	CusInsertbyid(&cusTree[0], parent, cus);
 
-	CusInsertbyid(&cusTree[0], parent, cus, temp);
+	CusInsertbyName(&cusTree[1], parent, cus);
 
-	CusInsertbyName(&cusTree[1], parent, cus, temp);
+	//CusInsertbyDate(&cusTree[2], parent, cus);
 }
 
 void print_cus(Customer* cus)
@@ -395,7 +496,7 @@ void print_cus(Customer* cus)
 
 	if (cus->SumOfShops > 0)
 	{
-		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay.Date);
+		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay->Date);
 	}
 	/*  printf("first name: %s\n", user->firstname);
 	  printf("password %s\n", user->password);
@@ -435,8 +536,8 @@ CusNode* leftRotateCus(CusNode* custree) {
 	y->left = custree;
 	custree->right = T2;
 
-	custree->height = max(getHeight1(custree->right), getHeight1(custree->left)) + 1;
-	y->height = max(getHeight1(y->right), getHeight1(y->left)) + 1;
+	custree->height = max(getHeightCus(custree->right), getHeightCus(custree->left)) + 1;
+	y->height = max(getHeightCus(y->right), getHeightCus(y->left)) + 1;
 
 	return y;
 }
