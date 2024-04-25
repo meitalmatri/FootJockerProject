@@ -116,7 +116,7 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 	FILE* fp = NULL;
 	Customer cus;
 	int LastCusID,size,sum;
-	char ItemName[10];
+	char ItemName[14];
 	PurchaseDay* purch = NULL;
 	ItemNode* Itm = NULL;
 
@@ -135,14 +135,16 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 			{
 				for (int i = 0; i < cus.SumOfShops; i++)
 				{
-					int j =1;
+					int j =0;
 
 					purch = (PurchaseDay*)malloc(sizeof(PurchaseDay));
 					fscanf(fp, "%s %s %d %d", &purch->Date, &ItemName,&size,&sum);
 					Itm = searchItemByName(ItmTree, &ItemName);
-					purch->purItems[0].Itm = Itm->itemN;
-					purch->purItems[0].size = size;
-					purch->purItems[0].sum = sum;
+
+
+					purch->purItems[j].Itm = Itm->itemN;
+					purch->purItems[j].size = size;
+					purch->purItems[j].sum = sum;
 
 					long int currentPosition = ftell(fp);
 
@@ -164,10 +166,11 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 						Itm = searchItemByName(ItmTree, &ItemName);
 					}
 
-					j = 1;
+					fseek(fp, currentPosition, SEEK_SET);
+					j = 0;
 
 
-					if (i = 0)
+					if (i == 0)
 					{
 						purch->previous = NULL;
 					}
@@ -216,7 +219,7 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 	if (Custree)
 	{
 		cus_fprint_inorder(Custree->left, fp);
-		fprintf(fp, "%d %s %s %d\n ", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
+		fprintf(fp, "%d %s %s %d\n", Custree->cus.ID, Custree->cus.fullName, Custree->cus.JoinDate, Custree->cus.SumOfShops);
 
 		if (Custree->cus.SumOfShops > 0)
 		{
@@ -228,7 +231,7 @@ void cus_fprint_inorder(CusNode* Custree, FILE* fp)
 				{
 					if (Custree->cus.lastPurchaseDay->purItems[j].sum>0)
 					{
-						fprintf(fp, ",\n%s", Custree->cus.lastPurchaseDay->purItems[j].Itm.model);
+						fprintf(fp, "\n%s", Custree->cus.lastPurchaseDay->purItems[j].Itm.model);
 						fprintf(fp, " %d", Custree->cus.lastPurchaseDay->purItems[j].size);
 						fprintf(fp, " %d", Custree->cus.lastPurchaseDay->purItems[j].sum);
 					}
@@ -262,6 +265,7 @@ void BuyerUpdate(CusNode** Custree, int cusID, ItemPur* PurchasedItems[], ItemNo
 	CurrentPurchase = (PurchaseDay*)malloc(sizeof(PurchaseDay));
 	
 	CusToUpdate = searchCustomerByID(Custree, cusID);
+	CusToUpdate->cus.SumOfShops++;
 
 	while (!CusToUpdate)
 	{
@@ -287,23 +291,20 @@ void BuyerUpdate(CusNode** Custree, int cusID, ItemPur* PurchasedItems[], ItemNo
 			CurrentPurchase->purItems[i].sum = PurchasedItems[i]->sum;
 
 			PurchasedItems[i] == NULL;
-			SumOfItems++;
 		}
 	}
 
-	/*	while(ItemsID[i] > 0)
-		{
-			ItemPurchased = searchItemByID(Itmtree, ItemsID[i]);
-			CurrentPurchase->purItems[i].Itm = ItemPurchased->itemN;
-			SumOfItems++;
+		//while(ItemsID[i] > 0)
+		//{
+		//	ItemPurchased = searchItemByID(Itmtree, ItemsID[i]);
+		//	CurrentPurchase->purItems[i].Itm = ItemPurchased->itemN;
+		//	SumOfItems++;
 
-			ItemsID[i] = 0;
+		//	ItemsID[i] = 0;
 
-			if (i <= 2)
-				i++;
-		}*/
-	
-	CusToUpdate->cus.SumOfShops=SumOfItems;
+		//	if (i <= 2)
+		//		i++;
+		//}
 
 	if (CusToUpdate->cus.lastPurchaseDay)
 	{

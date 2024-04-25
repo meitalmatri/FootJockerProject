@@ -8,6 +8,7 @@ typedef struct purchaseday
     struct purchaseday* previous;
     struct purchaseday* next;
     ItemPur purItems[3];
+    //int SumItemPerDay;
 } PurchaseDay;
 
 char* getCurrentDate();

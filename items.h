@@ -40,6 +40,8 @@ typedef struct items_tree
 
 ItemNode* searchItemByID(ItemNode** Itemtree, int itemID);
 
+ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName);
+
 void AddItem(ItemNode** Itemtree, Item itm);
 
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);

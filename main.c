@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 #include "employees.h"
 #include "menu.h"
 #include <stdio.h>
@@ -22,47 +22,42 @@ int main()
 	Employee_node* employeeTree = NULL;
 	ItemPur* PurchasedItms[3] = { NULL, NULL, NULL };
 
-	char* currentDate = getCurrentDate();
+	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
 
-	// Print the current date
-	printf("Current date: %s\n", currentDate);
+	if (!checkIfEmployeeFileExists(employeeTree))
+	{
+		employeeTree = createDefaultAdmin();//Ã¤Ã«Ã°Ã±ÃºÃ© Ã Ãº Ã¤Ã®Ã¹ÃºÃ°Ã¤ Ã¤Ã§Ã£Ã¹ Ã¹Ã°Ã¥Ã¶Ã¸ Ã¬Ã²Ãµ
+	}
 
-	return 0;
+	else
+	{
+		load_employee_tree(&employeeTree);
+	}
 
-	//int choice, ItmToSellID, ItmToReturnID, AbleToPurchase, SumOfItems = 0, UpdateChoice;
-	//int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
-	//int  LastItemID, LastCustomerID;
-	//int* PurchaedID[3];
-	//char itemName, customerName, employeeName, userName, password;
-	//Customer NewCus;
-	//CusNode* CusTree[]= {NULL,NULL,NULL};
-	//CusNode* CusForUpdate = NULL;
-	//Item NewItem;
-	//ItemNode* ItemTree[] = {NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
-	//ItemNode* ItemForUpdate = NULL;
-	//Employee_node* employeeTree = NULL;
+	Employee_node* currentEmployee = NULL;//Ã¤Ã§Ã¬Ã´ÃºÃ© Ã±Ã¥Ã¢ Ã®Ã¹ÃºÃ°Ã¤ 
 
 	while (currentEmployee == NULL)
 	{
 		currentEmployee = login(&employeeTree);
 	}
 
-	//if (!checkIfEmployeeFileExists(employeeTree))
-	//{
-	//	employeeTree = createDefaultAdmin();//äëðñúé àú äîùúðä äçãù ùðåöø ìòõ
-	//}
+	printMenu(currentEmployee->data->level);
+	scanf("%d", &choice);
 
-	//else
-	//{
-	//	load_employee_tree(&employeeTree);
-	//}
+	LastItemID = load_items_tree(&ItemTree);
+	LastCustomerID = load_customer_tree(&CusTree, &ItemTree[3]);
 
-	//Employee_node* currentEmployee = NULL;//äçìôúé ñåâ îùúðä 
+	//printf("id\n");
+	//print_preorder1(ItemTree[0]);
+	//printf("price\n");
+	//print_preorder1(ItemTree[1]);
+	//printf("modify\n");
+	//print_preorder1(ItemTree[2]);
+	//printf("modle\n");
+	//print_preorder1(ItemTree[3]);
 
-	//while (currentEmployee == NULL)
-	//{
-	//	currentEmployee = login(&employeeTree);
-	//}
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 	{
@@ -71,8 +66,6 @@ int main()
 		scanf("%d", &choice);
 	}
 
-	//LastItemID = load_items_tree(&ItemTree);
-	//LastCustomerID = load_customer_tree(&CusTree,&ItemTree);
 
 	do
 	{
@@ -99,7 +92,7 @@ int main()
 			NewCus.ID = LastCustomerID;
 			printf("\n\n==>Enter the name of the customer you to add:");
 			scanf("%s", &NewCus.fullName);
-			strcpy(NewCus.JoinDate,getCurrentDate());
+			strcpy(NewCus.JoinDate, getCurrentDate());
 			NewCus.SumOfShops = 0;
 			//strcpy(NewCus.lastPurchaseDay->Date, "NoPurch");
 			NewCus.lastPurchaseDay = NULL;
@@ -119,7 +112,7 @@ int main()
 
 			ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
 
-			while (ITM.id==NULL)
+			while (ITM.id == NULL)
 			{
 				printf("\n\n==>Wrong ID, please enter The ID of the item you want to sell\n");
 				scanf("%d", &ItmToSellID);
@@ -135,7 +128,7 @@ int main()
 
 			printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
 			scanf("%d", &Purchase);
-			
+
 
 			while (Purchase == 1 && SumOfItems <= 2)
 			{
@@ -151,7 +144,7 @@ int main()
 				printf("\n\n==>Enter the sum of the item you want to sell\n");
 				scanf("%d", &SumToPur);
 
-				ITM = SellByID(&ItemTree, ItmToSellID,size,SumToPur);
+				ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
 
 				while (ITM.id == NULL)
 				{
@@ -160,14 +153,14 @@ int main()
 					ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
 				}
 
-					PurchasedItms[SumOfItems]->Itm = ITM;
-					PurchasedItms[SumOfItems]->size = size;
-					PurchasedItms[SumOfItems]->sum = SumToPur;
+				PurchasedItms[SumOfItems]->Itm = ITM;
+				PurchasedItms[SumOfItems]->size = size;
+				PurchasedItms[SumOfItems]->sum = SumToPur;
 
-					printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-					scanf("%d", &Purchase);
+				printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+				scanf("%d", &Purchase);
 
-					SumOfItems++;
+				SumOfItems++;
 
 			}
 
@@ -326,12 +319,13 @@ int main()
 			}
 		}
 
-	//if (value == 0)
-	//{
-	//	printf("\n==>Goodbye and have a good day");
-	//	save_employee_tree(&employeeTree);
-	//	save_customer_tree(&CusTree);
-	//	save_items_tree(&ItemTree);
-	//}
+	} while (value != 0);
 
+	if (value == 0)
+	{
+		printf("\n==>Goodbye and have a good day");
+		save_employee_tree(&employeeTree);
+		save_customer_tree(&CusTree);
+		save_items_tree(&ItemTree);
+	}
 }
