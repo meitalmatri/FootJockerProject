@@ -22,42 +22,47 @@ int main()
 	Employee_node* employeeTree = NULL;
 	ItemPur* PurchasedItms[3] = { NULL, NULL, NULL };
 
-	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
-	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
-	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
+	char* currentDate = getCurrentDate();
 
-	if (!checkIfEmployeeFileExists(employeeTree))
-	{
-		employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
-	}
+	// Print the current date
+	printf("Current date: %s\n", currentDate);
 
-	else
-	{
-		load_employee_tree(&employeeTree);
-	}
+	return 0;
 
-	Employee_node* currentEmployee = NULL;//החלפתי סוג משתנה 
+	//int choice, ItmToSellID, ItmToReturnID, AbleToPurchase, SumOfItems = 0, UpdateChoice;
+	//int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase;
+	//int  LastItemID, LastCustomerID;
+	//int* PurchaedID[3];
+	//char itemName, customerName, employeeName, userName, password;
+	//Customer NewCus;
+	//CusNode* CusTree[]= {NULL,NULL,NULL};
+	//CusNode* CusForUpdate = NULL;
+	//Item NewItem;
+	//ItemNode* ItemTree[] = {NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
+	//ItemNode* ItemForUpdate = NULL;
+	//Employee_node* employeeTree = NULL;
 
 	while (currentEmployee == NULL)
 	{
 		currentEmployee = login(&employeeTree);
 	}
 
-	printMenu(currentEmployee->data->level);
-	scanf("%d", &choice);
+	//if (!checkIfEmployeeFileExists(employeeTree))
+	//{
+	//	employeeTree = createDefaultAdmin();//הכנסתי את המשתנה החדש שנוצר לעץ
+	//}
 
-	LastItemID = load_items_tree(&ItemTree);
-	LastCustomerID = load_customer_tree(&CusTree,&ItemTree);
+	//else
+	//{
+	//	load_employee_tree(&employeeTree);
+	//}
 
-	//printf("id\n");
-	//print_preorder1(ItemTree[0]);
-	//printf("price\n");
-	//print_preorder1(ItemTree[1]);
-	//printf("modify\n");
-	//print_preorder1(ItemTree[2]);
-	//printf("modle\n");
-	//print_preorder1(ItemTree[3]);
+	//Employee_node* currentEmployee = NULL;//החלפתי סוג משתנה 
 
+	//while (currentEmployee == NULL)
+	//{
+	//	currentEmployee = login(&employeeTree);
+	//}
 
 	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
 	{
@@ -66,6 +71,8 @@ int main()
 		scanf("%d", &choice);
 	}
 
+	//LastItemID = load_items_tree(&ItemTree);
+	//LastCustomerID = load_customer_tree(&CusTree,&ItemTree);
 
 	do
 	{
@@ -319,13 +326,12 @@ int main()
 			}
 		}
 
-	} while (value != 0);
+	//if (value == 0)
+	//{
+	//	printf("\n==>Goodbye and have a good day");
+	//	save_employee_tree(&employeeTree);
+	//	save_customer_tree(&CusTree);
+	//	save_items_tree(&ItemTree);
+	//}
 
-	if (value == 0)
-	{
-		printf("\n==>Goodbye and have a good day");
-		save_employee_tree(&employeeTree);
-		save_customer_tree(&CusTree);
-		save_items_tree(&ItemTree);
-	}
 }
