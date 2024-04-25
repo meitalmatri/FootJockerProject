@@ -876,7 +876,8 @@ ItemNode* search_model(ItemNode* tree, char* word)
 	if (startwith == 0)
 	{
 		char ans=NULL;
-		printf("did you mean %s?\npress Y if yes or N if no\n", tree->itemN.model);
+		print_item(tree);
+		printf("did you mean these item?\npress Y if yes or N if no\n");
 		int c;
 		while ((c = getchar()) != '\n' && c != EOF) {}
 		scanf("%c", &ans);
@@ -913,7 +914,8 @@ ItemNode* search_manuf(ItemNode* tree, char* date)
 	if (searchDate == 0)
 	{
 		char ans = NULL;
-		printf("did you mean %s?\npress Y if yes or N if no\n", tree->itemN.manuf);
+		print_item(tree);
+		printf("did you mean these item?\npress Y if yes or N if no\n");
 		int c;
 		while ((c = getchar()) != '\n' && c != EOF) {}
 		scanf("%c", &ans);
@@ -926,4 +928,30 @@ ItemNode* search_manuf(ItemNode* tree, char* date)
 		search_manuf(tree->left_mf, date);
 	else
 		search_manuf(tree->right_mf, date);
+}
+
+ItemNode* search_price(ItemNode* tree, float price)
+{
+	if (!tree)
+		return NULL;
+	float cmpPrice;
+	cmpPrice = (tree->itemN.price) - price;
+
+	if (cmpPrice == 0)
+	{
+		char ans = NULL;
+		print_item(tree);
+		printf("did you mean these item?\npress Y if yes or N if no\n");
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF) {}
+		scanf("%c", &ans);
+		if ('Y' == ans || 'y' == ans)
+			return tree;
+		search_price(tree->left_pr, price);
+		search_price(tree->right_pr, price);
+	}
+	else if (cmpPrice > 0)
+		search_price(tree->left_pr, price);
+	else
+		search_price(tree->right_pr, price);
 }

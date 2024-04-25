@@ -40,8 +40,6 @@ typedef struct items_tree
 
 ItemNode* searchItemByID(ItemNode** Itemtree, int itemID);
 
-ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName);
-
 void AddItem(ItemNode** Itemtree, Item itm);
 
 void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
@@ -115,5 +113,8 @@ ItemNode* search_model(ItemNode* tree, char* word);
 int strstartswith(const char* str, const char* prefix);
 
 ItemNode* search_manuf(ItemNode* tree, char* word);
+
+ItemNode* search_price(ItemNode* tree, float price);
+
 
 
