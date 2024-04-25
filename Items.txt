@@ -1,4 +1,4 @@
-1 NikeJordan 14/01/1998 500 44 size 36 inv 24  size 39 inv 20 InStock
+1 NikeJordan 14/01/1998 500 36 size 36 inv 24  size 39 inv 12 InStock
 2 NikeAirForce 02/10/2000 600 92 size 32 inv 20  size 36 inv 19  size 38 inv 28  size 39 inv 25 InStock
 3 nikee 15/15/2015 500 120 size 32 inv 20  size 36 inv 40  size 38 inv 28  size 39 inv 32 InStock
 4 NikeDunkLow 10/04/2024 500 80 size 32 inv 20  size 36 inv 30  size 38 inv 16  size 39 inv 14 InStock

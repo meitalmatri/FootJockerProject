@@ -378,37 +378,35 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
 		return;
 }
 
-int SellByID(ItemNode** ItmTree, int ID)
+Item SellByID(ItemNode** ItmTree, int ID, int size, int sumToPur)
 {
-	int sum,size, CusID;
+	int CusID;
 	ItemNode* ItmToSell = NULL;
 	ItmToSell = searchItemByID(ItmTree, ID);
 
 	if (ItmToSell->itemN.InStock)
 	{
-		printf("\n\n==>Enter the size of the item you want to sell\n");
-		scanf("%d", &size);
-
 		while (size<31 && size>40)
 		{
 			printf("This size isn't available, try again\n");
-		}
 
-		printf("\n\n==>Enter the sum of the item you want to sell\n");
-		scanf("%d", &sum);
+			printf("\n\n==>Enter the size of the item you want to sell\n");
+			scanf("%d", &size);
+
+		}
 		
 
-		if (ItmToSell->itemN.size[size % 30] >= sum)
+		if (ItmToSell->itemN.size[size % 30] >= sumToPur)
 		{
-			ItmToSell->itemN.size[size % 30] -= sum;
-			ItmToSell->itemN.inventory -= sum;
-			return 1;
+			ItmToSell->itemN.size[size % 30] -= sumToPur;
+			ItmToSell->itemN.inventory -= sumToPur;
+			return ItmToSell->itemN;
 		}
 
 		else
 		{
 			printf("\n\n==>There is not enough inventory for that purchase, try again later");
-			return 0;
+			return;
 		}
 	}
 

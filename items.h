@@ -16,6 +16,12 @@ typedef struct item{
     bool InStock;
 } Item;
 
+typedef struct itemsPurchased {
+    Item Itm;
+    int size;
+    int sum;
+} ItemPur;
+
 typedef struct items_tree
 {
     Item itemN;
@@ -56,7 +62,7 @@ void save_item_tree(ItemNode** ItmTree);
 
 void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
 
-int SellByID(ItemNode** ItmTree, int ID);
+Item SellByID(ItemNode** ItmTree, int ID, int size, int sumToPur);
 
 int getHeight1(ItemNode* n);
 
