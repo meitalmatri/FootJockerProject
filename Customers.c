@@ -111,6 +111,93 @@ void UpdateCustomer(CusNode** Custree)
 	print_inorder(*Custree);
 }
 
+int AbleToReturn(CusNode** CusTree, int CusID, int ItemID,int ItemSize, int ItemSum)
+{
+	CusNode* CusToUpdate = NULL;
+
+	PurchaseDay* lastpur;
+
+	CusToUpdate = searchCustomerByID(CusTree, CusID);
+
+	if (!CusToUpdate)
+	{
+		printf("\n\n==>Wrong Cus ID,try again");
+
+		return 0;
+	}
+
+	lastpur = CusToUpdate->cus.lastPurchaseDay;
+
+	if (CusToUpdate->cus.SumOfShops > 0)
+	{
+		for (int i = 0; i <= CusToUpdate->cus.SumOfShops; i++)
+		{
+			for (int j = 0; j <= 2; j++)
+			{
+				if (lastpur->purItems[j].Itm.id == ItemID&& lastpur->purItems[j].size==ItemSize)
+				{
+					if (!check14DaysPassed(lastpur->Date, getCurrentDate()))
+					{
+						if (lastpur->purItems[j].sum >= ItemSum)
+						{
+							lastpur->purItems[j].sum -= ItemSum;
+
+							if (lastpur->purItems[0].sum <= 0 && lastpur->purItems[1].sum <= 0 && lastpur->purItems[2].sum <= 0)
+							{
+								CusToUpdate->cus.SumOfShops--;
+
+								if (lastpur->next != NULL && lastpur->previous != NULL)
+								{
+									lastpur->previous->next = lastpur->next;
+									lastpur->next->previous = lastpur->previous;
+								}
+
+								if (lastpur->next == NULL && lastpur->previous != NULL)
+								{
+									lastpur->previous= NULL;
+								}
+
+								if (lastpur->previous==NULL&&lastpur->next!=NULL)
+								{
+									lastpur->next->previous = NULL;
+								}
+
+							
+
+								free(lastpur);
+							}
+							return 1;
+						}
+						else
+						{
+							printf("\n\n==>Item sum not exist on customer items,try again");
+							return 0;
+						}
+					}
+
+					else
+					{
+						printf("\n\n==>14 day passed till the day of purchase, item not avalible to return");
+						return 0;
+					}
+
+				}
+			}
+
+			lastpur = lastpur->previous;
+		}
+
+		printf("\n\n==>Item ID/or size Not found in customer items list,try again");
+		return 0;
+	}
+	
+	else
+	{
+		printf("\n\n==>There are no pre purchases,try again");
+		return 0;
+	}
+}
+
 int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 {
 	FILE* fp = NULL;
@@ -150,25 +237,32 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 
 					fscanf(fp, "%s", &ItemName);
 
-					Itm = searchItemByName(ItmTree, &ItemName);
-
-					while (Itm!=NULL)
+					if (!feof(fp))
 					{
-						purch->purItems[j].Itm = Itm->itemN;
-						purch->purItems[j].size = size;
-						purch->purItems[j].sum = sum;
-						j++;
-
-						currentPosition = ftell(fp);
-
-						fscanf(fp, "%s", &ItemName);
 
 						Itm = searchItemByName(ItmTree, &ItemName);
+
+						while (Itm != NULL)
+						{
+							fscanf(fp, "%d %d", &size, &sum);
+
+							purch->purItems[j].Itm = Itm->itemN;
+							purch->purItems[j].size = size;
+							purch->purItems[j].sum = sum;
+							j++;
+
+							fscanf(fp, "%s", &ItemName);
+
+							Itm = searchItemByName(ItmTree, &ItemName);
+						}
+
+						if (currentPosition != NULL)
+						{
+							fseek(fp, currentPosition, SEEK_SET);
+						}
+
+						j = 0;
 					}
-
-					fseek(fp, currentPosition, SEEK_SET);
-					j = 0;
-
 
 					if (i == 0)
 					{
@@ -293,18 +387,6 @@ void BuyerUpdate(CusNode** Custree, int cusID, ItemPur* PurchasedItems[], ItemNo
 			PurchasedItems[i] == NULL;
 		}
 	}
-
-		//while(ItemsID[i] > 0)
-		//{
-		//	ItemPurchased = searchItemByID(Itmtree, ItemsID[i]);
-		//	CurrentPurchase->purItems[i].Itm = ItemPurchased->itemN;
-		//	SumOfItems++;
-
-		//	ItemsID[i] = 0;
-
-		//	if (i <= 2)
-		//		i++;
-		//}
 
 	if (CusToUpdate->cus.lastPurchaseDay)
 	{

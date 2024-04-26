@@ -8,7 +8,7 @@
 
 int main()
 {
-	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice;
+	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice,AbleToS, AbleToRe,SumToRe,des;
 	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase, size, SumToPur;
 	int  LastItemID, LastCustomerID;
 	char itemName, customerName, employeeName, userName, password;
@@ -59,7 +59,7 @@ int main()
 	//print_preorder1(ItemTree[3]);
 
 
-	while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
+	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
 	{
 		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
 		printf("\n\n==>Please try again-");
@@ -110,71 +110,78 @@ int main()
 			printf("\n\n==>Enter the sum of the item you want to sell\n");
 			scanf("%d", &SumToPur);
 
-			ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+			AbleToS = AbleToSell(&ItemTree, ItmToSellID, size, SumToPur);
 
-			while (ITM.id == NULL)
+			if (AbleToS)
 			{
-				printf("\n\n==>Wrong ID, please enter The ID of the item you want to sell\n");
-				scanf("%d", &ItmToSellID);
 				ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
-			}
-
-			printf("\n\n==>Enter the ID of the customer who buy that item\n");
-			scanf("%d", &CustomerID);
-			PurchasedItms[SumOfItems]->Itm = ITM;
-			PurchasedItms[SumOfItems]->size = size;
-			PurchasedItms[SumOfItems]->sum = SumToPur;
-			SumOfItems++;
-
-			printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-			scanf("%d", &Purchase);
-
-
-			while (Purchase == 1 && SumOfItems <= 2)
-			{
-				printf("\n\n==>Enter The ID of the item you want to sell\n");
-				scanf("%d", &ItmToSellID);
-
-				printf("\n\n==>Enter The ID of the item you want to sell\n");
-				scanf("%d", &ItmToSellID);
-
-				printf("\n\n==>Enter the size of the item you want to sell\n");
-				scanf("%d", &size);
-
-				printf("\n\n==>Enter the sum of the item you want to sell\n");
-				scanf("%d", &SumToPur);
-
-				ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
-
-				while (ITM.id == NULL)
-				{
-					printf("\n\n==>Wrong ID, please enter The ID of the item you want to sell\n");
-					scanf("%d", &ItmToSellID);
-					ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
-				}
-
 				PurchasedItms[SumOfItems]->Itm = ITM;
 				PurchasedItms[SumOfItems]->size = size;
 				PurchasedItms[SumOfItems]->sum = SumToPur;
-
-				printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-				scanf("%d", &Purchase);
-
 				SumOfItems++;
 
-			}
-
-			while (Purchase == 1 && SumOfItems > 2)
-			{
-				printf("\n\n==>Error, you've reach the maximum items to sell on that purchase");
 				printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
 				scanf("%d", &Purchase);
 			}
 
-			BuyerUpdate(&CusTree, CustomerID, &PurchasedItms, &ItemTree);
-			Purchase = 0;
+			else
+			{
+				printf("\n\n==>If you want to try again press 1, else press 0\n");
+				scanf("%d", &Purchase);
 
-			printf("\n\n==>Purchase Succeed");
+				if (Purchase == 0)
+				{
+					break;
+				}
+			}
+
+				while (Purchase == 1 && SumOfItems <= 2)
+				{
+					printf("\n\n==>Enter The ID of the item you want to sell\n");
+					scanf("%d", &ItmToSellID);
+
+					printf("\n\n==>Enter the size of the item you want to sell\n");
+					scanf("%d", &size);
+
+					printf("\n\n==>Enter the sum of the item you want to sell\n");
+					scanf("%d", &SumToPur);
+
+					AbleToS = AbleToSell(&ItemTree, ItmToSellID, size, SumToPur);
+
+					if (AbleToS)
+					{
+						ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+						PurchasedItms[SumOfItems]->Itm = ITM;
+						PurchasedItms[SumOfItems]->size = size;
+						PurchasedItms[SumOfItems]->sum = SumToPur;
+						SumOfItems++;
+
+						printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+						scanf("%d", &Purchase);
+					}
+
+					else
+					{
+						printf("\n\n==>If you want to try again press 1, else press 0\n");
+						scanf("%d", &Purchase);
+					}
+
+				}
+
+				while (Purchase == 1 && SumOfItems > 2)
+				{
+					printf("\n\n==>Error, you've reach the maximum items to sell on that purchase");
+					printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+					scanf("%d", &Purchase);
+				}
+
+
+				printf("\n\n==>Enter the ID of the customer who buy that item\n");
+				scanf("%d", &CustomerID);
+				BuyerUpdate(&CusTree, CustomerID, &PurchasedItms, &ItemTree);
+				Purchase = 0;
+
+				printf("\n\n==>Purchase Succeed");
 
 
 			break;
@@ -238,52 +245,42 @@ int main()
 
 		case 8:
 
-			//printf("\n\n==>Enter The ID of the item you want to return\n");
-			//scanf("%d", &ItmToReturnID);
-			//AbleToPurchase = SellByID(&ItemTree, ItmToSellID);
+			des = 1;
 
-			//if (AbleToPurchase)
-			//{
-			//	printf("\n\n==>Enter the ID of the customer who buy that item\n");
-			//	scanf("%d", &CustomerID);
-			//}
+			while (des == 1)
+			{
+				printf("\n\n==>Enter The ID of the item you want to return\n");
+				scanf("%d", &ItmToReturnID);
 
-			//printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-			//scanf("%d", &Purchase);
-			//PurchaedID[SumOfItems] = ItmToSellID;
-			//SumOfItems++;
+				printf("\n\n==>Enter The size of the item you want to return\n");
+				scanf("%d", &size);
 
-			//while (Purchase == 1 && SumOfItems <= 2)
-			//{
-			//	printf("\n\n==>Enter The ID of the item you want to sell\n");
-			//	scanf("%d", &ItmToSellID);
-			//	AbleToPurchase = SellByID(&ItemTree, ItmToSellID);
+				printf("\n\n==>Enter the ID of the customer who want to return that item\n");
+				scanf("%d", &CustomerID);
 
-			//	if (AbleToPurchase)
-			//	{
-			//		PurchaedID[SumOfItems] = ItmToSellID;
+				printf("\n\n==>Enter the sum of the item you want to return\n");
+				scanf("%d", &SumToRe);
 
-			//		printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-			//		scanf("%d", &Purchase);
+				AbleToRe = AbleToReturn(&CusTree, CustomerID, ItmToReturnID, size, SumToRe);
 
-			//		SumOfItems++;
-			//	}
+				if (AbleToRe)
+				{
+					ItemReturn(&ItemTree, ItmToReturnID, size, SumToRe);
 
-			//}
+					printf("\n\n==>Item return succeed\nIf you want return another Item press 1, else press 0\n");
+					scanf("%d", &des);
 
-			//while (Purchase == 1 && SumOfItems > 2)
-			//{
-			//	printf("\n\n==>Error, you've reach the maximum items to sell on that purchase");
-			//	printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
-			//	scanf("%d", &Purchase);
-			//}
+				}
 
-			//BuyerUpdate(&CusTree, CustomerID, &PurchaedID, &ItemTree);
-			//Purchase = 0;
+				else
+				{
+					printf("\n\n==>If you want to try again press 1, else press 0\n");
+					scanf("%d", &des);
 
-			//printf("\n\n==>Purchase Succeed");
-
+				}
+			}
 			break;
+
 		case 9:
 			printf("\n\n==>Enter the name of the employee you want to add:");
 			scanf("%s", &employeeName);
@@ -311,7 +308,7 @@ int main()
 			printMenu(currentEmployee->data->level);
 			scanf("%d", &choice);
 
-			while ((choice > 4 && currentEmployee->data->level == 3) || (choice > 7 && currentEmployee->data->level > 1))
+			while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
 			{
 				printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
 				printf("\n\n==>Please try again-");

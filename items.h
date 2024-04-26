@@ -66,6 +66,8 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
 
 Item SellByID(ItemNode** ItmTree, int ID, int size, int sumToPur);
 
+int AbleToSell(ItemNode** ItmTree, int ID, int size, int sumToPur);
+
 int getHeight1(ItemNode* n);
 
 ItemNode* rightRotate1(ItemNode* y);
@@ -121,6 +123,8 @@ ItemNode* search_price(ItemNode* tree, float price);
 void print_inorderPrice(ItemNode* tree, float min, float max);
 
 void print_inorderdate(ItemNode* tree, char* min, char* max);
+
+void ItemReturn(ItemNode** Itemtree, int ItmToReturnID, int size, int SumToRe);
 
 
 

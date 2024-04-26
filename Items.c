@@ -44,6 +44,30 @@ ItemNode* searchItemByName(ItemNode** Itmtree, char* ModelName)
 	}
 }
 
+void ItemReturn(ItemNode** Itemtree, int ItmToReturnID, int size, int SumToRe)
+{
+	ItemNode* ItmToUpdate;
+
+	ItmToUpdate = searchItemByID(Itemtree, ItmToReturnID);
+
+	if (ItmToUpdate->itemN.size[size % 30] > 0)
+	{
+		ItmToUpdate->itemN.size[size % 30] += SumToRe;
+	}
+
+	else
+	{
+		ItmToUpdate->itemN.size[size % 30] = SumToRe;
+	}
+
+	ItmToUpdate->itemN.inventory += SumToRe;
+
+	if (!ItmToUpdate->itemN.InStock)
+	{
+		ItmToUpdate->itemN.InStock == true;
+	}
+}
+
 void AddItem(ItemNode** itemTree, Item itm)
 {
 	ItemNode* ItemToADDInV=NULL;
@@ -343,34 +367,59 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
 
 Item SellByID(ItemNode** ItmTree, int ID, int size, int sumToPur)
 {
-	int CusID;
+	ItemNode* ItmToSell = NULL;
+	ItmToSell = searchItemByID(ItmTree, ID);
+	ItmToSell->itemN.size[size % 30] -= sumToPur;
+	ItmToSell->itemN.inventory -= sumToPur;
+	if (ItmToSell->itemN.inventory == 0)
+	{
+		ItmToSell->itemN.InStock = false;
+	}
+	return ItmToSell->itemN;
+	
+}
+
+int AbleToSell(ItemNode** ItmTree, int ID, int size, int sumToPur)
+{
 	ItemNode* ItmToSell = NULL;
 	ItmToSell = searchItemByID(ItmTree, ID);
 
+	if (!ItmToSell)
+	{
+		printf("\n\n==>Wrong ID, please try again\n");
+		return 0;
+	}
+
 	if (ItmToSell->itemN.InStock)
 	{
-		while (size<31 && size>40)
+		if (size < 31 && size>40)
 		{
-			printf("This size isn't available, try again\n");
+			printf("\n\n==>This size isn't available,please try again later\n");
 
-			printf("\n\n==>Enter the size of the item you want to sell\n");
-			scanf("%d", &size);
-
+			return 0;
 		}
-		
 
 		if (ItmToSell->itemN.size[size % 30] >= sumToPur)
 		{
-			ItmToSell->itemN.size[size % 30] -= sumToPur;
-			ItmToSell->itemN.inventory -= sumToPur;
-			return ItmToSell->itemN;
+			return 1;
 		}
 
 		else
 		{
-			printf("\n\n==>There is not enough inventory for that purchase, try again later");
-			return;
+
+			printf("\n\n==>This size isn't available,please try again later\n");
+
+			return 0;
 		}
+	}
+
+	else
+	{
+
+		printf("This Item isn't available,please try again later\n");
+		//printf("\n\n==>There is not enough inventory for that purchase");
+
+		return 0;
 	}
 
 }
@@ -691,27 +740,6 @@ void print_item(Item* user)
 	  printf("password %s\n", user->password);
 	  printf("level: %d\n", user->level);*/
 }
-
-/*ItemNode* searchItem(ItemNode** Itemtree, Item itemID)
-{
-	if (!(*Itemtree))
-	{
-		return NULL;
-	}
-
-	if (itemID.id < (*Itemtree)->itemN.id)
-	{
-		searchItem(&((*Itemtree)->left), itemID);
-	}
-	else if (itemID.id > (*Itemtree)->itemN.id)
-	{
-		searchItem(&((*Itemtree)->right), itemID);
-	}
-	else if (itemID.id == (*Itemtree)->itemN.id)
-	{
-		return *Itemtree;
-	}
-}*/
 
 int getHeightpr(ItemNode* n) {
 	if (n == NULL)
