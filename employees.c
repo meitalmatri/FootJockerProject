@@ -3,6 +3,7 @@
 #include<malloc.h>
 
 
+
 int checkIfEmployeeFileExists(Employee_node* tree)
 {
     FILE* fp = NULL;
@@ -209,6 +210,7 @@ Employee_node* login(Employee_node** tree)
 		temp_emp = search_emp(tree, username_temp);
 		if ((temp_emp) && (!strcmp(temp_emp->data->password, password_temp)))
 		{
+			system("cls");
 			printf("==>login successful\nwelcome %s\n", temp_emp->data->firstname);
 			return temp_emp;
 		}

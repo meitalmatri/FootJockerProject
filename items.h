@@ -5,6 +5,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdbool.h>
+#include<conio.h>
 
 typedef struct item{
     int id;
@@ -126,5 +127,6 @@ void print_inorderdate(ItemNode* tree, char* min, char* max);
 
 void ItemReturn(ItemNode** Itemtree, int ItmToReturnID, int size, int SumToRe);
 
+void print_inorderInStoke(ItemNode* tree);
 
 
