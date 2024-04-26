@@ -983,3 +983,13 @@ void print_inorderInStoke(ItemNode* tree)
 	}
 
 }
+
+void removeItem(ItemNode** Itemtree, int ID)
+{
+	ItemNode* itemremov; 
+	itemremov = searchItemByID(Itemtree, ID);
+	itemremov->itemN.InStock = false;
+	for (int i = 0; i < 11; i++)
+		itemremov->itemN.size[i] = 0;
+}
+

@@ -55,7 +55,7 @@ ItemNode* min_value(ItemNode* Itm, int* height);
 
 ItemNode* max_value(ItemNode* Itm, int* height);
 
-ItemNode* removeItem(ItemNode** Itemtree, int ID);
+void removeItem(ItemNode** Itemtree, int ID);
 
 //void load_item_tree(ItemNode** tree);
 
@@ -128,5 +128,7 @@ void print_inorderdate(ItemNode* tree, char* min, char* max);
 void ItemReturn(ItemNode** Itemtree, int ItmToReturnID, int size, int SumToRe);
 
 void print_inorderInStoke(ItemNode* tree);
+
+void freeItemTree(ItemNode* tree);
 
 
