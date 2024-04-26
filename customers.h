@@ -33,6 +33,7 @@ typedef struct customers_tree
 
 void insertCustomer(CusNode** Custree, CusNode* parent, Customer cus);
 void AddCustomer(CusNode** Custree, Customer cus);
+int AbleToReturn(CusNode** CusTree, int CusID, int ItemID, int ItemSize,int ItemSum);
 void print_preorder(CusNode* Custree);
 void print_inorder(CusNode* Custree);
 void print_postorder(CusNode* Custree);
