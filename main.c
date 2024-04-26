@@ -10,10 +10,10 @@ int main()
 {
 	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice,AbleToS, AbleToRe,SumToRe,des;
 	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase, size, SumToPur;
-	int  LastItemID, LastCustomerID,tempId;
+	int  LastItemID, LastCustomerID;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
-	CusNode* CusTree[] = { NULL,NULL,NULL };
+	CusNode* CusTree[] = { NULL,NULL};
 	CusNode* CusForUpdate = NULL;
 	Item NewItem;
 	Item ITM;
@@ -25,7 +25,7 @@ int main()
 	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
 	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
 	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
-	
+
 	if (!checkIfEmployeeFileExists(employeeTree))
 	{
 		employeeTree = createDefaultAdmin();//äëðñúé àú äîùúðä äçãù ùðåöø ìòõ
@@ -35,7 +35,7 @@ int main()
 	{
 		load_employee_tree(&employeeTree);
 	}
-	
+
 	Employee_node* currentEmployee = NULL;//äçìôúé ñåâ îùúðä 
 
 	while (currentEmployee == NULL)
@@ -50,18 +50,6 @@ int main()
 	LastCustomerID = load_customer_tree(&CusTree, &ItemTree[3]);
 
 
-	print_inorderdate(ItemTree[2], "01/10/2000", "20/10/30");
-
-	//printf("id\n");
-	//print_preorder1(ItemTree[0]);
-	//printf("price\n");
-	//print_preorder1(ItemTree[1]);
-	//printf("modify\n");
-	//print_preorder1(ItemTree[2]);
-	//printf("modle\n");
-	//print_preorder1(ItemTree[3]);
-
-
 	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
 	{
 		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
@@ -72,12 +60,12 @@ int main()
 
 	do
 	{
-		system("cls");
 		switch (choice)
 		{
-		case 1:
-			searceMenu(ItemTree);
-			break;
+			/*case 1:
+				printf("\n\n==>Enter the item ID you want to search:");
+				scanf("%d", &value);
+				break;*/
 		case 2:
 			LastItemID++;
 			NewItem.id = LastItemID;
@@ -308,7 +296,6 @@ int main()
 
 		if (value == 1)
 		{
-			system("cls");
 			printMenu(currentEmployee->data->level);
 			scanf("%d", &choice);
 

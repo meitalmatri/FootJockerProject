@@ -69,11 +69,11 @@ CusNode* searchCustomerByName(CusNode** Custree, char* FullName)
 
 	if (strcmp((*Custree)->cus.fullName,FullName)>0)
 	{
-		searchCustomerByName(&((*Custree)->left), FullName);
+		searchCustomerByName(&((*Custree)->left_name), FullName);
 	}
 	else if (strcmp((*Custree)->cus.fullName, FullName) < 0)
 	{
-		searchCustomerByName(&((*Custree)->right), FullName);
+		searchCustomerByName(&((*Custree)->right_name), FullName);
 	}
 	else if (strcmp((*Custree)->cus.fullName, FullName) == 0)
 	{
@@ -405,13 +405,10 @@ void BuyerUpdate(CusNode** Custree, int cusID, ItemPur* PurchasedItems[], ItemNo
 	
 }
 
-void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus)
+void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 {
 	if (!(*tree))
 	{
-		CusNode* temp = NULL;
-		//if tree node is empty, then create a new item and add it as head.
-		temp = (CusNode*)malloc(sizeof(CusNode));
 		temp->left = temp->right = NULL;
 		temp->parent = parent;
 		temp->height = 1;
@@ -423,11 +420,11 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus)
 
 	if (cus.ID < (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->left, *tree, cus);
+		CusInsertbyid(&(*tree)->left, *tree, cus, temp);
 	}
 	else if (cus.ID > (*tree)->cus.ID)
 	{
-		CusInsertbyid(&(*tree)->right, *tree, cus);
+		CusInsertbyid(&(*tree)->right, *tree, cus, temp);
 	}
 	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
 	int bf = getBalanceFactorCus(*tree);
@@ -466,17 +463,14 @@ void CusInsertbyid(CusNode** tree, CusNode* parent, Customer cus)
 	return;
 }
 
-void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus)
+void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus, CusNode* temp)
 {
 
 	if (!(*tree))
 	{
-		CusNode* temp = NULL;
-		//if tree node is empty, then create a new item and add it as head.
-		temp = (CusNode*)malloc(sizeof(CusNode));
-		temp->left = temp->right = NULL;
-		temp->parent = parent;
-		temp->height = 1;
+		temp->left_name = temp->right_name = NULL;
+		temp->parent_name = parent;
+		temp->height_na = 1;
 		temp->cus = cus;
 		*tree = temp;
 
@@ -488,78 +482,15 @@ void CusInsertbyName(CusNode** tree, CusNode* parent, Customer cus)
 		if (strcmp(cus.fullName , (*tree)->cus.fullName)<0|| strcmp(cus.fullName, (*tree)->cus.fullName) == 0)
 		{
 			//insert into left pointer of tree, sending the pointer, father (himself) and value
-			CusInsertbyName(&(*tree)->left, *tree, cus);
+			CusInsertbyName(&(*tree)->left_name, *tree, cus, temp);
 		}
 
 		else if ((cus.fullName, (*tree)->cus.fullName) >0)
 		{
-		    CusInsertbyName(&(*tree)->right, *tree, cus);
+		    CusInsertbyName(&(*tree)->right_name, *tree, cus, temp);
 		}
 	}
 
-	return;
-}
-
-void CusInsertbyDate(CusNode** tree, CusNode* parent, Customer cus)
-{
-
-	if (!(*tree))
-	{
-		CusNode* temp = NULL;
-		//if tree node is empty, then create a new item and add it as head.
-		temp = (CusNode*)malloc(sizeof(CusNode));
-		temp->left = temp->right = NULL;
-		temp->parent = parent;
-		temp->height = 1;
-		temp->cus = cus;
-		*tree = temp;
-
-		return;
-	}
-
-	if (dateCmp((*tree)->cus.JoinDate, cus.JoinDate) < 0 || dateCmp((*tree)->cus.JoinDate, cus.JoinDate) == 0)
-	{
-		CusInsertbyDate(&(*tree)->left, *tree, cus);
-	}
-	else if (dateCmp((*tree)->cus.JoinDate, cus.JoinDate) > 0)
-	{
-		CusInsertbyDate(&(*tree)->right, *tree, cus);
-	}
-
-	(*tree)->height = 1 + max(getHeightCus((*tree)->left), getHeightCus((*tree)->right));
-	int bf = getBalanceFactorCus(*tree);
-
-	// Left Left Case  
-	if (bf > 1 && (cus.ID < (*tree)->cus.ID)) {
-		(*tree) = rightRotateCus(*tree);
-		return;
-	}
-	// Right Right Case  
-	if (bf < -1)
-	{
-		if (!(*tree)->left)
-		{
-			(*tree) = leftRotateCus(*tree);
-			return;
-		}
-		else if (cus.ID > (*tree)->cus.ID)
-		{
-			(*tree) = leftRotateCus(*tree);
-			return;
-		}
-	}
-	// Left Right Case  
-	if (bf > 1 && (cus.ID > (*tree)->cus.ID)) {
-		(*tree)->left = leftRotateCus((*tree)->left);
-		(*tree) = rightRotateCus(*tree);
-		return;
-	}
-	// Right Left Case  
-	if (bf < -1 && (cus.ID < (*tree)->cus.ID)) {
-		(*tree)->right = rightRotateCus((*tree)->right);
-		(*tree) = leftRotateCus(*tree);
-		return;
-	}
 	return;
 }
 
@@ -585,11 +516,13 @@ void cus_print_preorder(CusNode* tree)
 
 void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 {
-	CusInsertbyid(&cusTree[0], parent, cus);
+	CusNode* temp = NULL;
+	//if tree node is empty, then create a new item and add it as head.
+	temp = (CusNode*)malloc(sizeof(CusNode));
 
-	CusInsertbyName(&cusTree[1], parent, cus);
+	CusInsertbyid(&cusTree[0], parent, cus, temp);
 
-	//CusInsertbyDate(&cusTree[2], parent, cus);
+	CusInsertbyName(&cusTree[1], parent, cus, temp);
 }
 
 void print_cus(Customer* cus)
