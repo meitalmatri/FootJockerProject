@@ -10,7 +10,7 @@ int main()
 {
 	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice;
 	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase, size, SumToPur;
-	int  LastItemID, LastCustomerID;
+	int  LastItemID, LastCustomerID,tempId;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
 	CusNode* CusTree[] = { NULL,NULL,NULL };
@@ -49,6 +49,9 @@ int main()
 	LastItemID = load_items_tree(&ItemTree);
 	LastCustomerID = load_customer_tree(&CusTree, &ItemTree[3]);
 
+
+	print_inorderdate(ItemTree[2], "01/10/2000", "20/10/30");
+
 	//printf("id\n");
 	//print_preorder1(ItemTree[0]);
 	//printf("price\n");
@@ -71,10 +74,9 @@ int main()
 	{
 		switch (choice)
 		{
-			/*case 1:
-				printf("\n\n==>Enter the item ID you want to search:");
-				scanf("%d", &value);
-				break;*/
+		case 1:
+			searceMenu(ItemTree);
+			break;
 		case 2:
 			LastItemID++;
 			NewItem.id = LastItemID;

@@ -122,5 +122,6 @@ void print_inorderPrice(ItemNode* tree, float min, float max);
 
 void print_inorderdate(ItemNode* tree, char* min, char* max);
 
+void print_inorderInStoke(ItemNode* tree);
 
 
