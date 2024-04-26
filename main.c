@@ -13,7 +13,7 @@ int main()
 	int  LastItemID, LastCustomerID;
 	char itemName, customerName, employeeName, userName, password;
 	Customer NewCus;
-	CusNode* CusTree[] = { NULL,NULL,NULL };
+	CusNode* CusTree[] = { NULL,NULL};
 	CusNode* CusForUpdate = NULL;
 	Item NewItem;
 	Item ITM;
@@ -48,15 +48,6 @@ int main()
 
 	LastItemID = load_items_tree(&ItemTree);
 	LastCustomerID = load_customer_tree(&CusTree, &ItemTree[3]);
-
-	//printf("id\n");
-	//print_preorder1(ItemTree[0]);
-	//printf("price\n");
-	//print_preorder1(ItemTree[1]);
-	//printf("modify\n");
-	//print_preorder1(ItemTree[2]);
-	//printf("modle\n");
-	//print_preorder1(ItemTree[3]);
 
 
 	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
