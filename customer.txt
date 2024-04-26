@@ -2,9 +2,9 @@
 NoPurch
 2 MeitalMatri 10/04/24 2
 25/04/24
-NikeJordan 36 2
-25/04/24
 NikeAirForce 39 4
+25/04/24
+NikeJordan 36 2
 3 YohadLevi 10/04/24 1
 25/04/24
 NikeDunkLow 36 2

@@ -25,7 +25,7 @@ int main()
 	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
 	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
 	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
-
+	
 	if (!checkIfEmployeeFileExists(employeeTree))
 	{
 		employeeTree = createDefaultAdmin();//äëðñúé àú äîùúðä äçãù ùðåöø ìòõ
@@ -35,7 +35,7 @@ int main()
 	{
 		load_employee_tree(&employeeTree);
 	}
-
+	
 	Employee_node* currentEmployee = NULL;//äçìôúé ñåâ îùúðä 
 
 	while (currentEmployee == NULL)
@@ -72,6 +72,7 @@ int main()
 
 	do
 	{
+		system("cls");
 		switch (choice)
 		{
 		case 1:
@@ -307,6 +308,7 @@ int main()
 
 		if (value == 1)
 		{
+			system("cls");
 			printMenu(currentEmployee->data->level);
 			scanf("%d", &choice);
 

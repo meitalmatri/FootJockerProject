@@ -34,12 +34,13 @@ void searceMenu(ItemNode** tree)
 {
 	int tempId, value;
 	float minpr=0, maxpr=0;
-	char minda[10], maxda[10], tempdate[10];
+	char minda[11], maxda[11], tempdate[11];
 	do
 	{
 		printf("\n\n==>please enter by what you would like to do the item serching by:\n");
 		printf("     1 id\n     2 date\n     3 date range\n     4 price\n     5 price range\n     6 in stoked\n     0 exit\n");
 		scanf("%d", &value);
+		system("cls");
 		switch (value)
 		{
 		case 1:
