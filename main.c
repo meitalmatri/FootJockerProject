@@ -9,9 +9,9 @@
 int main()
 {
 	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice,AbleToS, AbleToRe,SumToRe,des;
-	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase, size, SumToPur;
+	int CustomerID, employeeLevel = 0, /*NewEmployeeLevel,*/ value, Purchase, size, SumToPur;
 	int  LastItemID, LastCustomerID;
-	char itemName, customerName[15], employeeName, userName, password;
+	char itemName, customerName[15]/*, employeeName, userName, password*/;
 	//Customer NewCus;
 	CusNode* CusTree[] = { NULL,NULL};
 	CusNode* CusForUpdate = NULL;
@@ -275,7 +275,7 @@ int main()
 			break;
 
 		case 9:
-			printf("\n\n==>Enter the name of the employee you want to add:");
+			/*printf("\n\n==>Enter the name of the employee you want to add:");
 			scanf("%s", &employeeName);
 			printf("\n\n==>Enter the username of the employee you want to add:");
 			scanf("%s", &userName);
@@ -283,7 +283,8 @@ int main()
 			scanf("%s", &password);
 			printf("\n\n==>Enter the level of the employee you want to add:");
 			scanf("%d", &NewEmployeeLevel);
-			add_employee(&employeeTree, &userName, &employeeName, &password, NewEmployeeLevel);
+			add_employee(&employeeTree, &userName, &employeeName, &password, NewEmployeeLevel);*/
+			addEnpMenu(&employeeTree);
 			break;
 		case 10:
 			update_employee(employeeTree);

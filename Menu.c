@@ -125,6 +125,13 @@ void addCusMenu(CusNode** CusTree, int* LastCustomerID)
 
 }
 
+void addEnpMenu(Employee_node** tree)
+{
+	add_new_employee(tree);
+	system("cls");
+	printf("the employee was secssfully added\n");
+}
+
 void removeItemMenu(ItemNode** tree)
 {
 	int ID;

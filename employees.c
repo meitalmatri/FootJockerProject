@@ -87,13 +87,14 @@ void add_new_employee(Employee_node** tree)
 {
 	char username[20],firstname[10],password[10];
 	int level=0;
-	printf("hello\nyou are know creating new employee\nplease enter a username:\n");
-	scanf("%s",username);
-	printf("please enter a firstname:\n");
+	system("cls");
+	printf("\n\n ==> Enter the name of the employee you want to add : \n");
 	scanf("%s",firstname);
-	printf("please enter a password:\n");
+	printf("\n\n==>Enter the username of the employee you want to add:\n");
+	scanf("%s",username);
+	printf("\n\n==>Enter the password of the employee you want to add:\n");
 	scanf("%s",password);
-	printf("please enter levle:\n");
+	printf("\n\n==>Enter the level of the employee you want to add:\n\n   1-manager\n   2-seeler\n   3-student\n");
 	scanf("%d",&level);
 	add_employee(tree, &username, &firstname, &password, level);
 }
