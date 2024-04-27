@@ -530,6 +530,11 @@ void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 
 void print_cus(Customer* cus)
 {
+	if (cus == NULL)
+	{
+		printf("the customer yo want to print not found\n");
+		return;
+	}
 	printf("id: %d \nFull Name: %s \nJoin Date: %s \nSum Of Shops: %d \n", cus->ID, cus->fullName , cus->JoinDate, cus->SumOfShops);
 
 	if (cus->SumOfShops > 0)

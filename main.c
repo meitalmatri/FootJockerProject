@@ -12,10 +12,10 @@ int main()
 	int CustomerID, employeeLevel = 0, NewEmployeeLevel, value, Purchase, size, SumToPur;
 	int  LastItemID, LastCustomerID;
 	char itemName, customerName[15], employeeName, userName, password;
-	Customer NewCus;
+	//Customer NewCus;
 	CusNode* CusTree[] = { NULL,NULL};
 	CusNode* CusForUpdate = NULL;
-	Item NewItem;
+	//Item NewItem;
 	Item ITM;
 	ItemNode* ItemTree[] = { NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
 	ItemNode* ItemForUpdate = NULL;
@@ -62,12 +62,11 @@ int main()
 	{
 		switch (choice)
 		{
-			/*case 1:
-				printf("\n\n==>Enter the item ID you want to search:");
-				scanf("%d", &value);
-				break;*/
+			case 1:
+				searceMenu(&ItemTree);
+				break;
 		case 2:
-			LastItemID++;
+			/*LastItemID++;
 			NewItem.id = LastItemID;
 			NewItem.inventory = NULL;
 			printf("\n\n==>Enter the model of the item you to add:");
@@ -76,20 +75,22 @@ int main()
 			scanf("%s", &NewItem.manuf);
 			printf("\n\n==>Enter price:");
 			scanf("%f", &NewItem.price);
-			AddItem(&ItemTree, NewItem);
+			AddItem(&ItemTree, NewItem);*/
+			addItemMenu(&ItemTree, &LastItemID);
 			break;
 		case 3:
-			LastCustomerID++;
-			NewCus.ID = LastCustomerID;
-			printf("\n\n==>Enter the name of the customer you to add:");
-			scanf("%s", &NewCus.fullName);
-			strcpy(NewCus.JoinDate, getCurrentDate());
-			NewCus.SumOfShops = 0;
-			//strcpy(NewCus.lastPurchaseDay->Date, "NoPurch");
-			NewCus.lastPurchaseDay = NULL;
-			AddCustomer(&CusTree, NewCus);
-			printf("\n\n");
-			cus_print_preorder(CusTree[2]);
+			//LastCustomerID++;
+			//NewCus.ID = LastCustomerID;
+			//printf("\n\n==>Enter the name of the customer you to add:");
+			//scanf("%s", &NewCus.fullName);
+			//strcpy(NewCus.JoinDate, getCurrentDate());
+			//NewCus.SumOfShops = 0;
+			////strcpy(NewCus.lastPurchaseDay->Date, "NoPurch");
+			//NewCus.lastPurchaseDay = NULL;
+			//AddCustomer(&CusTree, NewCus);
+			//printf("\n\n");
+			//cus_print_preorder(CusTree[2]);
+			addCusMenu(&CusTree, &LastCustomerID);
 			break;
 		case 4:
 			printf("\n\n==>Enter The ID of the item you want to sell\n");
@@ -177,13 +178,14 @@ int main()
 
 			break;
 		case 5:
-			removeItem(&ItemTree, NULL);
+			//removeItem(&ItemTree, NULL);
+			removeItemMenu(&ItemTree);
 			break;
-			/*case 6:
-				printf("\n\n==>Enter the item you to update:");
-				scanf("%s", &itemName);
-				UpdateItem(itemName);
-				break;*/
+		/*case 6:
+			printf("\n\n==>Enter the item you to update:");
+			scanf("%s", &itemName);
+			UpdateItem(itemName);
+			break;*/
 		case 7:
 			printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
 			scanf("%d", &UpdateChoice);
