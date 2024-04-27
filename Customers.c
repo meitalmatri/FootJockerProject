@@ -89,26 +89,29 @@ void UpdateCustomer(CusNode** Custree)
 
 	print_cus(*Custree);
 
-	printf("What would you like to update? \n");
-	printf("For name updating press 1 \n");
-	printf("For join date updating press 2 \n");
+	printf("\n\n==>What would you like to update? \n");
+	printf("\n\n==>For name updating press 1 \n");
+	printf("\n\n==>For join date updating press 2 \n");
 	scanf("%d", &value);
 
 	if (value == 1)
 	{
-		printf("Enter new name: ");
+		printf("\n\n==>Enter new name: ");
 		scanf("%s", &newName);
 		strcpy(((*Custree)->cus.fullName), newName);		
 	}
 
 	if (value == 2)
 	{
-		printf("Enter new date: ");
+		printf("\n\n==>Enter new date: ");
 		scanf("%s", &newDate);
 		strcpy(((*Custree)->cus.JoinDate), newDate);
 	}
 
-	print_inorder(*Custree);
+	printf("\n\n==>Update Success\n");
+
+	print_cus(*Custree);
+	//print_inorder(*Custree);
 }
 
 int AbleToReturn(CusNode** CusTree, int CusID, int ItemID,int ItemSize, int ItemSum)
