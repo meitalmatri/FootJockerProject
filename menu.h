@@ -18,5 +18,7 @@ void removeItemMenu(ItemNode** tree);
 void returnItemMenu(ItemNode** ItemTree, CusNode** CusTree);
 void updateCusMenu(CusNode** CusTree);
 void purchaseMenu(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms);
+void shutDown(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms, Employee_node** employeeTree);
+
 
 

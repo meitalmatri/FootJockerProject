@@ -338,3 +338,16 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 
 
 }
+
+void shutDown(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms, Employee_node** employeeTree)
+{
+	printf("\n==>Goodbye and have a good day");
+	save_employee_tree(employeeTree);
+	save_customer_tree(CusTree);
+	save_items_tree(ItemTree);
+
+	freeEmpTree(*employeeTree);
+	freeItemTree(*ItemTree);
+	freeCusTree(*ItemTree);
+	freePurchasedItms(PurchasedItms);
+}

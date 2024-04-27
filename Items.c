@@ -155,30 +155,24 @@ void UpdateItem(ItemNode** Itemtree)
 		print_item(&ItmToUpdate->itemN);
 
 		printf("\n\n What would you like to update on this item? \n");
-		printf("If you like to update the model press 1 \n");
-		printf("If you like to update the price press 2 \n");
-		printf("If you like to update the manufactory date press 3 \n");
+		printf("If you like to update the price press 1 \n");
+		printf("If you like to update the manufactory date press 2 \n");
 		scanf("%d", &choose);
 
 		switch (choose)
 		{
 		case 1:
-			printf("Enter new model\n");
-			scanf("%s", NewModel);
-			strcpy(ItmToUpdate->itemN.model,NewModel);
-			break;
-
-		case 2:
 			printf("Enter new price\n");
 			scanf("%d", &NewPrice);
 			ItmToUpdate->itemN.price = NewPrice;
 			break;
 
-		case 3:
+		case 2:
 			printf("Enter new manufactory date\n");
 			scanf("%s", ManuFactoryDate);
-			strcpy(ItmToUpdate->itemN.manuf,ManuFactoryDate);
+			strcpy(ItmToUpdate->itemN.manuf, ManuFactoryDate);
 			break;
+
 		}
 		printf("\n\n==>To continue update please press 1, for exit please press 0\n\n");
 		scanf("%d", &choose);
@@ -1030,4 +1024,18 @@ void sizeZero(Item* itm)
 {
 	for (int i = 0; i < 11; i++)
 		itm->size[i] = 0;
+}
+
+void mallocPurchasedItms(ItemPur** PurchasedItms)
+{
+	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
+}
+
+void freePurchasedItms(ItemPur** PurchasedItms)
+{
+	free(PurchasedItms[0]);
+	free(PurchasedItms[1]);
+	free(PurchasedItms[2]);
 }
