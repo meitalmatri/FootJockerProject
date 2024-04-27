@@ -210,6 +210,7 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 	char ItemName[14];
 	PurchaseDay* purch = NULL;
 	ItemNode* Itm = NULL;
+	long int currentPosition;
 
 	fp = fopen("customer.txt", "r");
 	if (fp == NULL)
@@ -237,36 +238,53 @@ int load_customer_tree(CusNode** Custree ,ItemNode** ItmTree)
 					purch->purItems[j].size = size;
 					purch->purItems[j].sum = sum;
 
-					long int currentPosition = ftell(fp);
+					currentPosition = ftell(fp);
 
 					fscanf(fp, "%s", &ItemName);
 
 					if (!feof(fp))
 					{
-
 						Itm = searchItemByName(ItmTree, &ItemName);
+					}
+
+					else
+					{
+						Itm = NULL;
+					}
 
 						while (Itm != NULL)
 						{
 							fscanf(fp, "%d %d", &size, &sum);
 
+							j++;
 							purch->purItems[j].Itm = Itm->itemN;
 							purch->purItems[j].size = size;
 							purch->purItems[j].sum = sum;
-							j++;
+
+							currentPosition = ftell(fp);
 
 							fscanf(fp, "%s", &ItemName);
+							
+							if (!feof(fp))
+							{
+								Itm = searchItemByName(ItmTree, &ItemName);
+							}
 
-							Itm = searchItemByName(ItmTree, &ItemName);
+							else
+							{
+								Itm = NULL;
+							}
+
+						
+								
 						}
 
-						if (currentPosition != NULL)
+						if (!feof(fp))
 						{
 							fseek(fp, currentPosition, SEEK_SET);
 						}
 
 						j = 0;
-					}
 
 					if (i == 0)
 					{
