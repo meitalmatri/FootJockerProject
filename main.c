@@ -43,24 +43,22 @@ int main()
 	{
 		currentEmployee = login(&employeeTree);
 	}
-
-	printMenu(currentEmployee->data->level);
-	scanf("%d", &choice);
-
+	
 	LastItemID = load_items_tree(&ItemTree);
 	LastCustomerID = load_customer_tree(&CusTree, &ItemTree[3]);
 
 
-	while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
-	{
-		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
-		printf("\n\n==>Please try again-");
-		scanf("%d", &choice);
-	}
-
-
 	do
 	{
+		printMenu(currentEmployee->data->level);
+		scanf("%d", &choice);
+
+		while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
+		{
+			printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
+			printf("\n\n==>Please try again-");
+			scanf("%d", &choice);
+		}
 		switch (choice)
 		{
 		case 1:
@@ -218,19 +216,6 @@ int main()
 
 		printf("\n\n==>To continue please press 1, for exit please press 0\n\n");
 		scanf("%d", &value);
-
-		if (value == 1)
-		{
-			printMenu(currentEmployee->data->level);
-			scanf("%d", &choice);
-
-			while ((choice > 3 && currentEmployee->data->level == 3) || (choice > 8 && currentEmployee->data->level > 1))
-			{
-				printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
-				printf("\n\n==>Please try again-");
-				scanf("%d", &choice);
-			}
-		}
 
 	} while (value != 0);
 
