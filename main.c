@@ -22,9 +22,10 @@ int main()
 	Employee_node* employeeTree = NULL;
 	ItemPur* PurchasedItms[3] = { NULL, NULL, NULL };
 
-	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
-	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
-	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
+	//PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
+	//PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
+	//PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
+	mallocPurchasedItms(&PurchasedItms);
 
 	if (!checkIfEmployeeFileExists(employeeTree))
 	{
@@ -66,30 +67,9 @@ int main()
 				searceMenu(&ItemTree);
 				break;
 		case 2:
-			/*LastItemID++;
-			NewItem.id = LastItemID;
-			NewItem.inventory = NULL;
-			printf("\n\n==>Enter the model of the item you to add:");
-			scanf("%s", &NewItem.model);
-			printf("\n\n==>Enter manufactory date:");
-			scanf("%s", &NewItem.manuf);
-			printf("\n\n==>Enter price:");
-			scanf("%f", &NewItem.price);
-			AddItem(&ItemTree, NewItem);*/
 			addItemMenu(&ItemTree, &LastItemID);
 			break;
 		case 3:
-			//LastCustomerID++;
-			//NewCus.ID = LastCustomerID;
-			//printf("\n\n==>Enter the name of the customer you to add:");
-			//scanf("%s", &NewCus.fullName);
-			//strcpy(NewCus.JoinDate, getCurrentDate());
-			//NewCus.SumOfShops = 0;
-			////strcpy(NewCus.lastPurchaseDay->Date, "NoPurch");
-			//NewCus.lastPurchaseDay = NULL;
-			//AddCustomer(&CusTree, NewCus);
-			//printf("\n\n");
-			//cus_print_preorder(CusTree[2]);
 			addCusMenu(&CusTree, &LastCustomerID);
 			break;
 		case 4:
@@ -177,60 +157,12 @@ int main()
 			purchaseMenu(&ItemTree,&CusTree,&PurchasedItms);
 			break;
 		case 5:
-			//removeItem(&ItemTree, NULL);
 			removeItemMenu(&ItemTree);
 			break;
 		case 6:
 			UpdateItem(&ItemTree);
 			break;
 		case 7:
-			/*printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
-			scanf("%d", &UpdateChoice);
-
-			if (UpdateChoice == 0)
-			{
-				printf("\n\n==>Enter the name of the customer you to update:");
-				scanf("%s", &customerName);
-				CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
-
-				if (CusForUpdate == NULL)
-				{
-					printf("\n\n==>Name not found, please try again \n");
-					printf("\n\n==>Enter the Name of the customer you to update:");
-					scanf("%s", &customerName);
-					CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
-
-					if (CusForUpdate == NULL)
-					{
-						printf("\n\n==>Name not found, please try again later");
-						break;
-					}
-				}
-
-			}
-
-			else
-			{
-				printf("\n\n==>Enter the ID of the customer you to update:");
-				scanf("%d", &CustomerID);
-				CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
-
-				if (CusForUpdate == NULL)
-				{
-					printf("\n\n==>ID not found, please try again \n");
-					printf("\n\n==>Enter the ID of the customer you to update:");
-					scanf("%d", &CustomerID);
-					CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
-
-					if (CusForUpdate == NULL)
-					{
-						printf("\n\n==>ID not found, please try again later");
-						break;
-					}
-				}
-			}
-
-			UpdateCustomer(&CusForUpdate);*/
 			updateCusMenu(&CusTree);
 			break;
 
@@ -274,15 +206,6 @@ int main()
 			break;
 
 		case 9:
-			/*printf("\n\n==>Enter the name of the employee you want to add:");
-			scanf("%s", &employeeName);
-			printf("\n\n==>Enter the username of the employee you want to add:");
-			scanf("%s", &userName);
-			printf("\n\n==>Enter the password of the employee you want to add:");
-			scanf("%s", &password);
-			printf("\n\n==>Enter the level of the employee you want to add:");
-			scanf("%d", &NewEmployeeLevel);
-			add_employee(&employeeTree, &userName, &employeeName, &password, NewEmployeeLevel);*/
 			addEnpMenu(&employeeTree);
 			break;
 		case 10:
@@ -313,13 +236,15 @@ int main()
 
 	if (value == 0)
 	{
-		printf("\n==>Goodbye and have a good day");
-		save_employee_tree(&employeeTree);
-		save_customer_tree(&CusTree);
-		save_items_tree(&ItemTree);
+		shutDown(&ItemTree, &CusTree, &PurchasedItms, &employeeTree);
+		//printf("\n==>Goodbye and have a good day");
+		//save_employee_tree(&employeeTree);
+		//save_customer_tree(&CusTree);
+		//save_items_tree(&ItemTree);
 
-		freeEmpTree(employeeTree);
-		freeItemTree(ItemTree);
-		freeCusTree(ItemTree);
+		//freeEmpTree(employeeTree);
+		//freeItemTree(ItemTree);
+		//freeCusTree(ItemTree);
+		//freePurchasedItms(&PurchasedItms);
 	}
 }

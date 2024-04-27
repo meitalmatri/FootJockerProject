@@ -1025,3 +1025,17 @@ void sizeZero(Item* itm)
 	for (int i = 0; i < 11; i++)
 		itm->size[i] = 0;
 }
+
+void mallocPurchasedItms(ItemPur** PurchasedItms)
+{
+	PurchasedItms[0] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[1] = (ItemPur*)malloc(sizeof(ItemPur));
+	PurchasedItms[2] = (ItemPur*)malloc(sizeof(ItemPur));
+}
+
+void freePurchasedItms(ItemPur** PurchasedItms)
+{
+	free(PurchasedItms[0]);
+	free(PurchasedItms[1]);
+	free(PurchasedItms[2]);
+}

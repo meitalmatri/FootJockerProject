@@ -137,3 +137,6 @@ void printSize(ItemNode** Itemtree, int ID);
 
 void sizeZero(Item* itm);
 
+void mallocPurchasedItms(ItemPur** PurchasedItms);
+
+void freePurchasedItms(ItemPur** PurchasedItms);
