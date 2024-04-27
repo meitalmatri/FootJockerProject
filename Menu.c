@@ -249,10 +249,12 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 	Item ITM;
 
 
-
+	system("cls");
+	print_inorderInStoke(*ItemTree);
 	printf("\n\n==>Enter The ID of the item you want to sell\n");
 	scanf("%d", &ItmToSellID);
 
+	printSize(ItemTree, ItmToSellID);
 	printf("\n\n==>Enter the size of the item you want to sell\n");
 	scanf("%d", &size);
 
@@ -263,12 +265,12 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 
 	if (AbleToS)
 	{
-		ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+		ITM = SellByID(ItemTree, ItmToSellID, size, SumToPur);
 		PurchasedItms[SumOfItems]->Itm = ITM;
 		PurchasedItms[SumOfItems]->size = size;
 		PurchasedItms[SumOfItems]->sum = SumToPur;
 		SumOfItems++;
-
+		system("cls");
 		printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
 		scanf("%d", &Purchase);
 	}
@@ -286,25 +288,27 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 
 	while (Purchase == 1 && SumOfItems <= 2)
 	{
+		print_inorderInStoke(*ItemTree);
 		printf("\n\n==>Enter The ID of the item you want to sell\n");
 		scanf("%d", &ItmToSellID);
 
+		printSize(ItemTree, ItmToSellID);
 		printf("\n\n==>Enter the size of the item you want to sell\n");
 		scanf("%d", &size);
 
 		printf("\n\n==>Enter the sum of the item you want to sell\n");
 		scanf("%d", &SumToPur);
 
-		AbleToS = AbleToSell(&ItemTree, ItmToSellID, size, SumToPur);
+		AbleToS = AbleToSell(ItemTree, ItmToSellID, size, SumToPur);
 
 		if (AbleToS)
 		{
-			ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+			ITM = SellByID(ItemTree, ItmToSellID, size, SumToPur);
 			PurchasedItms[SumOfItems]->Itm = ITM;
 			PurchasedItms[SumOfItems]->size = size;
 			PurchasedItms[SumOfItems]->sum = SumToPur;
 			SumOfItems++;
-
+			system("cls");
 			printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
 			scanf("%d", &Purchase);
 		}
@@ -324,10 +328,10 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 		scanf("%d", &Purchase);
 	}
 
-
+	system("cls");
 	printf("\n\n==>Enter the ID of the customer who buy that item\n");
 	scanf("%d", &CustomerID);
-	BuyerUpdate(&CusTree, CustomerID, &PurchasedItms, &ItemTree);
+	BuyerUpdate(CusTree, CustomerID, PurchasedItms, ItemTree);
 	Purchase = 0;
 
 	printf("\n\n==>Purchase Succeed");

@@ -61,7 +61,7 @@ void removeItem(ItemNode** Itemtree, int ID);
 
 int load_items_tree(ItemNode** ItmTree);
 
-void save_item_tree(ItemNode** ItmTree);
+void save_items_tree(ItemNode** ItmTree);
 
 void item_fprint_inorder(ItemNode* ItmTree, FILE* fp);
 
@@ -133,4 +133,7 @@ void freeItemTree(ItemNode* tree);
 
 void print_inordere(ItemNode* tree);
 
+void printSize(ItemNode** Itemtree, int ID);
+
+void sizeZero(Item* itm);
 

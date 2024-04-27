@@ -293,7 +293,7 @@ int load_items_tree(ItemNode** ItmTree)
 		while (!feof(fp))
 		{
 			fscanf(fp, "%d %s %s  %f %d ", &itm.id, &itm.model, &itm.manuf, &itm.price, &itm.inventory);
-
+			sizeZero(&itm);
 			if (itm.inventory> 0)
 			{
 				itm.InStock == true;
@@ -1012,4 +1012,22 @@ void freeItemTree(ItemNode* tree)
 	freeItemTree(tree->left);
 	freeItemTree(tree->right);
 	free(tree);
+}
+
+void printSize(ItemNode** Itemtree, int ID)
+{
+	ItemNode* temp;
+	temp = searchItemByID(Itemtree, ID);
+	printf("\nsize:inventory\n");
+	for (int i = 0; i < 11; i++)
+	{
+		if (temp->itemN.size[i] != 0)
+			printf("%d:%d  ", i + 30, temp->itemN.size[i]);
+	}
+}
+
+void sizeZero(Item* itm)
+{
+	for (int i = 0; i < 11; i++)
+		itm->size[i] = 0;
 }
