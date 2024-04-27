@@ -35,4 +35,5 @@ void update_employee(Employee_node* tree);
 Employee_node* rightRotate(Employee_node* y);
 Employee_node* leftRotate(Employee_node* x);
 int getBalanceFactor(Employee_node* n);
+void freeEmpTree(Employee_node* tree);
 

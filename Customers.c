@@ -583,3 +583,12 @@ int getBalanceFactorCus(CusNode* custree) {
 	}
 	return getHeightCus(custree->left) - getHeightCus(custree->right);
 }
+
+void freeCusTree(CusNode* tree)
+{
+	if (tree)
+		return;
+	freeCusTree(tree->left);
+	freeCusTree(tree->right);
+	free(tree);
+}

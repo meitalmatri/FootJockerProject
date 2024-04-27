@@ -315,5 +315,9 @@ int main()
 		save_employee_tree(&employeeTree);
 		save_customer_tree(&CusTree);
 		save_items_tree(&ItemTree);
+
+		freeEmpTree(employeeTree);
+		freeItemTree(ItemTree);
+		freeCusTree(ItemTree);
 	}
 }

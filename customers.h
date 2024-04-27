@@ -53,6 +53,6 @@ CusNode* rightRotateCus(CusNode* y);
 CusNode* leftRotateCus(CusNode* x);
 int getBalanceFactorCus(CusNode* n);
 int getHeightCus(CusNode* n);
-
+void freeCusTree(CusNode* tree);
 
 

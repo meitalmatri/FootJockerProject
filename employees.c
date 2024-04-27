@@ -311,3 +311,12 @@ int getBalanceFactor(Employee_node* n) {
 	}
 	return getHeight(n->left) - getHeight(n->right);
 }
+
+void freeEmpTree(Employee_node* tree)
+{
+	if (tree)
+		return;
+	freeEmpTree(tree->left);
+	freeEmpTree(tree->right);
+	free(tree);
+}

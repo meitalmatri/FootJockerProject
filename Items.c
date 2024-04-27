@@ -216,64 +216,64 @@ ItemNode* max_value(ItemNode* Itm, int* height)
 	return Itm;
 }
 
-ItemNode* removeItem(ItemNode** Itemtree, int ID)
-{
-	int ItmID;
-	ItemNode* ItmNode;
-
-	if(ID==NULL)
-	{ 
-	printf("Enter the ID of The item you want to remove");
-	scanf("%d", &ItmID);
-	}
-
-	ItmNode = searchItemByID(Itemtree, ItmID);
-
-		if (!ItmNode)
-			return NULL;
-
-	/*	if (data < root->data)
-			root->left = delete_node(root->left, data);
-		else if (data > root->data)
-			root->right = delete_node(root->right, data);
-		else
-		{*/
-			ItemNode* cursor = NULL;
-
-			if ((ItmNode->left) && (ItmNode->right)) //2 children
-			{
-				int left, right;
-				ItemNode* parent = NULL;
-				ItemNode* cursorLeft = min_value(ItmNode->right, &left);
-				ItemNode* cursorRight = max_value(ItmNode->left, &right);
-
-				cursor = (left > right) ? cursorLeft : cursorRight;
-				parent = cursor->parent;
-				ItmNode->itemID = cursor->itemID;
-
-				if (parent->left == cursor)
-					parent->left = removeItem(Itemtree, cursor->itemID);
-				else
-					parent->right = removeItem(Itemtree, cursor->itemID);
-			}
-
-			else
-			{
-				if (ItmNode->left)	//only left child
-				{
-					cursor = ItmNode->left;
-					cursor->parent = ItmNode->parent;
-				}
-				else if (ItmNode->right) //only right child
-				{
-					cursor = ItmNode->right;
-					cursor->parent = ItmNode->parent;
-				}
-				free(ItmNode);
-				ItmNode = cursor;
-			}
-			return(ItmNode);
-}
+//ItemNode* removeItem(ItemNode** Itemtree, int ID)
+//{
+//	int ItmID;
+//	ItemNode* ItmNode;
+//
+//	if(ID==NULL)
+//	{ 
+//	printf("Enter the ID of The item you want to remove");
+//	scanf("%d", &ItmID);
+//	}
+//
+//	ItmNode = searchItemByID(Itemtree, ItmID);
+//
+//		if (!ItmNode)
+//			return NULL;
+//
+//	/*	if (data < root->data)
+//			root->left = delete_node(root->left, data);
+//		else if (data > root->data)
+//			root->right = delete_node(root->right, data);
+//		else
+//		{*/
+//			ItemNode* cursor = NULL;
+//
+//			if ((ItmNode->left) && (ItmNode->right)) //2 children
+//			{
+//				int left, right;
+//				ItemNode* parent = NULL;
+//				ItemNode* cursorLeft = min_value(ItmNode->right, &left);
+//				ItemNode* cursorRight = max_value(ItmNode->left, &right);
+//
+//				cursor = (left > right) ? cursorLeft : cursorRight;
+//				parent = cursor->parent;
+//				ItmNode->itemID = cursor->itemID;
+//
+//				if (parent->left == cursor)
+//					parent->left = removeItem(Itemtree, cursor->itemID);
+//				else
+//					parent->right = removeItem(Itemtree, cursor->itemID);
+//			}
+//
+//			else
+//			{
+//				if (ItmNode->left)	//only left child
+//				{
+//					cursor = ItmNode->left;
+//					cursor->parent = ItmNode->parent;
+//				}
+//				else if (ItmNode->right) //only right child
+//				{
+//					cursor = ItmNode->right;
+//					cursor->parent = ItmNode->parent;
+//				}
+//				free(ItmNode);
+//				ItmNode = cursor;
+//			}
+//			return(ItmNode);
+//}
 
 int load_items_tree(ItemNode** ItmTree)
 {
@@ -993,3 +993,11 @@ void removeItem(ItemNode** Itemtree, int ID)
 		itemremov->itemN.size[i] = 0;
 }
 
+void freeItemTree(ItemNode* tree)
+{
+	if (tree)
+		return;
+	freeItemTree(tree->left);
+	freeItemTree(tree->right);
+	free(tree);
+}
