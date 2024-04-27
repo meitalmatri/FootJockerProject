@@ -108,6 +108,7 @@ void UpdateCustomer(CusNode** Custree)
 		strcpy(((*Custree)->cus.JoinDate), newDate);
 	}
 
+	system("cls");
 	printf("\n\n==>Update Success\n");
 
 	print_cus(*Custree);

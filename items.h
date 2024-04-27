@@ -49,7 +49,7 @@ void insertItem(ItemNode** ItemTree, ItemNode* parent, Item itm);
 
 void AddIventory(ItemNode** Itemtree);
 
-void UpdateItem(ItemNode** Itemtree, int itmID);
+void UpdateItem(ItemNode** Itemtree);
 
 ItemNode* min_value(ItemNode* Itm, int* height);
 
@@ -130,5 +130,7 @@ void ItemReturn(ItemNode** Itemtree, int ItmToReturnID, int size, int SumToRe);
 void print_inorderInStoke(ItemNode* tree);
 
 void freeItemTree(ItemNode* tree);
+
+void print_inordere(ItemNode* tree);
 
 

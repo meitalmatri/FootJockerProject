@@ -147,3 +147,190 @@ void removeItemMenu(ItemNode** tree)
 	print_inorderInStoke(tree[0]);
 
 }
+
+void returnItemMenu(ItemNode** ItemTree, CusNode** CusTree)
+{
+	int des = 1, ItmToReturnID, size, CustomerID, SumToRe, AbleToRe;
+
+	while (des == 1)
+	{
+		system("cls");
+		printf("\n\n==>Enter The ID of the item you want to return\n");
+		scanf("%d", &ItmToReturnID);
+
+		printf("\n\n==>Enter The size of the item you want to return\n");
+		scanf("%d", &size);
+
+		printf("\n\n==>Enter the ID of the customer who want to return that item\n");
+		scanf("%d", &CustomerID);
+
+		printf("\n\n==>Enter the sum of the item you want to return\n");
+		scanf("%d", &SumToRe);
+
+		AbleToRe = AbleToReturn(CusTree, CustomerID, ItmToReturnID, size, SumToRe);
+
+		if (AbleToRe)
+		{
+			ItemReturn(ItemTree, ItmToReturnID, size, SumToRe);
+
+			printf("\n\n==>Item return succeed\nIf you want return another Item press 1, else press 0\n");
+			scanf("%d", &des);
+
+		}
+
+		else
+		{
+			printf("\n\n==>If you want to try again press 1, else press 0\n");
+			scanf("%d", &des);
+
+		}
+	}
+}
+
+void updateCusMenu(CusNode** CusTree)
+{
+	int UpdateChoice, CustomerID;
+	char customerName[15];
+	CusNode* CusForUpdate = NULL;
+
+	system("cls");
+	printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
+	scanf("%d", &UpdateChoice);
+
+	if (UpdateChoice == 0)
+	{
+		printf("\n\n==>Enter the name of the customer you to update:");
+		scanf("%s", &customerName);
+		CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
+
+		if (CusForUpdate == NULL)
+		{
+			printf("\n\n==>Name not found, please try again \n");
+			printf("\n\n==>Enter the Name of the customer you to update:");
+			scanf("%s", &customerName);
+			CusForUpdate = searchCustomerByName(&CusTree[1], &customerName);
+
+			if (CusForUpdate == NULL)
+			{
+				printf("\n\n==>Name not found, please try again later");
+				return;
+			}
+		}
+
+	}
+
+	else
+	{
+		printf("\n\n==>Enter the ID of the customer you to update:");
+		scanf("%d", &CustomerID);
+		CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
+
+		if (CusForUpdate == NULL)
+		{
+			printf("\n\n==>ID not found, please try again \n");
+			printf("\n\n==>Enter the ID of the customer you to update:");
+			scanf("%d", &CustomerID);
+			CusForUpdate = searchCustomerByID(&CusTree[0], CustomerID);
+
+			if (CusForUpdate == NULL)
+			{
+				printf("\n\n==>ID not found, please try again later");
+				return;
+			}
+		}
+	}
+	system("cls");
+	UpdateCustomer(&CusForUpdate);
+}
+
+void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms)
+{
+	int ItmToSellID, size, SumToPur, AbleToS, SumOfItems = 0, Purchase, CustomerID;
+	Item ITM;
+
+
+
+	printf("\n\n==>Enter The ID of the item you want to sell\n");
+	scanf("%d", &ItmToSellID);
+
+	printf("\n\n==>Enter the size of the item you want to sell\n");
+	scanf("%d", &size);
+
+	printf("\n\n==>Enter the sum of the item you want to sell\n");
+	scanf("%d", &SumToPur);
+
+	AbleToS = AbleToSell(ItemTree, ItmToSellID, size, SumToPur);
+
+	if (AbleToS)
+	{
+		ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+		PurchasedItms[SumOfItems]->Itm = ITM;
+		PurchasedItms[SumOfItems]->size = size;
+		PurchasedItms[SumOfItems]->sum = SumToPur;
+		SumOfItems++;
+
+		printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+		scanf("%d", &Purchase);
+	}
+
+	else
+	{
+		printf("\n\n==>If you want to try again press 1, else press 0\n");
+		scanf("%d", &Purchase);
+
+		if (Purchase == 0)
+		{
+			return;
+		}
+	}
+
+	while (Purchase == 1 && SumOfItems <= 2)
+	{
+		printf("\n\n==>Enter The ID of the item you want to sell\n");
+		scanf("%d", &ItmToSellID);
+
+		printf("\n\n==>Enter the size of the item you want to sell\n");
+		scanf("%d", &size);
+
+		printf("\n\n==>Enter the sum of the item you want to sell\n");
+		scanf("%d", &SumToPur);
+
+		AbleToS = AbleToSell(&ItemTree, ItmToSellID, size, SumToPur);
+
+		if (AbleToS)
+		{
+			ITM = SellByID(&ItemTree, ItmToSellID, size, SumToPur);
+			PurchasedItms[SumOfItems]->Itm = ITM;
+			PurchasedItms[SumOfItems]->size = size;
+			PurchasedItms[SumOfItems]->sum = SumToPur;
+			SumOfItems++;
+
+			printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+			scanf("%d", &Purchase);
+		}
+
+		else
+		{
+			printf("\n\n==>If you want to try again press 1, else press 0\n");
+			scanf("%d", &Purchase);
+		}
+
+	}
+
+	while (Purchase == 1 && SumOfItems > 2)
+	{
+		printf("\n\n==>Error, you've reach the maximum items to sell on that purchase");
+		printf("\n\n==>Fine, if you want to sell another item for this customer, press 1, else press 0\n");
+		scanf("%d", &Purchase);
+	}
+
+
+	printf("\n\n==>Enter the ID of the customer who buy that item\n");
+	scanf("%d", &CustomerID);
+	BuyerUpdate(&CusTree, CustomerID, &PurchasedItms, &ItemTree);
+	Purchase = 0;
+
+	printf("\n\n==>Purchase Succeed");
+
+
+}

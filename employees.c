@@ -184,18 +184,16 @@ void insert(Employee_node** tree, Employee_node* parent, Employee* user)
 	return;
 }
 
-//void print_preorder(Employee_node* tree)
-//{
-//	if (tree)
-//	{
-//		print_employee(tree->data);
-//		printf("\nthe left sun of %s is\n", tree->data);
-//		print_preorder(tree->left);
-//		printf("\nthe right sun of %s is\n", tree->data);
-//		print_preorder(tree->right);
-//	}
-//
-//}
+void print_preorderEmp(Employee_node* tree)
+{
+	if (tree)
+	{
+		print_employee(tree->data);
+		print_preorderEmp(tree->left);
+		print_preorderEmp(tree->right);
+	}
+
+}
 
 Employee_node* login(Employee_node** tree)
 {
@@ -243,14 +241,18 @@ void update_employee(Employee_node* tree)
 	int temp = 0;
 	char update_user[20];
 
-	printf("what username would you like to update?\n");
+	system("cls");
+	print_preorderEmp(tree);
+	printf("\nwhat username would you like to update?\n");
 	scanf("%s", update_user);
 	temp_emp = search_emp(&tree, update_user);
 	if (temp_emp)
 	{
 		do
 		{
-			printf("what data whould you like to update?\n1 - password\n2 - first name\n3 - level\npress any other number to exit\n");
+			system("cls");
+			print_employee(temp_emp->data);
+			printf("\nwhat data whould you like to update?\n1 - password\n2 - first name\n3 - level\npress any other number to exit\n");
 			scanf("%d", &temp);
 			switch (temp) {
 			case 1:

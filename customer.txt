@@ -1,18 +1,18 @@
-1 KoralOr 10/04/24 2
-26/04/24
-NikeAirForce 36 2
+1 KoralOr1 10/04/24 2
 26/04/24
 NikeJordan 39 2
-2 MeitalMatari 10/04/24 2
-25/04/24
-NikeAirForce 39 4
-25/04/24
-NikeJordan 36 2
-3 YohadLevi 10/04/24 2
-25/04/24
-NikeDunkLow 36 2
 26/04/24
 NikeAirForce 36 2
+2 MeitalMatari 10/04/24 2
+25/04/24
+NikeJordan 36 2
+25/04/24
+NikeAirForce 39 4
+3 YohadLevi 10/04/24 2
+26/04/24
+NikeAirForce 36 2
+25/04/24
+NikeDunkLow 36 2
 4 OsnatPatahov 13/04/24 0
 NoPurch
 5 MazalMatari 16/04/24 0

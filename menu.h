@@ -15,5 +15,8 @@ void addItemMenu(ItemNode** tree, int* LastItemID);
 void addCusMenu(CusNode** tree, int* LastItemID);
 void addEnpMenu(Employee_node** tree);
 void removeItemMenu(ItemNode** tree);
+void returnItemMenu(ItemNode** ItemTree, CusNode** CusTree);
+void updateCusMenu(CusNode** CusTree);
+void purchaseMenu(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms);
 
 

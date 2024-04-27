@@ -8,7 +8,7 @@
 
 int main()
 {
-	int choice, ItmToSellID, ItmToReturnID, SumOfItems = 0, UpdateChoice,AbleToS, AbleToRe,SumToRe,des;
+	int choice, ItmToSellID,/* ItmToReturnID,*/ SumOfItems = 0, UpdateChoice,AbleToS/*, AbleToRe,SumToRe,des*/;
 	int CustomerID, employeeLevel = 0, /*NewEmployeeLevel,*/ value, Purchase, size, SumToPur;
 	int  LastItemID, LastCustomerID;
 	char itemName, customerName[15]/*, employeeName, userName, password*/;
@@ -62,7 +62,7 @@ int main()
 	{
 		switch (choice)
 		{
-			case 1:
+		case 1:
 				searceMenu(&ItemTree);
 				break;
 		case 2:
@@ -93,7 +93,7 @@ int main()
 			addCusMenu(&CusTree, &LastCustomerID);
 			break;
 		case 4:
-			printf("\n\n==>Enter The ID of the item you want to sell\n");
+			/*printf("\n\n==>Enter The ID of the item you want to sell\n");
 			scanf("%d", &ItmToSellID);
 
 			printf("\n\n==>Enter the size of the item you want to sell\n");
@@ -173,21 +173,18 @@ int main()
 				BuyerUpdate(&CusTree, CustomerID, &PurchasedItms, &ItemTree);
 				Purchase = 0;
 
-				printf("\n\n==>Purchase Succeed");
-
-
+				printf("\n\n==>Purchase Succeed");*/
+			purchaseMenu(&ItemTree,&CusTree,&PurchasedItms);
 			break;
 		case 5:
 			//removeItem(&ItemTree, NULL);
 			removeItemMenu(&ItemTree);
 			break;
-		/*case 6:
-			printf("\n\n==>Enter the item you to update:");
-			scanf("%s", &itemName);
-			UpdateItem(itemName);
-			break;*/
+		case 6:
+			//UpdateItem(&ItemTree);
+			break;
 		case 7:
-			printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
+			/*printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
 			scanf("%d", &UpdateChoice);
 
 			if (UpdateChoice == 0)
@@ -233,45 +230,47 @@ int main()
 				}
 			}
 
-			UpdateCustomer(&CusForUpdate);
+			UpdateCustomer(&CusForUpdate);*/
+			updateCusMenu(&CusTree);
 			break;
 
 		case 8:
 
-			des = 1;
+			//des = 1;
 
-			while (des == 1)
-			{
-				printf("\n\n==>Enter The ID of the item you want to return\n");
-				scanf("%d", &ItmToReturnID);
+			//while (des == 1)
+			//{
+			//	printf("\n\n==>Enter The ID of the item you want to return\n");
+			//	scanf("%d", &ItmToReturnID);
 
-				printf("\n\n==>Enter The size of the item you want to return\n");
-				scanf("%d", &size);
+			//	printf("\n\n==>Enter The size of the item you want to return\n");
+			//	scanf("%d", &size);
 
-				printf("\n\n==>Enter the ID of the customer who want to return that item\n");
-				scanf("%d", &CustomerID);
+			//	printf("\n\n==>Enter the ID of the customer who want to return that item\n");
+			//	scanf("%d", &CustomerID);
 
-				printf("\n\n==>Enter the sum of the item you want to return\n");
-				scanf("%d", &SumToRe);
+			//	printf("\n\n==>Enter the sum of the item you want to return\n");
+			//	scanf("%d", &SumToRe);
 
-				AbleToRe = AbleToReturn(&CusTree, CustomerID, ItmToReturnID, size, SumToRe);
+			//	AbleToRe = AbleToReturn(&CusTree, CustomerID, ItmToReturnID, size, SumToRe);
 
-				if (AbleToRe)
-				{
-					ItemReturn(&ItemTree, ItmToReturnID, size, SumToRe);
+			//	if (AbleToRe)
+			//	{
+			//		ItemReturn(&ItemTree, ItmToReturnID, size, SumToRe);
 
-					printf("\n\n==>Item return succeed\nIf you want return another Item press 1, else press 0\n");
-					scanf("%d", &des);
+			//		printf("\n\n==>Item return succeed\nIf you want return another Item press 1, else press 0\n");
+			//		scanf("%d", &des);
 
-				}
+			//	}
 
-				else
-				{
-					printf("\n\n==>If you want to try again press 1, else press 0\n");
-					scanf("%d", &des);
+			//	else
+			//	{
+			//		printf("\n\n==>If you want to try again press 1, else press 0\n");
+			//		scanf("%d", &des);
 
-				}
-			}
+			//	}
+			//}
+			returnItemMenu(&ItemTree,&CusTree);
 			break;
 
 		case 9:
