@@ -181,7 +181,7 @@ int main()
 			removeItemMenu(&ItemTree);
 			break;
 		case 6:
-			//UpdateItem(&ItemTree);
+			UpdateItem(&ItemTree);
 			break;
 		case 7:
 			/*printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");

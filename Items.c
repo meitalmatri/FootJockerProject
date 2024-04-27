@@ -155,30 +155,24 @@ void UpdateItem(ItemNode** Itemtree)
 		print_item(&ItmToUpdate->itemN);
 
 		printf("\n\n What would you like to update on this item? \n");
-		printf("If you like to update the model press 1 \n");
-		printf("If you like to update the price press 2 \n");
-		printf("If you like to update the manufactory date press 3 \n");
+		printf("If you like to update the price press 1 \n");
+		printf("If you like to update the manufactory date press 2 \n");
 		scanf("%d", &choose);
 
 		switch (choose)
 		{
 		case 1:
-			printf("Enter new model\n");
-			scanf("%s", NewModel);
-			strcpy(ItmToUpdate->itemN.model,NewModel);
-			break;
-
-		case 2:
 			printf("Enter new price\n");
 			scanf("%d", &NewPrice);
 			ItmToUpdate->itemN.price = NewPrice;
 			break;
 
-		case 3:
+		case 2:
 			printf("Enter new manufactory date\n");
 			scanf("%s", ManuFactoryDate);
-			strcpy(ItmToUpdate->itemN.manuf,ManuFactoryDate);
+			strcpy(ItmToUpdate->itemN.manuf, ManuFactoryDate);
 			break;
+
 		}
 		printf("\n\n==>To continue update please press 1, for exit please press 0\n\n");
 		scanf("%d", &choose);
