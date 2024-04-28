@@ -1,8 +1,9 @@
 #include "menu.h"
 
 
-void printMenu(unsigned int employeeLevel)
+int printMenu(unsigned int employeeLevel)
 {
+	int choice;
 
 	printf("\n============> FootJockerMenue <============\n");
 	printf("Choose your operation:\n\n");
@@ -27,6 +28,14 @@ void printMenu(unsigned int employeeLevel)
 
 	printf("Your Choice:");
 
+	scanf("%d", &choice);
+
+	while ((choice > 3 && employeeLevel == 3) || (choice > 8 && employeeLevel > 1))
+	{
+		printf("\n\n==>Choice is not on the list, maybe you dont have the promission for that choice!");
+		printf("\n\n==>Please try again-");
+		scanf("%d", &choice);
+	}
 
 }
 

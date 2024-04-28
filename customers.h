@@ -37,7 +37,6 @@ int AbleToReturn(CusNode** CusTree, int CusID, int ItemID, int ItemSize,int Item
 void print_preorder(CusNode* Custree);
 void print_inorder(CusNode* Custree);
 void print_postorder(CusNode* Custree);
-void deltree(CusNode* Custree);
 CusNode* searchCustomerByID(CusNode** Custree, int CusID);
 CusNode* searchCustomerByName(CusNode** Custree, char* FullName);
 void UpdateCustomer(CusNode** Custree);

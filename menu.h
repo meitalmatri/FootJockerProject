@@ -9,7 +9,7 @@
 #include "customers.h"
 
 
-void printMenu(unsigned int employeeLevel);
+int printMenu(unsigned int employeeLevel);
 void searceMenu(ItemNode** tree);
 void addItemMenu(ItemNode** tree, int* LastItemID);
 void addCusMenu(CusNode** tree, int* LastItemID);

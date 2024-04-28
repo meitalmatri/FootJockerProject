@@ -215,7 +215,11 @@ Employee_node* login(Employee_node** tree)
 		}
 
 		if(i<2)
-		printf("\n==>please try again\n\n");
+		{
+			system("cls");
+			printf("\n==>the username or password are incorrect, please try again\n\n");
+		}
+
 	}
 	printf("\n==>login failed please try again later\n");
 
