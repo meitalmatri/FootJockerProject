@@ -47,74 +47,44 @@ int main()
 		{
 		case 1:
 			searceMenu(&ItemTree);
-			//printLog(&log, &i,currentEmployee->data->username, "searching item");
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Search_Item");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "searching item");
 			break;
 		case 2:
 			addItemMenu(&ItemTree, &LastItemID);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Add_Item");
-			i++;
+		        printLog(&log, &i,currentEmployee->data->username, "Add Item");
 			break;
 		case 3:
 			addCusMenu(&CusTree, &LastCustomerID);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Add_Customer");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Add Customer");
 			break;
 		case 4:
 			purchaseMenu(&ItemTree,&CusTree,&PurchasedItms);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Purchase");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Purchase Item");
 			break;
 		case 5:
 			removeItemMenu(&ItemTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Remove_Item");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Remove Item");
 			break;
 		case 6:
 			UpdateItem(&ItemTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Update_Item");
+			printLog(&log, &i,currentEmployee->data->username, "Update Item");
 			i++;
 			break;
 		case 7:
 			updateCusMenu(&CusTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Update_Customer");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Update Customer");
 			break;
 		case 8:
 			returnItemMenu(&ItemTree,&CusTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Return_Item");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Return Item");
 			break;
 		case 9:
 			addEnpMenu(&employeeTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s", currentEmployee->data->username);
-			sprintf(log[i].action, "Add_Employee");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Add Employee");
 			break;
 		case 10:
 			update_employee(employeeTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "%s",currentEmployee->data->username);
-			sprintf(log[i].action, "Update_Employee");
-			i++;
+			printLog(&log, &i,currentEmployee->data->username, "Update Employee");
 			break;
 		default:
 			printf("\n\n==> Choice is not on the list.. Try Again..!\n");
