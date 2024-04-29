@@ -37,15 +37,12 @@ int main()
 	do
 	{
 		choice=printMenu(currentEmployee->data->level);
-		currentEmployee.username.date
 		switch (choice)
 		{
 		case 1:
 			searceMenu(&ItemTree);
-			sprintf(log[i].date, "%s", date);
-			sprintf(log[i].username, "currentEmployee.username.date",);
-			sprintf(log[i].action, "searceMenu");
-			i++1;
+			printLog(&log, &i,currentEmployee->data->username, "searching item");
+
 			break;
 		case 2:
 			addItemMenu(&ItemTree, &LastItemID);
