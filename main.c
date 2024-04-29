@@ -5,21 +5,21 @@
 #include "customers.h"
 #include "items.h"
 #include "employees.h"
-
+#include "log.h"
 int main()
 {
-	int choice,value,LastItemID, LastCustomerID;
+	int choice, value, LastItemID, LastCustomerID, i = 0;
 	CusNode* CusTree[] = { NULL,NULL};
 	ItemNode* ItemTree[] = { NULL,NULL,NULL,NULL };//0-id,1-price,2-modifydate,3-modle
 	ItemPur* PurchasedItms[3] = { NULL, NULL, NULL };
 	Employee_node* employeeTree = NULL;
-	Employee_node* currentEmployee = NULL;//äçìôúé ñåâ îùúðä 
-
+	Employee_node* currentEmployee = NULL;
+	LogEntry log[LOG_SIZE];
 	mallocPurchasedItms(&PurchasedItms);
 
 	if (!checkIfEmployeeFileExists(employeeTree))
 	{
-		employeeTree = createDefaultAdmin();//äëðñúé àú äîùúðä äçãù ùðåöø ìòõ
+		employeeTree = createDefaultAdmin();
 	}
 
 	else
@@ -37,38 +37,78 @@ int main()
 	do
 	{
 		choice=printMenu(currentEmployee->data->level);
-
+		currentEmployee.username.date
 		switch (choice)
 		{
 		case 1:
 			searceMenu(&ItemTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date",);
+			sprintf(log[i].action, "searceMenu");
+			i++1;
 			break;
 		case 2:
 			addItemMenu(&ItemTree, &LastItemID);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "addItemMenu");
+			i++1;
 			break;
 		case 3:
 			addCusMenu(&CusTree, &LastCustomerID);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "addCusMenu");
+			i++1;
 			break;
 		case 4:
 			purchaseMenu(&ItemTree,&CusTree,&PurchasedItms);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "purchaseMenu");
+			i++1;
 			break;
 		case 5:
 			removeItemMenu(&ItemTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "removeItemMenu");
+			i++1;
 			break;
 		case 6:
 			UpdateItem(&ItemTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "UpdateItem");
+			i++1;
 			break;
 		case 7:
 			updateCusMenu(&CusTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "updateCusMenu");
+			i++1;
 			break;
 		case 8:
 			returnItemMenu(&ItemTree,&CusTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "returnItemMenu");
+			i++1;
 			break;
 		case 9:
 			addEnpMenu(&employeeTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "addEnpMenu");
+			i++1;
 			break;
 		case 10:
 			update_employee(employeeTree);
+			sprintf(log[i].date, "%s", date);
+			sprintf(log[i].username, "currentEmployee.username.date");
+			sprintf(log[i].action, "update_employee");
+			i++1;
 			break;
 		default:
 			printf("\n\n==> Choice is not on the list.. Try Again..!\n");
