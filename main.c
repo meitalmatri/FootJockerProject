@@ -47,44 +47,43 @@ int main()
 		{
 		case 1:
 			searceMenu(&ItemTree);
-			printLog(&log, &i,currentEmployee->data->username, "searching item");
+			printLog(log, &i,currentEmployee->data->username, "searching item");
 			break;
 		case 2:
 			addItemMenu(&ItemTree, &LastItemID);
-		        printLog(&log, &i,currentEmployee->data->username, "Add Item");
+		    printLog(log, &i,currentEmployee->data->username, "Add Item");
 			break;
 		case 3:
 			addCusMenu(&CusTree, &LastCustomerID);
-			printLog(&log, &i,currentEmployee->data->username, "Add Customer");
+			printLog(log, &i,currentEmployee->data->username, "Add Customer");
 			break;
 		case 4:
 			purchaseMenu(&ItemTree,&CusTree,&PurchasedItms);
-			printLog(&log, &i,currentEmployee->data->username, "Purchase Item");
+			printLog(log, &i,currentEmployee->data->username, "Purchase Item");
 			break;
 		case 5:
 			removeItemMenu(&ItemTree);
-			printLog(&log, &i,currentEmployee->data->username, "Remove Item");
+			printLog(log, &i,currentEmployee->data->username, "Remove Item");
 			break;
 		case 6:
 			UpdateItem(&ItemTree);
-			printLog(&log, &i,currentEmployee->data->username, "Update Item");
-			i++;
+			printLog(log, &i,currentEmployee->data->username, "Update Item");
 			break;
 		case 7:
 			updateCusMenu(&CusTree);
-			printLog(&log, &i,currentEmployee->data->username, "Update Customer");
+			printLog(log, &i,currentEmployee->data->username, "Update Customer");
 			break;
 		case 8:
 			returnItemMenu(&ItemTree,&CusTree);
-			printLog(&log, &i,currentEmployee->data->username, "Return Item");
+			printLog(log, &i,currentEmployee->data->username, "Return Item");
 			break;
 		case 9:
 			addEnpMenu(&employeeTree);
-			printLog(&log, &i,currentEmployee->data->username, "Add Employee");
+			printLog(log, &i,currentEmployee->data->username, "Add Employee");
 			break;
 		case 10:
 			update_employee(employeeTree);
-			printLog(&log, &i,currentEmployee->data->username, "Update Employee");
+			printLog(log, &i,currentEmployee->data->username, "Update Employee");
 			break;
 		default:
 			printf("\n\n==> Choice is not on the list.. Try Again..!\n");
@@ -99,13 +98,7 @@ int main()
 	if (value == 0)
 	{
 		shutDown(&ItemTree, &CusTree, &PurchasedItms, &employeeTree);
-
-		for (int j = 0; j <i; j++) 
-		{
-
-				writeLog(&log[j], "logfile.txt");
-			
-		}
+		writeLog(&log,i);
     
 	}
 

@@ -12,13 +12,13 @@ void printLogEntry(const LogEntry* entry) {
 }
 
 
-void writeLog(const LogEntry* entry, const char* filename) {
-    FILE* logfile = fopen(filename, "w");
+void writeLog(const LogEntry* entry, int j) {
+    FILE* logfile = fopen("log.txt", "a");
     if (logfile == NULL) {
         printf("Error opening log file!\n");
         return;
     }
-   // for(int i=0;i<j;i++)
+    for(int i=0;i<j;i++)
     fprintf(logfile,"\n%s %s %s %s\n", entry->date, entry->username, entry->action, (entry->success ? "Success" : "Failure"));
 
     fclose(logfile);
@@ -58,10 +58,10 @@ void writeLog(const LogEntry* entry, const char* filename) {
 //}
 
 
-void printLog(LogEntry** log, int* i,char* username ,char* word)
+void printLog(LogEntry* log, int* i,char* username ,char* word)
 {
-    strcpy(log[*i]->date, getCurrentDate());
-    strcpy(log[*i]->username, username);
-    strcpy(log[*i]->action, word);
+    strcpy(log[*i].date, getCurrentDate());
+    strcpy(log[*i].username, username);
+    strcpy(log[*i].action, word);
     *i = *i + 1;
 }

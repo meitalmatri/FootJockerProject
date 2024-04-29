@@ -245,7 +245,10 @@ int load_items_tree(ItemNode** ItmTree)
 			
 			}
 			else
+			{
 				itm.InStock == false;
+				fscanf(fp, "%s \n", &word);
+			}
 
 			insertItem(ItmTree, NULL, itm);
 
@@ -292,7 +295,7 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
 			fprintf(fp, "InStock\n");
 		}
 		else
-			fprintf(fp, "NotInStock\n");
+			fprintf(fp, " NotInStock\n");
 
 		item_fprint_inorder(ItmTree->right, fp);
 	}
@@ -936,6 +939,7 @@ void removeItem(ItemNode** Itemtree, int ID)
 	ItemNode* itemremov; 
 	itemremov = searchItemByID(Itemtree, ID);
 	itemremov->itemN.InStock = false;
+	itemremov->itemN.inventory = 0;
 	for (int i = 0; i < 11; i++)
 		itemremov->itemN.size[i] = 0;
 }

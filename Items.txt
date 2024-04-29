@@ -2,4 +2,4 @@
 2 NikeAirForce 02/10/2000 600 70 size 32 inv 20  size 36 inv 10  size 38 inv 28  size 39 inv 12 InStock
 3 nikee 15/15/2015 500 112 size 32 inv 20  size 36 inv 40  size 38 inv 22  size 39 inv 30 InStock
 4 NikeDunkLow 10/04/2024 500 72 size 32 inv 20  size 36 inv 26  size 38 inv 16  size 39 inv 10 InStock
-5 adidasPuma 15/10/2003 499 6 size 35 inv 4  size 36 inv 2 InStock
+5 adidasPuma 15/10/2003 499 0InStock

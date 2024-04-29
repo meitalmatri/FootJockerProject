@@ -1,3 +1,5 @@
+#pragma once
+
 #include "employees.h"
 #include "menu.h"
 #include <stdio.h>
