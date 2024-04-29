@@ -36,7 +36,7 @@ int printMenu(unsigned int employeeLevel)
 		printf("\n\n==>Please try again-");
 		scanf("%d", &choice);
 	}
-
+	return choice;
 }
 
 void searceMenu(ItemNode** tree)
