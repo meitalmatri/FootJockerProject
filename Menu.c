@@ -1,4 +1,5 @@
 #include "menu.h"
+#include"log.h"
 
 
 int printMenu(unsigned int employeeLevel)

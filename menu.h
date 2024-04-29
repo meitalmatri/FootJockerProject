@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
+#include"log.h"
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
@@ -19,6 +20,3 @@ void returnItemMenu(ItemNode** ItemTree, CusNode** CusTree);
 void updateCusMenu(CusNode** CusTree);
 void purchaseMenu(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms);
 void shutDown(ItemNode** ItemTree, CusNode** CusTree, ItemPur** PurchasedItms, Employee_node** employeeTree);
-
-
-

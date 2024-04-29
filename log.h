@@ -1,3 +1,5 @@
+#pragma once
+
 #include "employees.h"
 #include "menu.h"
 #include <stdio.h>
@@ -16,11 +18,10 @@ typedef struct {
     char date[11];
     char username[20];
     char action[100];
-    int success;
 } LogEntry;
 
-void printLog(LogEntry** log, int* i, char* username, char* word);
-void writeLog(const LogEntry* entry, const char* filename, int j);
+void printLog(LogEntry* log, int* i, char* username, char* word);
+void writeLog(const LogEntry* entry, int j);
 void printLogEntry(const LogEntry* entry);
-int loging();
+//int loging();
 
