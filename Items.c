@@ -98,7 +98,7 @@ void AddIventory(ItemNode** ItemNO)
 		{
 			if (ItmToUpdate->itemN.InStock==false)
 				ItmToUpdate->itemN.InStock = true;
-			printf("\n\n==>How much inventory you would like to add to this size?");
+			printf("\n==>How much inventory you would like to add to this size?\n");
 			scanf("%d", &sum);
 
 			if (ItmToUpdate->itemN.size[(size % 30)] >= 0)
@@ -122,7 +122,7 @@ void AddIventory(ItemNode** ItemNO)
 
 		else
 		{
-			printf("\n\n==>The size you've written is not allowed please try again");
+			printf("\n==>The size you've written is not allowed please try again");
 		}
 
 		printf("\n\n==>Which more size would you like to add inventory to? if there is no more size to add, press -1 \n");
@@ -144,43 +144,56 @@ void UpdateItem(ItemNode** Itemtree)
 	ItemNode* ItmToUpdate;
 	system("cls");
 	print_inordere(*Itemtree);
-	printf("please enter the item ID you want to change \n");
+	printf("\n\n==>please enter the item ID you want to change \n");
 	scanf("%d", &ID);
 	ItmToUpdate = searchItemByID(Itemtree, ID);
-	
 
-	do 
+	while (!ItmToUpdate)
 	{
 		system("cls");
-		print_item(&ItmToUpdate->itemN);
+		print_inordere(*Itemtree);
+		printf("\n\n==>ID not found, please try again\n");
+		printf("\n\n==>Enter ID to update\n");
+		scanf("%d", &ID);
+		ItmToUpdate = searchItemByID(Itemtree, ID);
+	}
 
-		printf("\n\n What would you like to update on this item? \n");
-		printf("If you like to update the price press 1 \n");
-		printf("If you like to update the manufactory date press 2 \n");
-		scanf("%d", &choose);
-
-		switch (choose)
+		do
 		{
-		case 1:
-			printf("Enter new price\n");
-			scanf("%d", &NewPrice);
-			ItmToUpdate->itemN.price = NewPrice;
-			break;
+			system("cls");
+			print_item(&ItmToUpdate->itemN);
 
-		case 2:
-			printf("Enter new manufactory date\n");
-			scanf("%s", ManuFactoryDate);
-			strcpy(ItmToUpdate->itemN.manuf, ManuFactoryDate);
-			break;
+			printf("\n\n What would you like to update on this item? \n");
+			printf("\n\n==>If you like to update the price press 1 \n");
+			printf("\n\n==>If you like to update the manufactory date press 2 \n");
+			printf("\n\n==>If you like to update the inventory press 3 \n");
+			scanf("%d", &choose);
 
-		}
-		printf("\n\n==>To continue update please press 1, for exit please press 0\n\n");
-		scanf("%d", &choose);
-	} while (choose != 0);
+			switch (choose)
+			{
+			case 1:
+				printf("Enter new price\n");
+				scanf("%d", &NewPrice);
+				ItmToUpdate->itemN.price = NewPrice;
+				break;
 
-	system("cls");
-	printf("Inventory Sucssesful update\n");
+			case 2:
+				printf("Enter new manufactory date\n");
+				scanf("%s", ManuFactoryDate);
+				strcpy(ItmToUpdate->itemN.manuf, ManuFactoryDate);
+				break;
 
+			case 3:
+				system("cls");
+				AddIventory(&ItmToUpdate);
+				break;
+			}
+			printf("\n\n==>To continue update please press 1, for exit please press 0\n\n");
+			scanf("%d", &choose);
+		} while (choose != 0);
+
+		system("cls");
+		printf("Inventory Sucssesful update\n");
 }
 
 ItemNode* min_value(ItemNode* Itm, int* height)
@@ -216,7 +229,7 @@ int load_items_tree(ItemNode** ItmTree)
 	FILE* fp = NULL;
 	Item itm;
 	int LastItmID,size,inv;
-	char inStock[15], word[10];
+	char inStock[15], word[12];
 
 	fp = fopen("Items.txt", "r");
 	if (fp == NULL)
@@ -231,7 +244,7 @@ int load_items_tree(ItemNode** ItmTree)
 			sizeZero(&itm);
 			if (itm.inventory> 0)
 			{
-				itm.InStock == true;
+				itm.InStock = true;
 
 				fscanf(fp, "%s", &word);
 
@@ -246,7 +259,7 @@ int load_items_tree(ItemNode** ItmTree)
 			}
 			else
 			{
-				itm.InStock == false;
+				itm.InStock = false;
 				fscanf(fp, "%s \n", &word);
 			}
 
@@ -279,7 +292,7 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
 	if (ItmTree)
 	{
 		item_fprint_inorder(ItmTree->left, fp);
-		fprintf(fp, "%d %s %s %.0f %d", ItmTree->itemN.id, ItmTree->itemN.model, ItmTree->itemN.manuf, ItmTree->itemN.price, ItmTree->itemN.inventory);
+		fprintf(fp, "%d %s %s %.0f %d ", ItmTree->itemN.id, ItmTree->itemN.model, ItmTree->itemN.manuf, ItmTree->itemN.price, ItmTree->itemN.inventory);
 
 		if (ItmTree->itemN.InStock)
 		{
@@ -288,14 +301,14 @@ void item_fprint_inorder(ItemNode* ItmTree, FILE* fp)
 			{
 				if (ItmTree->itemN.size[i]>0)
 				{
-					fprintf(fp, " size %d inv %d ", (i + 30), ItmTree->itemN.size[i]);
+					fprintf(fp, "size %d inv %d ", (i + 30), ItmTree->itemN.size[i]);
 				}
 			}
 
 			fprintf(fp, "InStock\n");
 		}
 		else
-			fprintf(fp, " NotInStock\n");
+			fprintf(fp, "NotInStock\n");
 
 		item_fprint_inorder(ItmTree->right, fp);
 	}
@@ -927,9 +940,9 @@ void print_inordere(ItemNode* tree)
 {
 	if (tree)
 	{
-		print_inorderInStoke(tree->left);
+		print_inordere(tree->left);
 		print_item(&tree->itemN);
-		print_inorderInStoke(tree->right);
+		print_inordere(tree->right);
 	}
 
 }
@@ -938,6 +951,15 @@ void removeItem(ItemNode** Itemtree, int ID)
 {
 	ItemNode* itemremov; 
 	itemremov = searchItemByID(Itemtree, ID);
+
+	while (!itemremov)
+	{
+		printf("\n\n==>ID not found, please try again\n");
+		printf("\n\n==>Enter ID to remove\n");
+		scanf("%d", &ID);
+		itemremov = searchItemByID(Itemtree, ID);
+	}
+
 	itemremov->itemN.InStock = false;
 	itemremov->itemN.inventory = 0;
 	for (int i = 0; i < 11; i++)
