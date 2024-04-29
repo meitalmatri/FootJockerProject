@@ -730,7 +730,7 @@ void print_preorder1(ItemNode* tree)
 void print_item(Item* user)
 {
 	if(user!=NULL)
-	printf("id:%d inventory:%d manuf:%s model:%s price:%f\n", user->id, user->inventory, user->manuf,user->model,user->price);
+	printf("id:%d inventory:%d manuf:%s model:%s price:%.2f\n", user->id, user->inventory, user->manuf,user->model,user->price);
 	/*  printf("first name: %s\n", user->firstname);
 	  printf("password %s\n", user->password);
 	  printf("level: %d\n", user->level);*/
