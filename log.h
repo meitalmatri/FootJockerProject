@@ -20,7 +20,7 @@ typedef struct {
 } LogEntry;
 
 void printLog(LogEntry** log, int* i, char* username, char* word);
-void writeLog(const LogEntry* entry, const char* filename, int j);
+void writeLog(const LogEntry* entry, const char* filename);
 void printLogEntry(const LogEntry* entry);
 int loging();
 
