@@ -1,3 +1,7 @@
+//דן ענף 308471341
+//מיטל מטרי 318573367
+//יוהד רמי לוי 319123378
+
 #include "menu.h"
 #include"log.h"
 
@@ -161,18 +165,26 @@ void removeItemMenu(ItemNode** tree)
 void returnItemMenu(ItemNode** ItemTree, CusNode** CusTree)
 {
 	int des = 1, ItmToReturnID, size, CustomerID, SumToRe, AbleToRe;
+	CusNode* Cust = NULL;
+
+	
 
 	while (des == 1)
 	{
+		
 		system("cls");
+
+		printf("\n\n==>Enter the ID of the customer who want to return that item\n");
+		scanf("%d", &CustomerID);
+
+		Cust = searchCustomerByID(CusTree, CustomerID);
+		print_cus(&(Cust->cus));
+
 		printf("\n\n==>Enter The ID of the item you want to return\n");
 		scanf("%d", &ItmToReturnID);
 
 		printf("\n\n==>Enter The size of the item you want to return\n");
 		scanf("%d", &size);
-
-		printf("\n\n==>Enter the ID of the customer who want to return that item\n");
-		scanf("%d", &CustomerID);
 
 		printf("\n\n==>Enter the sum of the item you want to return\n");
 		scanf("%d", &SumToRe);
@@ -204,7 +216,7 @@ void updateCusMenu(CusNode** CusTree)
 	CusNode* CusForUpdate = NULL;
 
 	system("cls");
-	printf("\n\n==>If you want to update customer by name please press 0 for ID press 1\n");
+	printf("\n\n==>If you want to update customer by name please press 0 for ID press anything else\n");
 	scanf("%d", &UpdateChoice);
 
 	if (UpdateChoice == 0)
@@ -257,12 +269,28 @@ void purchaseMenu(ItemNode** ItemTree,CusNode** CusTree, ItemPur** PurchasedItms
 {
 	int ItmToSellID, size, SumToPur, AbleToS, SumOfItems = 0, Purchase, CustomerID;
 	Item ITM;
+	ItemNode* ItmToSell = NULL;
 
 
 	system("cls");
 	print_inorderInStoke(*ItemTree);
 	printf("\n\n==>Enter The ID of the item you want to sell\n");
 	scanf("%d", &ItmToSellID);
+
+	ItmToSell = searchItemByID(ItemTree, ItmToSellID);
+
+	while (!ItmToSell)
+	{
+		printf("\n\n==>Wrong ID, please try again\n");
+		scanf("%d", &ItmToSellID);
+		ItmToSell = searchItemByID(ItemTree, ItmToSellID);
+	}
+
+	while (ItmToSell->itemN.inventory == 0)
+	{
+		printf("Item Not Availible In Stock, please try again later");
+		return;
+	}
 
 	printSize(ItemTree, ItmToSellID);
 	printf("\n\n==>Enter the size of the item you want to sell\n");

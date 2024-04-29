@@ -1,3 +1,9 @@
+//דן ענף 308471341
+//מיטל מטרי 318573367
+//יוהד רמי לוי 319123378
+
+
+
 #include "customers.h"
 
 void AddCustomer(CusNode** Custree, Customer cus)
@@ -134,7 +140,7 @@ int AbleToReturn(CusNode** CusTree, int CusID, int ItemID,int ItemSize, int Item
 
 	if (CusToUpdate->cus.SumOfShops > 0)
 	{
-		for (int i = 0; i <= CusToUpdate->cus.SumOfShops; i++)
+		for (int i = 0; i < CusToUpdate->cus.SumOfShops; i++)
 		{
 			for (int j = 0; j <= 2; j++)
 			{
@@ -549,6 +555,10 @@ void insertCustomer(CusNode** cusTree, CusNode* parent, Customer cus)
 
 void print_cus(Customer* cus)
 {
+	PurchaseDay* purch = NULL;
+
+	purch = (PurchaseDay*)malloc(sizeof(PurchaseDay));
+
 	if (cus == NULL)
 	{
 		printf("the customer yo want to print not found\n");
@@ -556,19 +566,25 @@ void print_cus(Customer* cus)
 	}
 	printf("id: %d \nFull Name: %s \nJoin Date: %s \nSum Of Shops: %d \n", cus->ID, cus->fullName , cus->JoinDate, cus->SumOfShops);
 
+	purch = cus->lastPurchaseDay;
+
 	if (cus->SumOfShops > 0)
 	{
-		printf("Last Purchase Day : % s\n", cus->lastPurchaseDay->Date);
-	}
-	/*  printf("first name: %s\n", user->firstname);
-	  printf("password %s\n", user->password);
-	  printf("level: %d\n", user->level);*/
+		for (int i = 0; i < cus->SumOfShops; i++)
+		{
+			for (int j = 0; j <= 2; j++)
+			{
+				if (purch->purItems[j].sum > 0)
+				{
+					printf("\n%s", purch->purItems[j].Itm.model);
+					printf(" %d", purch->purItems[j].size);
+					printf(" %d", purch->purItems[j].sum);
+				}
+			}
 
-	/* int ID;
-	char fullName[20];
-	char JoinDate[10];
-	int SumOfShops;
-	PurchaseDay lastPurchaseDay; */
+			purch = purch->previous;
+		}
+	}
 
 }
 

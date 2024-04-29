@@ -1,3 +1,8 @@
+//דן ענף 308471341
+//מיטל מטרי 318573367
+//יוהד רמי לוי 319123378
+
+
 #include "items.h"
 #include "dates.h"
 
@@ -335,12 +340,6 @@ int AbleToSell(ItemNode** ItmTree, int ID, int size, int sumToPur)
 {
 	ItemNode* ItmToSell = NULL;
 	ItmToSell = searchItemByID(ItmTree, ID);
-
-	if (!ItmToSell)
-	{
-		printf("\n\n==>Wrong ID, please try again\n");
-		return 0;
-	}
 
 	if (ItmToSell->itemN.InStock)
 	{
